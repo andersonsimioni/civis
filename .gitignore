@@ -1,4 +1,4 @@
-# Python
+# --- Python -------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
@@ -7,30 +7,95 @@ build/
 dist/
 *.egg-info/
 *.egg
+*.egg-info
+pip-wheel-metadata/
 
+# --- Virtual envs & lockfiles ------------------------------------------
 # uv virtual env (lockfile IS committed for reproducibility)
 .venv/
+venv/
+env/
 
-# Environment
+# --- Secrets & environment ---------------------------------------------
+# NEVER commit real credentials. .env.example carries only variable names.
 .env
-.env.local
+.env.*
+!.env.example
 
-# IDE
+# Private keys and certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+credentials.json
+secrets.json
+*_secret*
+*_credentials*
+
+# --- IDE / editor ------------------------------------------------------
 .vscode/
 .idea/
 *.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
 
-# Generated synthetic data (regenerable from seed — see synth/generate.py)
-data/generated/*
-!data/generated/.gitkeep
-
-# Test / lint artifacts
+# --- Test / lint / type-check artifacts --------------------------------
 .pytest_cache/
 .coverage
+.coverage.*
+coverage.xml
 htmlcov/
 .mypy_cache/
 .ruff_cache/
+.tox/
+.nox/
+.hypothesis/
 
-# OS
-.DS_Store
-Thumbs.db
+# --- Notebooks ---------------------------------------------------------
+.ipynb_checkpoints/
+*.ipynb_convert/
+
+# --- Databases (local dev only — Postgres runs in docker from week 2) --
+*.sqlite
+*.sqlite3
+*.db
+
+# --- Logs --------------------------------------------------------------
+*.log
+logs/
+
+# --- Large model weights (should NEVER be in the repo — Ollama stores  -
+# --- them under ~/.ollama, but this catches accidental copies) ---------
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+models/
+
+# --- Frontend (React lands in week 6) ---------------------------------
+node_modules/
+frontend/dist/
+frontend/build/
+.next/
+out/
+
+# --- Docker / infra ----------------------------------------------------
+.docker/
+docker-compose.override.yml
+
+# --- Generated synthetic data (regenerable from seed) -----------------
+data/generated/*
+!data/generated/.gitkeep
+
+# --- Backups & scratch -------------------------------------------------
+*.bak
+*.orig
+*.rej
+scratch/
+local/
+tmp/

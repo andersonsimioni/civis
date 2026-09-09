@@ -10,6 +10,14 @@ dependencies = [
     "pydantic>=2.9,<3.0",
     "faker>=30.0,<31.0",
     "pyyaml>=6.0,<7.0",
+    # HTTP client used by Ollama and OpenAI-compatible providers.
+    "httpx>=0.27,<1.0",
+    # CLI framework (subcommands + interactive prompts + rich rendering).
+    "typer>=0.12,<1.0",
+    # TOML I/O that preserves comments — config.toml is human-editable.
+    "tomlkit>=0.13,<1.0",
+    # OS-appropriate config directory (~/.config/civis on Linux, %APPDATA% on Windows).
+    "platformdirs>=4.0,<5.0",
 ]
 
 [project.optional-dependencies]

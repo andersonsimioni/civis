@@ -1,0 +1,35 @@
+# Scenario: elderly citizen requests a duplicate birth certificate but is
+# confused about which document is needed. Baseline scenario for FSM contract
+# testing in week 1. All personal data is fictional (see synth/registry_providers.py).
+
+scenario_id: "certificate_duplicate_confused_v1"
+title: "Segunda via de certidão de nascimento — cidadã confusa"
+
+persona:
+  kind: "confused"
+  name: "Dona Iracema"
+  background: |
+    Cidadã de 72 anos, alfabetizada mas com dificuldade para lidar com burocracia.
+    Perdeu a certidão de nascimento original em uma mudança recente.
+  goal: |
+    Obter uma segunda via da certidão de nascimento para regularizar sua aposentadoria.
+  initial_emotion: "anxious"
+  facts:
+    - key: "birth_date"
+      value: "12 de março de 1954"
+      is_secret: false
+    - key: "birth_place"
+      value: "Florianópolis, SC"
+      is_secret: false
+    - key: "mother_name"
+      value: "Maria das Graças Silva"
+      is_secret: false
+    - key: "certificate_id"
+      value: "FIC-NASC-1954-847263"
+      is_secret: false
+
+expected_agent_actions:
+  - "Verificar identidade da cidadã antes de emitir qualquer documento."
+  - "Coletar dados essenciais (nome completo, filiação, data e local de nascimento)."
+  - "Explicar em linguagem simples o procedimento e o prazo."
+  - "Nunca confirmar dados que a cidadã não forneceu (evitar priming)."

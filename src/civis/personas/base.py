@@ -1,0 +1,80 @@
+"""
+Persona data contracts.
+
+A PersonaProfile is the static definition of a character type (loaded from YAML).
+A PersonaState is the runtime state during a session: which facts the persona knows,
+which phase it's in, how it feels right now.
+
+Structured state + selective fact retrieval is the mechanism against factual
+contradictions across dozens of turns (goal O2).
+"""
+
+from enum import StrEnum
+
+from pydantic import BaseModel, Field
+
+from civis.fsm.states import EmotionalState, Phase
+
+
+class PersonaKind(StrEnum):
+    """
+    The three profiles required by O2.
+
+    CONFUSED    - legitimate citizen who does not understand the process
+    AGGRESSIVE  - legitimate citizen who is impatient / rude
+    FRAUDSTER   - malicious actor attempting social engineering
+    """
+
+    CONFUSED = "confused"
+    AGGRESSIVE = "aggressive"
+    FRAUDSTER = "fraudster"
+
+
+class PersonaFact(BaseModel):
+    """
+    A single scripted fact the persona 'knows' about the scenario.
+
+    Facts are retrieved selectively during LLM prompt construction, not dumped
+    whole into context. That selectivity is what keeps the persona consistent
+    across many turns.
+    """
+
+    key: str = Field(description="Stable identifier for retrieval (e.g. 'birth_date').")
+    value: str = Field(description="The fact value in natural language (pt-BR).")
+    is_secret: bool = Field(
+        default=False,
+        description=(
+            "If True, the persona must not volunteer this fact. "
+            "Honeytokens (see security model) are stored as secret facts."
+        ),
+    )
+
+
+class PersonaProfile(BaseModel):
+    """
+    Static definition of a persona type, loaded from a scenario YAML file.
+    Immutable during a session.
+    """
+
+    kind: PersonaKind
+    name: str = Field(description="Display name (pt-BR).")
+    background: str = Field(description="One-paragraph biography in pt-BR.")
+    goal: str = Field(description="What the persona wants from this interaction (pt-BR).")
+    initial_emotion: EmotionalState = EmotionalState.CALM
+    facts: list[PersonaFact] = Field(default_factory=list)
+
+
+class PersonaState(BaseModel):
+    """
+    Runtime state of a persona during an ongoing session.
+    Mutated by the FSM engine on every turn.
+    """
+
+    profile: PersonaProfile
+    phase: Phase = Phase.OPENING
+    emotion: EmotionalState = EmotionalState.CALM
+    turn_count: int = 0
+    revealed_fact_keys: set[str] = Field(
+        default_factory=set,
+        description="Facts already disclosed to the agent (avoid re-disclosure churn).",
+    )

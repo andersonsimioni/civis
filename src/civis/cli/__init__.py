@@ -2,12 +2,14 @@
 CIVIS command-line entry point.
 
 Wired with Typer. Subcommands live in sibling modules (session.py for
-fase A; others will land in later phases). This file assembles the app
-and exports `main` so `python -m civis` and `python -m civis.cli` find it.
+fase A, adversarial.py for fase C; others will land in later phases).
+This file assembles the app and exports `main` so `python -m civis` and
+`python -m civis.cli` find it.
 """
 
 import typer
 
+from civis.cli.adversarial import adversarial_app
 from civis.cli.session import session_command
 
 # no_args_is_help=True prints help when the user runs `python -m civis` with
@@ -31,6 +33,11 @@ def _root_callback() -> None:
 
 app.command("session", help="Run one training session with an agent + persona.")(
     session_command
+)
+app.add_typer(
+    adversarial_app,
+    name="adversarial",
+    help="Run adversarial batteries and JudgeDeceiver-pointwise attacks.",
 )
 
 

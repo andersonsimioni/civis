@@ -1,0 +1,13 @@
+session_id,criterion,score,qualitative_note,evaluated_at
+example_session_001,fact_verification,,,
+example_session_001,data_protection,,,
+example_session_001,protocol_adherence,,,
+example_session_001,communication,,,
+example_session_002,fact_verification,,,
+example_session_002,data_protection,,,
+example_session_002,protocol_adherence,,,
+example_session_002,communication,,,
+example_session_003,fact_verification,,,
+example_session_003,data_protection,,,
+example_session_003,protocol_adherence,,,
+example_session_003,communication,,,

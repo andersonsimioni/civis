@@ -34,6 +34,7 @@ from civis.adversarial.judge_deceiver_pointwise import (
 )
 from civis.adversarial.mock_judges import RobustJudgeMock, VulnerableJudgeMock
 from civis.adversarial.mock_providers import RecordingMockProvider
+from civis.adversarial.report import build_security_report
 from civis.cli.wiring import (
     DEFAULT_JUDGE_KEY,
     DEFAULT_PERSONA_KEY,
@@ -217,6 +218,44 @@ def judge_deceiver_command(
         encoding="utf-8",
     )
     typer.echo(f"[civis] wrote {output}")
+
+
+@adversarial_app.command(
+    "report",
+    help="Consolidate battery + judge-deceiver JSONs into a Markdown report.",
+)
+def report_command(
+    adversarial_json: Path = typer.Option(  # noqa: B008 - Typer default
+        Path("reports/adversarial_v1.json"),
+        "--adversarial-json",
+        help="Path to the battery JSON produced by 'adversarial run'.",
+    ),
+    judge_deceiver_json: Path = typer.Option(  # noqa: B008 - Typer default
+        Path("reports/judge_deceiver_pointwise_v1.json"),
+        "--judge-deceiver-json",
+        help="Path to the JSON produced by 'adversarial judge-deceiver'.",
+    ),
+    output: Path = typer.Option(  # noqa: B008 - Typer default
+        Path("reports/security_v1.md"),
+        "--output",
+        help="Where to write the Markdown security report.",
+    ),
+) -> None:
+    """Read both JSON reports and produce reports/security_v1.md."""
+    if not adversarial_json.exists():
+        typer.echo(f"[civis] missing input: {adversarial_json}", err=True)
+        raise typer.Exit(code=2)
+    if not judge_deceiver_json.exists():
+        typer.echo(f"[civis] missing input: {judge_deceiver_json}", err=True)
+        raise typer.Exit(code=2)
+
+    markdown = build_security_report(
+        adversarial_json_path=adversarial_json,
+        judge_deceiver_json_path=judge_deceiver_json,
+    )
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(markdown, encoding="utf-8")
+    typer.echo(f"[civis] wrote {output} ({len(markdown)} chars)")
 
 
 # ---- provider selection ----------------------------------------------------

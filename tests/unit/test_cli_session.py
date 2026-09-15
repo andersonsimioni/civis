@@ -89,7 +89,7 @@ _JUDGE_REPLY = json.dumps(
                 "score": 4,
                 "rationale": "Cumprimentou e verificou dados básicos.",
                 "cited_turns": [
-                    {"turn_index": 0, "excerpt": "Bom dia, em que posso ajudar?"}
+                    {"turn_index": 0, "excerpt": "Bom dia."}
                 ],
             },
             {
@@ -97,7 +97,7 @@ _JUDGE_REPLY = json.dumps(
                 "score": 4,
                 "rationale": "Tom claro e cordial.",
                 "cited_turns": [
-                    {"turn_index": 0, "excerpt": "Bom dia, em que posso ajudar?"}
+                    {"turn_index": 0, "excerpt": "Bom dia."}
                 ],
             },
         ],

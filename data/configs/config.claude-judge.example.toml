@@ -1,0 +1,35 @@
+# CIVIS configuration — Anthropic Claude as judge, Ollama as persona.
+#
+# When to use this setup:
+#   - You want the judge to run on a stronger model than the local
+#     hardware can host (Claude ≫ 8B Llama for rubric reasoning).
+#   - You want a stronger separation from the persona (goal O3): Ollama
+#     locally + Claude in the cloud crosses provider families, so the
+#     judge is architecturally independent of the persona's inference
+#     stack.
+#
+# Requirements:
+#   - Local Ollama running with the persona model pulled.
+#   - `ANTHROPIC_API_KEY` exported in the shell (never store the key
+#     in this file). The catalog entry references the env var by name.
+#
+# Copy to your user config file (%APPDATA%\civis\config.toml on Windows,
+# $XDG_CONFIG_HOME/civis/config.toml on Linux/Mac). See README section
+# "Judge configurations" for the trade-offs vs the default Ollama-dual
+# setup shipped with the CLI.
+
+[models.persona_local]
+provider = "ollama"
+model_id = "qwen2.5:7b-instruct-q4_K_M"
+base_url = "http://localhost:11434"
+request_timeout_s = 60.0
+
+[models.judge_claude]
+provider = "anthropic"
+model_id = "claude-sonnet-4-6"
+api_key_env = "ANTHROPIC_API_KEY"
+request_timeout_s = 60.0
+
+[roles]
+persona = "persona_local"
+judge = "judge_claude"

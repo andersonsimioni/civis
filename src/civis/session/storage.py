@@ -3,10 +3,12 @@ On-disk persistence of CIVIS sessions.
 
 Fase A layout (SQLite / Postgres come later):
     data/sessions/{session_id}/
-        transcript.json     Ordered list of turns.
-        metadata.json       Scenario id, timestamps, provider names, seeds.
-        verdict.json        Present only after the judge has scored the
-                            session; absent while the session is in progress.
+        transcript.json         Ordered list of turns.
+        metadata.json           Scenario id, timestamps, provider names, seeds.
+        verdict.json            Present only after the judge has scored the
+                                session; absent while the session is in progress.
+        contradictions.json     Contradiction detector output (B.4). Present
+                                after any session run, judge or no judge.
 
 Two design choices worth calling out:
 
@@ -32,6 +34,7 @@ from pydantic import BaseModel, Field
 TRANSCRIPT_FILENAME = "transcript.json"
 METADATA_FILENAME = "metadata.json"
 VERDICT_FILENAME = "verdict.json"
+CONTRADICTIONS_FILENAME = "contradictions.json"
 
 
 class Turn(BaseModel):
@@ -134,6 +137,22 @@ def save_verdict_json(verdict_payload: dict, session_id: str, base: Path) -> Pat
     target = session_dir(base, session_id) / VERDICT_FILENAME
     target.parent.mkdir(parents=True, exist_ok=True)
     _dump_json(target, verdict_payload)
+    return target
+
+
+def save_contradictions_json(
+    report_payload: dict,
+    session_id: str,
+    base: Path,
+) -> Path:
+    """
+    Persist the ContradictionReport as a raw dict. Same rationale as
+    save_verdict_json — this module stays free of a dependency on the
+    session.contradiction_detector contracts.
+    """
+    target = session_dir(base, session_id) / CONTRADICTIONS_FILENAME
+    target.parent.mkdir(parents=True, exist_ok=True)
+    _dump_json(target, report_payload)
     return target
 
 

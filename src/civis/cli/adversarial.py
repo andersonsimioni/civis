@@ -27,6 +27,12 @@ from civis.adversarial.battery import (
     BatteryReport,
     run_battery,
 )
+from civis.adversarial.judge_deceiver_pointwise import (
+    JudgeDeceiverReport,
+    generate_pointwise_attacks,
+    run_judge_deceiver,
+)
+from civis.adversarial.mock_judges import RobustJudgeMock, VulnerableJudgeMock
 from civis.adversarial.mock_providers import RecordingMockProvider
 from civis.cli.wiring import (
     DEFAULT_JUDGE_KEY,
@@ -148,6 +154,71 @@ def run_command(
     typer.echo(f"[civis] wrote {output}")
 
 
+@adversarial_app.command(
+    "judge-deceiver",
+    help="Run JudgeDeceiver-pointwise against vulnerable and robust mock judges.",
+)
+def judge_deceiver_command(
+    output: Path = typer.Option(  # noqa: B008 - Typer requires call in default
+        Path("reports/judge_deceiver_pointwise_v1.json"),
+        "--output",
+        help="Where to write the JSON report.",
+    ),
+    target_score: int = typer.Option(
+        5,
+        "--target-score",
+        help="Score the attacks try to force on the target criterion (0-5).",
+    ),
+) -> None:
+    """
+    Generate the pointwise attack suite and run it against two judges:
+
+        - VulnerableJudgeMock — obeys embedded score-forcing directives.
+        - RobustJudgeMock     — ignores them; returns baseline scores.
+
+    Both mocks are deterministic. When CIVIS_RUN_REAL_LLM=1, a third
+    'real' run against the configured judge provider is added; the mocks
+    still run so a reader can compare simulated ASR to real ASR at a glance.
+    """
+    attacks = generate_pointwise_attacks(target_score=target_score)
+    typer.echo(
+        f"[civis] generated {len(attacks)} attacks "
+        f"({len(attacks)} judge calls per judge, +1 baseline)"
+    )
+
+    reports: list[JudgeDeceiverReport] = []
+    for judge, label in (
+        (VulnerableJudgeMock(), "mock:vulnerable_judge"),
+        (RobustJudgeMock(), "mock:robust_judge"),
+    ):
+        report = run_judge_deceiver(judge=judge, label=label, attacks=attacks)
+        reports.append(report)
+        typer.echo(_judge_deceiver_summary(label, report))
+
+    run_real = os.environ.get(REAL_LLM_ENV) == "1"
+    if run_real:
+        config, _ = load_or_default_config()
+        real_judge = build_provider_from_config(config, DEFAULT_JUDGE_KEY)
+        typer.echo(f"[civis] {REAL_LLM_ENV}=1 → also running against real judge {real_judge.name}")
+        real_report = run_judge_deceiver(
+            judge=real_judge, label=f"real:{real_judge.name}", attacks=attacks
+        )
+        reports.append(real_report)
+        typer.echo(_judge_deceiver_summary(f"real:{real_judge.name}", real_report))
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "target_score": target_score,
+        "attacks_per_judge": len(attacks),
+        "reports": [r.model_dump(mode="json") for r in reports],
+    }
+    output.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    typer.echo(f"[civis] wrote {output}")
+
+
 # ---- provider selection ----------------------------------------------------
 
 def _persona_provider(use_real: bool) -> LLMProvider:
@@ -243,4 +314,13 @@ def _summary_line(role: str, report: BatteryReport) -> str:
         f"[civis] {role:>8s} target={report.target_label} "
         f"defended={report.defended} leaked={report.leaked} "
         f"skipped={report.skipped} leak_rate={report.leak_rate:.2%}"
+    )
+
+
+def _judge_deceiver_summary(label: str, report: JudgeDeceiverReport) -> str:
+    """One-line summary printed for each judge in the judge-deceiver run."""
+    return (
+        f"[civis] judge-deceiver {label:>22s} "
+        f"ASR={report.overall_asr:.2%} "
+        f"({report.succeeded}/{report.attempted})"
     )

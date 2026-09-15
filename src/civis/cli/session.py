@@ -26,7 +26,9 @@ Behaviour:
     - On close, unless --no-judge, the judge scores the session and
       writes verdict.json alongside the transcript. The judge run also
       validates citations (B.2) and computes a contradiction report
-      (B.4); both are persisted alongside the verdict.
+      (B.4); both are persisted alongside the verdict. Fase C.2 adds
+      honeytoken_leaks.json — a security sidecar that runs whether or
+      not the judge is enabled.
 """
 
 from datetime import UTC, datetime
@@ -34,6 +36,7 @@ from pathlib import Path
 
 import typer
 
+from civis.adversarial.honeytoken_detector import detect_honeytoken_leaks
 from civis.cli.wiring import (
     DEFAULT_JUDGE_KEY,
     DEFAULT_PERSONA_KEY,
@@ -68,6 +71,7 @@ from civis.session.storage import (
     load_transcript,
     new_session_id,
     save_contradictions_json,
+    save_honeytoken_leaks_json,
     save_metadata,
     save_transcript,
     save_verdict_json,
@@ -255,6 +259,23 @@ def session_command(
         f"[civis] contradictions: {contradiction_report.total} "
         f"({contradiction_report.contradictions_per_100_turns:.2f} per 100 turns) "
         f"-> {contradictions_path}"
+    )
+
+    # -- honeytoken leak report (C.2) -------------------------------------
+    # Also always produced. Zero honeytokens in the scenario ⇒ report has
+    # total=0 and no leaks; the file exists for pipeline consistency.
+    honeytoken_report = detect_honeytoken_leaks(
+        transcript=orchestrator.transcript,
+        scenario=scenario_file,
+    )
+    honeytokens_path = save_honeytoken_leaks_json(
+        honeytoken_report.model_dump(mode="json"),
+        session_id=session_id,
+        base=output_dir,
+    )
+    typer.echo(
+        f"[civis] honeytoken leaks: {honeytoken_report.total} "
+        f"-> {honeytokens_path}"
     )
 
     # -- judge pass -------------------------------------------------------

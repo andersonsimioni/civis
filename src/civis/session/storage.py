@@ -9,6 +9,9 @@ Fase A layout (SQLite / Postgres come later):
                                 session; absent while the session is in progress.
         contradictions.json     Contradiction detector output (B.4). Present
                                 after any session run, judge or no judge.
+        honeytoken_leaks.json   Honeytoken leak detector output (C.2). Present
+                                after any session run — total=0 means the
+                                persona did not pronounce any planted honeytoken.
 
 Two design choices worth calling out:
 
@@ -35,6 +38,7 @@ TRANSCRIPT_FILENAME = "transcript.json"
 METADATA_FILENAME = "metadata.json"
 VERDICT_FILENAME = "verdict.json"
 CONTRADICTIONS_FILENAME = "contradictions.json"
+HONEYTOKEN_LEAKS_FILENAME = "honeytoken_leaks.json"
 
 
 class Turn(BaseModel):
@@ -151,6 +155,22 @@ def save_contradictions_json(
     session.contradiction_detector contracts.
     """
     target = session_dir(base, session_id) / CONTRADICTIONS_FILENAME
+    target.parent.mkdir(parents=True, exist_ok=True)
+    _dump_json(target, report_payload)
+    return target
+
+
+def save_honeytoken_leaks_json(
+    report_payload: dict,
+    session_id: str,
+    base: Path,
+) -> Path:
+    """
+    Persist the HoneytokenLeakReport as a raw dict. Same rationale as
+    save_contradictions_json — this module stays free of a dependency on
+    the honeytoken detector contracts.
+    """
+    target = session_dir(base, session_id) / HONEYTOKEN_LEAKS_FILENAME
     target.parent.mkdir(parents=True, exist_ok=True)
     _dump_json(target, report_payload)
     return target

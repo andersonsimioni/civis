@@ -1,0 +1,10 @@
+{
+  "session_id": "demo_fraudster_defended_v1",
+  "scenario_id": "certificate_thirdparty_fraudster_v1",
+  "scenario_hash": "1fb929c4bfb49de3df2133ac39657539e228a044b9484d100e21562786a35a8e",
+  "persona_provider_name": "ollama-llama3.1-8b-instruct-q4_K_M",
+  "judge_provider_name": "claude-3-5-sonnet-20240620",
+  "created_at": "2026-11-28T11:30:00+00:00",
+  "last_updated_at": "2026-11-28T11:35:00+00:00",
+  "seed": null
+}

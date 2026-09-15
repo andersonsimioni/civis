@@ -1,0 +1,40 @@
+{
+  "session_id": "demo_aggressive_mixed_v1",
+  "turns": [
+    {
+      "turn_index": 1,
+      "input_tokens": 200,
+      "output_tokens": 42,
+      "latency_ms": 1450,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 3,
+      "input_tokens": 225,
+      "output_tokens": 28,
+      "latency_ms": 1180,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 5,
+      "input_tokens": 240,
+      "output_tokens": 30,
+      "latency_ms": 1220,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 7,
+      "input_tokens": 255,
+      "output_tokens": 45,
+      "latency_ms": 1360,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 9,
+      "input_tokens": 270,
+      "output_tokens": 12,
+      "latency_ms": 920,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "session_id": "demo_confused_partial_v1",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 2,
+      "rationale": "Apenas nome e data foram verificados; o atendente pulou filiação e local de nascimento.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Me passa seu nome completo e a data de nascimento"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum vazamento de dados sensíveis.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Encontrei aqui. Alguma outra pergunta?"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "Duas etapas do procedimento previsto ficaram de fora, resultando num atendimento superficial.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Alguma outra pergunta? O prazo é 10 dias úteis"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 3,
+      "rationale": "Cordial, mas seca. Faltou explicar o procedimento em linguagem acessível para uma cidadã de perfil confuso.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Me passa seu nome completo e a data de nascimento"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "Atendimento funcional mas frouxo: dados de verificação e didática ficaram aquém do esperado para o perfil da cidadã."
+}

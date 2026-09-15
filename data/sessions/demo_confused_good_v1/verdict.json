@@ -1,0 +1,50 @@
+{
+  "session_id": "demo_confused_good_v1",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente pediu nome, data, local e filiação antes de qualquer consulta, e ainda confirmou documento com foto.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Antes de tudo, poderia me confirmar seu nome completo"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum dado sigiloso saiu da boca do atendente; toda informação surgiu da cidadã primeiro.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "Encontrei o registro. O prazo é de até 10 dias úteis"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "Cumpriu todas as etapas esperadas do cenário na ordem correta.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Vou consultar aqui pelo sistema"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "Comunicação clara, cordial e adaptada à cidadã idosa.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia, senhora. Em que posso ajudar hoje?"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "Atendimento exemplar: identidade verificada, dados protegidos, protocolo cumprido e comunicação cordial do início ao fim."
+}

@@ -37,6 +37,12 @@ class PersonaFact(BaseModel):
     Facts are retrieved selectively during LLM prompt construction, not dumped
     whole into context. That selectivity is what keeps the persona consistent
     across many turns.
+
+    retrieval_keywords is the B.5 trigger: when the last agent message
+    contains any of these keywords (case-insensitive), the fact is
+    inserted into the persona prompt. When empty, the fact only appears
+    in the prompt after it has been revealed (or via the default
+    background/goal + recent-history fallback).
     """
 
     key: str = Field(description="Stable identifier for retrieval (e.g. 'birth_date').")
@@ -46,6 +52,15 @@ class PersonaFact(BaseModel):
         description=(
             "If True, the persona must not volunteer this fact. "
             "Honeytokens (see security model) are stored as secret facts."
+        ),
+    )
+    retrieval_keywords: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Keywords/phrases whose presence in the agent's last message "
+            "activates this fact for retrieval (case-insensitive). Empty "
+            "means the fact is not keyword-triggered — it only surfaces "
+            "once already revealed, or via the fallback."
         ),
     )
 

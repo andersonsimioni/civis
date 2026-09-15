@@ -88,7 +88,7 @@ def test_load_shipped_example_scenario():
     """The example scenario shipped with the repo must load cleanly —
     if it stops loading, every downstream test breaks."""
     repo_root = Path(__file__).resolve().parents[2]
-    target = repo_root / "data" / "scenarios" / "example_v1.yaml"
+    target = repo_root / "data" / "scenarios" / "certificate_duplicate_confused_v1.yaml"
     assert target.exists(), f"Example scenario missing at {target}"
     scenario, _ = load_scenario_from_path(target)
     assert scenario.scenario_id == "certificate_duplicate_confused_v1"

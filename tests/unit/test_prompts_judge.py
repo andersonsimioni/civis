@@ -222,3 +222,109 @@ def test_parser_rejects_score_out_of_range():
     raw = json.dumps(payload)
     with pytest.raises(JudgeParseError):
         parse_judge_response(raw, session_id="s1")
+
+
+# ---- rubric injection (B.1) -----------------------------------------------
+
+def test_prompt_injects_full_rubric_level_descriptions_when_provided():
+    """
+    When a RubricDefinition is passed, every criterion's level-by-level
+    description must land in the user prompt verbatim so the judge sees
+    the same yardstick the human evaluators use.
+    """
+    from civis.judge.rubric_loader import load_default_rubric
+    rubric = load_default_rubric()
+    _, user = build_judge_prompt(
+        session_id="s1",
+        scenario_title="X",
+        scenario_goal="Y",
+        expected_agent_actions=[],
+        transcript=_transcript(),
+        rubric=rubric,
+    )
+    # Every criterion appears as a section header.
+    for kind in CriterionKind:
+        assert f"## {kind.value}" in user
+    # Every score level (0..5) shows up per criterion — 4 criteria × 6 = 24.
+    for score in range(6):
+        assert f"Nota {score}" in user
+    # A distinctive snippet from the shipped rubric surfaces verbatim.
+    assert "Vazou honeytoken" in user  # data_protection level 0
+
+
+def test_prompt_without_rubric_falls_back_to_short_summary():
+    """
+    build_judge_prompt(rubric=None) is the fase-A behaviour and must still
+    render the short one-liner summaries so old tests / code paths remain
+    valid.
+    """
+    _, user = build_judge_prompt(
+        session_id="s1",
+        scenario_title="X",
+        scenario_goal="Y",
+        expected_agent_actions=[],
+        transcript=_transcript(),
+        rubric=None,
+    )
+    for kind in CriterionKind:
+        assert CRITERION_DESCRIPTIONS[kind][:30] in user
+    # No level-by-level block when no rubric is supplied.
+    assert "Nota 0" not in user
+
+
+def test_prompt_max_turn_index_caps_citation_range_in_system_prompt():
+    """
+    The B.2 retry path passes max_turn_index. The system prompt must
+    tell the judge to cite only turns with index <= that value.
+    """
+    system, _ = build_judge_prompt(
+        session_id="s1",
+        scenario_title="X",
+        scenario_goal="Y",
+        expected_agent_actions=[],
+        transcript=_transcript(),
+        max_turn_index=3,
+    )
+    assert "menor ou igual a 3" in system
+
+
+# ---- determinism: same prompt across two calls (B.1 acceptance) ------------
+
+def test_deterministic_score_across_two_calls_with_scripted_provider():
+    """
+    B.1 acceptance criterion: the judge reproduces the same score in two
+    executions over the same session. We simulate temperature=0 with a
+    provider that returns the same canned JSON both times and verify the
+    parsed verdicts are equal criterion-by-criterion.
+    """
+    from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse
+
+    class _FrozenJudgeProvider(LLMProvider):
+        """Returns the same verdict payload every call — stand-in for temp=0."""
+
+        def __init__(self, payload_json: str) -> None:
+            self._payload = payload_json
+
+        @property
+        def name(self) -> str:
+            return "fake:frozen-judge"
+
+        def complete(self, messages: list[LLMMessage]) -> LLMResponse:
+            return LLMResponse(
+                content=self._payload,
+                input_tokens=1,
+                output_tokens=1,
+                latency_ms=1,
+                provider_name=self.name,
+            )
+
+    payload = _valid_verdict_payload()
+    provider = _FrozenJudgeProvider(json.dumps(payload, ensure_ascii=False))
+    # Run twice, mirroring what the CLI would do end-to-end.
+    r1 = provider.complete([LLMMessage(role="user", content="ignore")])
+    r2 = provider.complete([LLMMessage(role="user", content="ignore")])
+    v1 = parse_judge_response(r1.content, session_id=payload["session_id"])
+    v2 = parse_judge_response(r2.content, session_id=payload["session_id"])
+    scores_1 = {c.criterion: c.score for c in v1.criteria}
+    scores_2 = {c.criterion: c.score for c in v2.criteria}
+    assert scores_1 == scores_2

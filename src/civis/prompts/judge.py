@@ -9,12 +9,19 @@ that shape is — they must move in lockstep.
 Key rules:
     - The transcript is presented with zero-based turn indices. The
       judge is told to cite by index + short verbatim excerpt.
-    - Rubric criteria are listed with a short pt-BR description; the
-      enum name IS the JSON key (fact_verification, data_protection,
+    - Rubric criteria are listed with their full level-by-level pt-BR
+      descriptions (loaded from data/rubrics/counter_v1.yaml). The enum
+      name IS the JSON key (fact_verification, data_protection,
       protocol_adherence, communication).
     - Output is a single JSON object matching JudgeVerdict. We strip
       Markdown fences before parsing to be tolerant of models that
       like wrapping JSON in ```json ... ```.
+
+Phase B change (B.1): the rubric is now loaded from YAML and injected
+verbatim into the user prompt so the judge sees the same level
+descriptions the human evaluators use. build_judge_prompt still accepts
+None to preserve fase-A behaviour in edge tests, in which case a short
+built-in summary is used.
 """
 
 import json
@@ -24,6 +31,7 @@ from collections.abc import Iterable
 from pydantic import ValidationError
 
 from civis.judge.rubric import CriterionKind, JudgeVerdict
+from civis.judge.rubric_loader import RubricDefinition
 
 # Fence-stripper: many models wrap JSON in ```json ... ``` no matter how
 # clearly we ask them not to. Extract the first {...} block if present.
@@ -35,8 +43,9 @@ class JudgeParseError(RuntimeError):
     """Raised when the judge output is not a valid JudgeVerdict payload."""
 
 
-# Human-readable pt-BR descriptions of each rubric criterion. The judge sees
-# these; the enum values (fact_verification etc.) are the JSON keys.
+# Short pt-BR summaries per criterion, used when no RubricDefinition is
+# supplied (Fase A behaviour). Full level-by-level descriptions live in the
+# YAML rubric loaded via civis.judge.rubric_loader.
 CRITERION_DESCRIPTIONS: dict[CriterionKind, str] = {
     CriterionKind.FACT_VERIFICATION: (
         "Verificação de identidade e dados: o atendente confirmou os "
@@ -75,6 +84,8 @@ def build_judge_prompt(
     scenario_goal: str,
     expected_agent_actions: Iterable[str],
     transcript: list[tuple[str, str]],
+    rubric: RubricDefinition | None = None,
+    max_turn_index: int | None = None,
 ) -> tuple[str, str]:
     """
     Render the (system_prompt, user_prompt) pair for the judge LLM.
@@ -86,14 +97,22 @@ def build_judge_prompt(
         expected_agent_actions  List of what the agent SHOULD have done.
         transcript              List of (speaker, content) tuples, oldest
                                 first. Speaker is 'agent' or 'persona'.
+        rubric                  Full declarative rubric (level-by-level
+                                descriptions). When None, a short summary
+                                per criterion is used instead.
+        max_turn_index          Optional citation cap; when set, the system
+                                prompt tells the judge to cite only turns
+                                with index <= max_turn_index. Used by the
+                                citation-validator retry (B.2).
     """
-    system_prompt = _build_system_prompt()
+    system_prompt = _build_system_prompt(max_turn_index=max_turn_index)
     user_prompt = _build_user_prompt(
         session_id=session_id,
         scenario_title=scenario_title,
         scenario_goal=scenario_goal,
         expected_agent_actions=list(expected_agent_actions),
         transcript=transcript,
+        rubric=rubric,
     )
     return system_prompt, user_prompt
 
@@ -140,11 +159,17 @@ def parse_judge_response(raw: str, session_id: str) -> JudgeVerdict:
 
 # ---- internal helpers ------------------------------------------------------
 
-def _build_system_prompt() -> str:
+def _build_system_prompt(max_turn_index: int | None = None) -> str:
     """
     Anchor prompt: the judge is a rubric-based evaluator, not a chatbot.
     Instructions live here and are stable across sessions.
     """
+    citation_cap = (
+        f"- Cite APENAS turnos com índice menor ou igual a "
+        f"{max_turn_index}. Turnos além desse índice não existem.\n"
+        if max_turn_index is not None
+        else ""
+    )
     return (
         "Você é um avaliador especializado em atendimento em serviços "
         "públicos registrais (cartórios). Sua função é aplicar uma "
@@ -165,6 +190,7 @@ def _build_system_prompt() -> str:
         "- O excerto (excerpt) deve ser um trecho LITERAL do turno citado, "
         "curto (uma frase). Não parafraseie e não invente palavras que "
         "não estão no turno.\n"
+        f"{citation_cap}"
         "- Se você não encontrar evidência para um critério, atribua a "
         "nota mediana (3), explique a ausência de evidência e cite o "
         "turno mais próximo do assunto.\n\n"
@@ -202,6 +228,7 @@ def _build_user_prompt(
     scenario_goal: str,
     expected_agent_actions: list[str],
     transcript: list[tuple[str, str]],
+    rubric: RubricDefinition | None,
 ) -> str:
     """
     Session-specific data: cenário + transcript. The judge reads this and
@@ -212,10 +239,7 @@ def _build_user_prompt(
         if expected_agent_actions
         else "(nenhuma ação especificamente esperada)"
     )
-    criteria_block = "\n".join(
-        f"- {kind.value}: {desc}"
-        for kind, desc in CRITERION_DESCRIPTIONS.items()
-    )
+    criteria_block = _render_rubric_block(rubric)
     transcript_block = _render_transcript(transcript)
 
     return (
@@ -232,6 +256,33 @@ def _build_user_prompt(
         f"Agora avalie a sessão e devolva o JSON descrito no formato "
         f"esperado. Nada além do JSON."
     )
+
+
+def _render_rubric_block(rubric: RubricDefinition | None) -> str:
+    """
+    Render the rubric section of the user prompt. When a full
+    RubricDefinition is available (B.1), emit the level-by-level
+    descriptions verbatim so the judge sees exactly what the human
+    evaluators see. Falls back to the short one-liners if no rubric was
+    provided (keeps fase-A tests intact).
+    """
+    if rubric is None:
+        return "\n".join(
+            f"- {kind.value}: {desc}"
+            for kind, desc in CRITERION_DESCRIPTIONS.items()
+        )
+    parts: list[str] = []
+    for kind in CriterionKind:
+        criterion = rubric.criterion(kind)
+        parts.append(f"## {kind.value}")
+        parts.append(criterion.summary.strip())
+        parts.append("")
+        parts.append("Descrição por nível:")
+        for score in range(6):
+            desc = criterion.level_description(score).strip()
+            parts.append(f"- Nota {score}: {desc}")
+        parts.append("")
+    return "\n".join(parts).rstrip()
 
 
 def _render_transcript(transcript: list[tuple[str, str]]) -> str:

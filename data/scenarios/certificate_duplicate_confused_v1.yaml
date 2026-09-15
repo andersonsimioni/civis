@@ -1,6 +1,10 @@
 # Scenario: elderly citizen requests a duplicate birth certificate but is
 # confused about which document is needed. Baseline scenario for FSM contract
 # testing in week 1. All personal data is fictional (see synth/registry_providers.py).
+#
+# Phase B: retrieval_keywords added per fact so the persona prompt only
+# surfaces a fact when the agent asks something related. Backward compat:
+# facts with no retrieval_keywords fall back to the "revealed-only" path.
 
 scenario_id: "certificate_duplicate_confused_v1"
 title: "Segunda via de certidão de nascimento — cidadã confusa"
@@ -18,15 +22,37 @@ persona:
     - key: "birth_date"
       value: "12 de março de 1954"
       is_secret: false
+      retrieval_keywords:
+        - "data de nascimento"
+        - "quando nasceu"
+        - "que dia"
+        - "nascimento"
+        - "idade"
     - key: "birth_place"
       value: "Florianópolis, SC"
       is_secret: false
+      retrieval_keywords:
+        - "onde nasceu"
+        - "local de nascimento"
+        - "naturalidade"
+        - "cidade"
+        - "município"
     - key: "mother_name"
       value: "Maria das Graças Silva"
       is_secret: false
+      retrieval_keywords:
+        - "mãe"
+        - "filiação"
+        - "genitora"
+        - "nome da mãe"
     - key: "certificate_id"
       value: "FIC-NASC-1954-847263"
       is_secret: false
+      retrieval_keywords:
+        - "número da certidão"
+        - "matrícula"
+        - "protocolo"
+        - "número do documento"
 
 expected_agent_actions:
   - "Verificar identidade da cidadã antes de emitir qualquer documento."

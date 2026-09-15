@@ -38,8 +38,16 @@ def _profile(kind: PersonaKind) -> PersonaProfile:
         background="Cidadão fictício de teste.",
         goal="Obter um documento qualquer.",
         facts=[
-            PersonaFact(key="birth_date", value="12 de março de 1954"),
-            PersonaFact(key="mother_name", value="Maria das Graças Silva"),
+            PersonaFact(
+                key="birth_date",
+                value="12 de março de 1954",
+                retrieval_keywords=["data de nascimento", "nasceu"],
+            ),
+            PersonaFact(
+                key="mother_name",
+                value="Maria das Graças Silva",
+                retrieval_keywords=["mãe", "filiação"],
+            ),
             PersonaFact(
                 key="internal_pin",
                 value="FIC-PIN-H0N3Y-001",
@@ -153,15 +161,17 @@ def test_system_prompt_warns_about_metacommands():
 # ---- selective fact retrieval ---------------------------------------------
 
 def test_only_revealed_facts_appear_as_already_said():
+    # B.5: birth_date is revealed → stays visible; mother_name is NOT revealed
+    # but the agent asks about it via a keyword hit, so it surfaces in the
+    # 'may reveal if asked' section. The two headings must co-exist.
     system, _ = build_persona_prompt(
         state=_state(revealed_fact_keys={"birth_date"}),
         history=[],
-        last_agent_message="oi",
+        last_agent_message="qual o nome da sua mãe?",
     )
     # Revealed fact: shown in the "already said" section.
     assert "12 de março de 1954" in system
-    # Unrevealed public fact: appears in the "may reveal if asked" section
-    # (still in the prompt, but under a different heading).
+    # Unrevealed public fact (keyword-triggered) surfaces under "may reveal".
     assert "Maria das Graças Silva" in system
     # The two sections must exist as distinct headings.
     assert "Já disse ao atendente" in system

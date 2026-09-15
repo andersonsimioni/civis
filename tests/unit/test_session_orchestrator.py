@@ -203,3 +203,127 @@ def test_prompt_never_contains_phase_enum_name_across_ten_turns():
             assert phase.name not in combined
         for emotion in EmotionalState:
             assert emotion.name not in combined
+
+
+# ---- observable turn events (B.4) ----------------------------------------
+
+def test_orchestrator_emits_one_turn_event_per_turn():
+    """
+    Every agent and persona turn must produce exactly one TurnEvent so the
+    contradiction detector (B.4) can walk the stream without gaps.
+    """
+    replies = ["Bom dia, moço.", "Meu nome é Iracema.", "Nasci em 12 de março de 1954."]
+    orch = _make_orchestrator(replies)
+    for i in range(3):
+        orch.run_agent_turn(f"pergunta {i}")
+    # 3 agent + 3 persona = 6 events.
+    assert len(orch.turn_events) == 6
+    assert [e.speaker for e in orch.turn_events] == [
+        "agent", "persona", "agent", "persona", "agent", "persona",
+    ]
+
+
+def test_orchestrator_records_observed_fact_values_on_keyword_match():
+    """
+    When the agent's last message contains a fact's retrieval_keywords,
+    the persona reply is recorded as observed_fact_values[fact_key] on
+    that turn's event.
+
+    Setup: build a scenario whose birth_date fact has explicit
+    retrieval_keywords so the orchestrator records values under it.
+    """
+    from civis.fsm.states import EmotionalState
+    from civis.personas.base import PersonaFact, PersonaKind, PersonaProfile
+
+    profile = PersonaProfile(
+        kind=PersonaKind.CONFUSED,
+        name="Iracema",
+        background="X",
+        goal="Y",
+        initial_emotion=EmotionalState.ANXIOUS,
+        facts=[
+            PersonaFact(
+                key="birth_date",
+                value="12 de março de 1954",
+                retrieval_keywords=["data de nascimento", "nasceu"],
+            ),
+        ],
+    )
+    scenario = ScenarioFile(
+        scenario_id="s1",
+        title="T",
+        persona=profile,
+        expected_agent_actions=["a"],
+    )
+    provider = FakePersonaProvider(["Nasci em 12 de março de 1954."])
+    orch = SessionOrchestrator(
+        scenario=scenario,
+        persona_provider=provider,
+        transcript=SessionTranscript(session_id="s1"),
+        state=PersonaState(
+            profile=profile,
+            phase=Phase.INFO_GATHERING,
+            emotion=EmotionalState.ANXIOUS,
+        ),
+    )
+    orch.run_agent_turn("Qual sua data de nascimento?")
+
+    persona_event = orch.turn_events[1]
+    assert persona_event.speaker == "persona"
+    assert persona_event.observed_fact_values == {
+        "birth_date": "Nasci em 12 de março de 1954."
+    }
+
+
+def test_planted_contradiction_is_detected_via_orchestrator_events():
+    """
+    End-to-end proof of B.4 through the orchestrator: two persona turns
+    answer the same 'data de nascimento?' question with different
+    values → detect_contradictions returns exactly 1 event.
+    """
+    from civis.fsm.states import EmotionalState
+    from civis.personas.base import PersonaFact, PersonaKind, PersonaProfile
+    from civis.session.contradiction_detector import detect_contradictions
+
+    profile = PersonaProfile(
+        kind=PersonaKind.CONFUSED,
+        name="Iracema",
+        background="X",
+        goal="Y",
+        initial_emotion=EmotionalState.ANXIOUS,
+        facts=[
+            PersonaFact(
+                key="birth_date",
+                value="12 de março de 1954",
+                retrieval_keywords=["data de nascimento"],
+            ),
+        ],
+    )
+    scenario = ScenarioFile(
+        scenario_id="s1",
+        title="T",
+        persona=profile,
+        expected_agent_actions=["a"],
+    )
+    provider = FakePersonaProvider([
+        "Nasci em 12 de março de 1954.",
+        "Nasci em 15 de março de 1954.",  # planted contradiction
+    ])
+    orch = SessionOrchestrator(
+        scenario=scenario,
+        persona_provider=provider,
+        transcript=SessionTranscript(session_id="s1"),
+        state=PersonaState(
+            profile=profile,
+            phase=Phase.INFO_GATHERING,
+            emotion=EmotionalState.ANXIOUS,
+        ),
+    )
+    orch.run_agent_turn("Qual sua data de nascimento?")
+    orch.run_agent_turn("Repete a data de nascimento, por favor.")
+
+    report = detect_contradictions(orch.turn_events)
+    assert report.total == 1
+    assert report.contradictions[0].fact_key == "birth_date"
+    assert "12 de março" in report.contradictions[0].prior_value
+    assert "15 de março" in report.contradictions[0].new_value

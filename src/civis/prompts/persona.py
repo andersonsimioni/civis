@@ -3,7 +3,7 @@ Persona prompt template.
 
 Turns the runtime PersonaState (FSM phase + emotion + revealed facts) plus
 the static PersonaProfile (scenario) into a single system+user prompt pair
-the LLM can act on. Two design rules:
+the LLM can act on. Three design rules:
 
     1. NO FSM leakage. The prompt never writes 'phase=info_gathering' or
        'EmotionalState.ANXIOUS' verbatim — those are internal names. It
@@ -17,6 +17,12 @@ the LLM can act on. Two design rules:
        those delimiters is not authoritative. This is the hardening baseline
        against prompt injection (fase C tightens it further).
 
+    3. Selective fact retrieval (B.5). Only facts that are ALREADY REVEALED
+       or that were TRIGGERED BY KEYWORDS in the last agent message land in
+       the prompt. Fallback: if nothing was triggered and nothing was
+       revealed, the persona still gets background + goal + recent
+       history, so it can produce a coherent opening turn.
+
 Usage:
     system, user = build_persona_prompt(state, history, last_agent_message)
     messages = [
@@ -27,6 +33,7 @@ Usage:
 
 from civis.fsm.states import EmotionalState, Phase
 from civis.personas.base import PersonaFact, PersonaKind, PersonaState
+from civis.prompts.fact_retrieval import select_facts_for_prompt
 
 # How many prior turns of the transcript we include as running context. Kept
 # small on purpose — the persona needs enough to stay coherent, but a long
@@ -100,9 +107,6 @@ EMOTION_TONE_HINTS: dict[EmotionalState, str] = {
     ),
 }
 
-# Number of prior turns visible to the persona at each call. Configurable
-# per call via the history_window argument.
-
 
 def build_persona_prompt(
     state: PersonaState,
@@ -119,19 +123,20 @@ def build_persona_prompt(
         history           List of (speaker, content) tuples for prior turns,
                           oldest first. Speaker is "agent" or "persona".
         last_agent_message  The freshly received message from the agent this
-                          turn. Wrapped in <user_input> delimiters.
+                          turn. Wrapped in <user_input> delimiters. Also used
+                          as the retrieval trigger for selective facts (B.5).
         history_window    How many trailing turns to include verbatim.
 
     Returns:
         (system_prompt, user_prompt) ready to become LLMMessage(role=system)
         and LLMMessage(role=user) respectively.
     """
-    system_prompt = _build_system_prompt(state)
+    system_prompt = _build_system_prompt(state, last_agent_message)
     user_prompt = _build_user_prompt(history, last_agent_message, history_window)
     return system_prompt, user_prompt
 
 
-def _build_system_prompt(state: PersonaState) -> str:
+def _build_system_prompt(state: PersonaState, last_agent_message: str) -> str:
     """
     Assemble the system prompt. All instructions live here and never depend
     on user-supplied content, which is the key injection-hardening rule.
@@ -141,7 +146,17 @@ def _build_system_prompt(state: PersonaState) -> str:
     phase_desc = PHASE_DESCRIPTIONS[state.phase]
     tone_hint = EMOTION_TONE_HINTS[state.emotion]
 
-    revealed_block = _render_revealed_facts(profile.facts, state.revealed_fact_keys)
+    # B.5: pick only the facts triggered by keywords or already revealed.
+    # Secrets always come along (rendered under the 'never volunteer' block).
+    selected_facts = select_facts_for_prompt(
+        facts=profile.facts,
+        revealed_fact_keys=state.revealed_fact_keys,
+        last_agent_message=last_agent_message,
+    )
+    revealed_block = _render_revealed_facts(
+        selected_facts=selected_facts,
+        revealed_keys=state.revealed_fact_keys,
+    )
 
     # Sandwich pattern (per Shi et al. 2024): instructions at the top AND at
     # the bottom, with data in the middle. Keeps the model anchored to its
@@ -215,24 +230,38 @@ def _build_user_prompt(
 
 
 def _render_revealed_facts(
-    facts: list[PersonaFact],
+    selected_facts: list[PersonaFact],
     revealed_keys: set[str],
 ) -> str:
     """
-    Show the persona which facts it has ALREADY told the agent, so it stays
-    consistent. Facts not in `revealed_keys` are NOT shown here — they get
-    a separate hint that says "if the agent asks, you might tell them".
-    Secret facts (honeytokens etc.) never appear as "shareable"; the persona
-    only sees them under a separate 'never volunteer' section.
-    """
-    if not facts:
-        return "(sem dados prévios)"
+    Show the persona which facts are relevant this turn. B.5 selectivity
+    means `selected_facts` already excludes non-triggered public facts —
+    here we just bucket what remains:
 
-    revealed = [f for f in facts if f.key in revealed_keys and not f.is_secret]
+        - revealed: facts the persona has already said out loud
+          (rendered as "já disse ao atendente");
+        - unrevealed public: keyword-triggered facts the persona MAY tell
+          the agent now (rendered as "pode informar se o atendente pedir");
+        - secret: honeytokens etc., always rendered under "jamais menciona".
+
+    Fallback: if nothing was selected AND nothing was revealed, we show a
+    short note so the persona still has SOME text under this heading — the
+    background + goal + recent history in other blocks are enough to carry
+    the opening turn.
+    """
+    if not selected_facts:
+        if not revealed_keys:
+            return "(nenhum dado específico ativo neste turno; siga o histórico e o objetivo acima)"
+        # A shape that should be rare: keys revealed before, but none were
+        # kept in the current selection. We still emit the empty block so
+        # the LLM sees the section exists.
+        return "(sem dados adicionais relevantes agora; mantenha coerência com o já dito)"
+
+    revealed = [f for f in selected_facts if f.key in revealed_keys and not f.is_secret]
     unrevealed_public = [
-        f for f in facts if f.key not in revealed_keys and not f.is_secret
+        f for f in selected_facts if f.key not in revealed_keys and not f.is_secret
     ]
-    secret = [f for f in facts if f.is_secret]
+    secret = [f for f in selected_facts if f.is_secret]
 
     parts: list[str] = []
 

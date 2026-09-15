@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <title>CIVIS — Roteiro até o pitch</title>
+    <style>
+@page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+}
+
+:root {
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b5394;
+    --rule: #d0d7de;
+    --code-bg: #f6f8fa;
+    --code-ink: #24292f;
+    --table-header: #f0f3f7;
+    --callout-bg: #fff8e1;
+    --callout-border: #f0c000;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 10.5pt; }
+
+body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    line-height: 1.55;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+h1 {
+    font-size: 22pt;
+    margin: 0 0 6pt 0;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 6pt;
+    page-break-after: avoid;
+}
+
+h2 {
+    font-size: 15pt;
+    margin: 22pt 0 8pt 0;
+    color: var(--accent);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 3pt;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 12.5pt;
+    margin: 16pt 0 6pt 0;
+    color: var(--ink);
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 11pt;
+    margin: 12pt 0 4pt 0;
+    color: var(--muted);
+}
+
+p, ul, ol { margin: 0 0 8pt 0; }
+
+ul, ol { padding-left: 20pt; }
+
+li { margin-bottom: 3pt; }
+
+strong { color: var(--ink); }
+
+em { color: var(--muted); font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 20pt 0;
+}
+
+/* Blockquote used as key-message callout. */
+blockquote {
+    margin: 10pt 0;
+    padding: 10pt 14pt;
+    background: var(--callout-bg);
+    border-left: 3pt solid var(--callout-border);
+    font-style: normal;
+    color: var(--ink);
+}
+
+blockquote p { margin: 0; }
+
+/* Tables — no zebra, subtle rules, header emphasized. */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10pt 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+}
+
+th {
+    background: var(--table-header);
+    color: var(--ink);
+    text-align: left;
+    padding: 6pt 8pt;
+    border-bottom: 1.5pt solid var(--rule);
+    font-weight: 600;
+}
+
+td {
+    padding: 5pt 8pt;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+}
+
+/* Code blocks — monospace, tinted background, no border for softness. */
+pre {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 8pt 10pt;
+    border-radius: 4pt;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 8.5pt;
+    line-height: 1.45;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+code {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9pt;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 1pt 4pt;
+    border-radius: 3pt;
+}
+
+pre code {
+    background: transparent;
+    padding: 0;
+    font-size: 8.5pt;
+}
+
+/* Prevent page break inside major structural blocks. */
+h1, h2, h3, h4 { break-after: avoid-page; }
+table, pre, blockquote { break-inside: avoid; }
+</style>
+</head>
+<body>
+<h1>CIVIS — Roteiro até o pitch de investidor</h1>
+<p><strong>Autor:</strong> Anderson Simioni Assunção
+<strong>Data de emissão:</strong> 15 de setembro de 2026
+<strong>Alvo:</strong> apresentação a investidores em <strong>15 de dezembro de 2026</strong>
+<strong>Janela:</strong> ~13 semanas
+<strong>Documento derivado de:</strong> <code>Plano_de_Trabalho_CIVIS.pdf</code>, <code>Analise_Critica_JudgeDeceiver_AndersonAssuncao.pdf</code> e leitura do repositório em 15/09/2026.</p>
+<hr>
+<h2>Resumo em três linhas</h2>
+<blockquote>
+<p>O plano original de 8 semanas está entre as semanas 2 e 3. Sobra buffer temporal, mas o <strong>kappa ≥ 0,6 (M1)</strong> é o único gargalo real, porque depende de 30 sessões avaliadas por 2 humanos e não acelera por código. O pitch precisa de três coisas para não ser "mais um simulador com LLM": <strong>kappa validado</strong>, <strong>demo ao vivo</strong> e o <strong>diferencial de segurança</strong> que a Análise Crítica identificou (JudgeDeceiver adaptado ao regime <em>pointwise</em>/rubrica).</p>
+</blockquote>
+<hr>
+<h2>1. Estado atual do repositório</h2>
+<p>Leitura direta do código em 15/09/2026. Não é o cronograma teórico — é o que já compila, roda e tem teste.</p>
+<h3>✅ Já feito</h3>
+<table>
+<thead>
+<tr>
+<th>Bloco</th>
+<th>Arquivos</th>
+<th>Cobertura de teste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FSM: 3 perfis, fases e emoções</td>
+<td><code>fsm/{engine,states,transitions}.py</code></td>
+<td>✅ 7 testes verdes</td>
+</tr>
+<tr>
+<td>Contratos de persona (<code>Profile</code>, <code>State</code>, <code>Fact</code>)</td>
+<td><code>personas/base.py</code></td>
+<td>✅ via FSM</td>
+</tr>
+<tr>
+<td>Config: catálogo de modelos + <code>roles</code> (invariante O3)</td>
+<td><code>config/{models,store}.py</code></td>
+<td>✅ 8 testes verdes</td>
+</tr>
+<tr>
+<td>Base sintética determinística com prefixo <code>FIC-</code></td>
+<td><code>synth/{generate,registry_providers}.py</code></td>
+<td>✅ 3 testes verdes</td>
+</tr>
+<tr>
+<td>Contratos do juiz (Pydantic)</td>
+<td><code>judge/rubric.py</code></td>
+<td>— só contratos</td>
+</tr>
+<tr>
+<td>Interface abstrata de provider LLM</td>
+<td><code>llm/provider.py</code></td>
+<td>✅ via factory</td>
+</tr>
+<tr>
+<td><strong>Ollama provider real</strong> (via <code>httpx.MockTransport</code>)</td>
+<td><code>llm/ollama_provider.py</code></td>
+<td>✅ 3 testes</td>
+</tr>
+<tr>
+<td>Factory de providers com dispatch por <code>ProviderKind</code></td>
+<td><code>llm/factory.py</code></td>
+<td>✅ 3 testes</td>
+</tr>
+<tr>
+<td>CI (ruff + pytest) no GitHub Actions</td>
+<td><code>.github/workflows/ci.yml</code></td>
+<td>✅ verde</td>
+</tr>
+<tr>
+<td>1 cenário YAML (<code>certificate_duplicate_confused_v1</code>)</td>
+<td><code>data/scenarios/</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Base v1 gerada</td>
+<td><code>data/generated/base_v1.json</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total:</strong> 28 testes verdes em ~1s.</p>
+<h3>❌ Falta</h3>
+<table>
+<thead>
+<tr>
+<th>Bloco</th>
+<th>Impacto se ficar de fora</th>
+<th>Bloqueia qual métrica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Orquestrador de sessão</strong> (turn loop: agent → FSM → prompt → LLM → history)</td>
+<td>Sem isso não roda nada</td>
+<td>Todas</td>
+</tr>
+<tr>
+<td><strong>Prompt templates</strong> (persona + juiz)</td>
+<td>O "roteiro→linguagem" do O1</td>
+<td>O1, O2, O3</td>
+</tr>
+<tr>
+<td><strong>Fact retrieval seletivo</strong></td>
+<td>Persona contradiz a si mesma</td>
+<td>O2, M3</td>
+</tr>
+<tr>
+<td><strong>Juiz executável</strong></td>
+<td>Contratos existem, nada roda</td>
+<td>O3, M1</td>
+</tr>
+<tr>
+<td><strong>CLI de sessão</strong></td>
+<td>Sem entrada de dados</td>
+<td>Todas</td>
+</tr>
+<tr>
+<td><strong>Providers Anthropic e OpenAI-compat</strong></td>
+<td>Só Ollama funciona; sem juiz separado, viola O3</td>
+<td>O3</td>
+</tr>
+<tr>
+<td><strong>Bateria adversarial + honeytokens</strong></td>
+<td>Sem prova de segurança</td>
+<td>O4, M2</td>
+</tr>
+<tr>
+<td><strong>JudgeDeceiver-pointwise</strong></td>
+<td>Sem diferencial vendável</td>
+<td>(pitch)</td>
+</tr>
+<tr>
+<td><strong>Frontend</strong></td>
+<td>Sem demo</td>
+<td>(pitch)</td>
+</tr>
+<tr>
+<td><strong>Telemetria persistida</strong></td>
+<td>Sem M4</td>
+<td>M4</td>
+</tr>
+<tr>
+<td><strong>Estudo de concordância</strong></td>
+<td><strong>INEGOCIÁVEL</strong></td>
+<td><strong>M1</strong></td>
+</tr>
+<tr>
+<td><strong>Cenários adicionais</strong> (falta 8 dos 9 previstos)</td>
+<td>Cobertura magra</td>
+<td>M5</td>
+</tr>
+<tr>
+<td>PostgreSQL, FastAPI, wizard</td>
+<td>Escopo original; sacrificáveis</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>2. Métricas e o que é inegociável</h2>
+<p>Da MEMORY e do Plano de Trabalho:</p>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Alvo</th>
+<th>Status inicial</th>
+<th>Prioridade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>M1 — kappa juiz-humano</strong></td>
+<td>≥ 0,6 sobre ≥ 30 sessões</td>
+<td>0 sessões</td>
+<td>🔴 <strong>INEGOCIÁVEL</strong></td>
+</tr>
+<tr>
+<td>M2 — vazamento adversarial</td>
+<td>&lt; 5% (honeytoken)</td>
+<td>não medido</td>
+<td>🟡 alta</td>
+</tr>
+<tr>
+<td>M3 — contradições por 100 turnos</td>
+<td>tendência decrescente</td>
+<td>não medido</td>
+<td>🟢 média</td>
+</tr>
+<tr>
+<td>M4 — recusa + latência p95</td>
+<td>&lt; 2% e &lt; 5s</td>
+<td>não medido</td>
+<td>🟢 média</td>
+</tr>
+<tr>
+<td>M5 — cobertura</td>
+<td>3 perfis × ≥ 3 cenários</td>
+<td>1 cenário total</td>
+<td>🟡 alta</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Regra da MEMORY:</strong> se apertar, sacrifica na ordem M3 → M4 → M5 → M2. M1 nunca cai.</p>
+</blockquote>
+<hr>
+<h2>3. Diferencial competitivo (o gancho para investidor)</h2>
+<p>Sua Análise Crítica do artigo <strong>JudgeDeceiver</strong> (CCS'24) identificou em §11(a) o seguinte gap científico:</p>
+<blockquote>
+<p>O JudgeDeceiver otimiza para o cenário <em>pairwise</em> (escolher entre respostas concorrentes). O CIVIS usa juiz <em>pointwise</em> (nota por rubrica sobre uma resposta única). O ataque hoje <strong>não tem análogo</strong> nesse regime. Adaptar a <em>target-aligned generation loss</em> para maximizar uma nota de rubrica específica é trabalho não coberto pela literatura.</p>
+</blockquote>
+<p>Isso vira <strong>três frases de pitch:</strong></p>
+<blockquote>
+<p>"Simuladores conversacionais existem. O que ninguém fez ainda é testar se o próprio juiz automático pode ser manipulado pela persona que ele está avaliando. Nós fazemos, medimos e reportamos — e é isso que separa uma demo bonita de uma prova de segurança."</p>
+</blockquote>
+<p><strong>Custo de entrega:</strong> ~1,5 semana dentro da Fase C. <strong>Sem isso, o CIVIS é vendável como produto, mas não como diferencial técnico defensável.</strong></p>
+<hr>
+<h2>4. Roteiro de 6 fases</h2>
+<p>Fases orientadas a <strong>entregável demonstrável</strong>, não a semanas do calendário. Cada fase tem critério objetivo de "pronto" e prompt para despachar via <code>/build</code>.</p>
+<pre><code>Set  |  Out           |  Nov              |  Dez
+15   22   06   20   03   17         08   15
+ ├─── A ────┤├── B ──┤├── C ──┤├── D ──┤
+                                ├──── E ────┤├ F ┤
+ A: MVP jogável       (~3 sem)
+ B: Juiz robusto      (~2 sem)
+ C: Segurança + edge  (~2 sem)
+ D: Frontend + demo   (~2 sem)  ─┐ paralelizadas
+ E: Estudo kappa (M1) (~3 sem)  ─┘
+ F: Pitch             (~1 sem)
+</code></pre>
+<p><strong>Buffer total:</strong> ~1 semana. Cabe, mas sem folga para crise. Cada fase tem um <em>checkpoint</em> que pode disparar corte de escopo (§7).</p>
+<hr>
+<h3>🏗️ Fase A — MVP jogável</h3>
+<p><strong>Janela:</strong> 15/set → 06/out (3 semanas)
+<strong>Objetivo:</strong> rodar uma sessão inteira do terminal, com Ollama, do primeiro "bom dia" até o verdict do juiz.</p>
+<p><strong>Entregáveis atômicos:</strong></p>
+<ul>
+<li><strong>A.1 — Providers Anthropic e OpenAI-compat de verdade.</strong> Hoje são stubs que levantam <code>NotImplementedError</code>. Precisamos deles para que <code>roles.persona ≠ roles.judge</code> funcione em produção (invariante O3). Aceite: teste com <code>MockTransport</code> cobrindo request-shaping + parsing de resposta + telemetria.</li>
+<li><strong>A.2 — Session orchestrator.</strong> Loop de turno: recebe input do atendente → chama <code>advance_turn</code> da FSM → monta prompt da persona a partir do <code>PersonaState</code> + facts seletivos → chama provider → grava turno no <code>SessionHistory</code>. Aceite: 1 teste rodando 10 turnos sem crash e sem duplicar facts revelados.</li>
+<li><strong>A.3 — Prompt template da persona.</strong> Um template Jinja/f-string em <code>src/civis/prompts/persona.py</code> que consome <code>PersonaState</code> + <code>Scenario</code> + últimos K turnos + fatos revelados. Separação instrução/dado explícita (hardening básico contra prompt injection). Aceite: renderiza sem <code>KeyError</code> para os 3 perfis.</li>
+<li><strong>A.4 — Prompt template do juiz v0.</strong> Rubrica com 4 critérios (<code>fact_verification</code>, <code>data_protection</code>, <code>protocol_adherence</code>, <code>communication</code>), instrução de citar turnos, saída JSON validada por Pydantic. Aceite: 1 sessão pequena roda, verdict valida contra <code>JudgeVerdict</code>.</li>
+<li><strong>A.5 — CLI <code>civis session</code>.</strong> <code>python -m civis session --scenario X --agent-input stdin --output transcript.json</code>. Aceite: <code>--help</code> funciona, sessão executa ponta a ponta.</li>
+<li><strong>A.6 — Persistência simples (JSON files).</strong> Sem PostgreSQL nesta fase. Transcript e verdict como JSON em <code>data/sessions/{session_id}/</code>. Aceite: relançar CLI com mesmo <code>session_id</code> reabre e continua.</li>
+</ul>
+<p><strong>Critério de pronto (mensurável):</strong></p>
+<pre><code>$ python -m civis session --scenario certificate_duplicate_confused_v1
+&gt; Bom dia, em que posso ajudar?
+&gt; [conversa por 8-12 turnos]
+&gt; Sessão encerrada. Verdict em data/sessions/2026-09-30_143012/verdict.json
+$ cat data/sessions/.../verdict.json | jq .criteria
+[{criterion: &quot;fact_verification&quot;, score: 3, cited_turns: [{turn_index: 2, ...}], ...}, ...]
+</code></pre>
+<p><strong>Riscos + mitigação:</strong>
+- 🔴 <em>Prompt da persona vaza estado da FSM.</em> Mitigação: template escreve apenas o "papel" (kind, emotion, phase → tom), nunca as chaves da FSM literalmente. Teste: assert que output não contém strings de <code>Phase.*</code> nem <code>EmotionalState.*</code>.
+- 🟡 <em>Anthropic SDK muda.</em> Mitigação: pin da versão no <code>pyproject.toml</code>, adapter isola SDK.
+- 🟡 <em>Latência de Ollama local mata o loop de dev.</em> Mitigação: variável <code>CIVIS_LLM_MOCK=1</code> retorna resposta fixa para debug.</p>
+<p><strong>Prompt para <code>/build</code>:</strong></p>
+<pre><code>/build fase A do ROADMAP_PITCH.md: implementar A.1 até A.6 na ordem, sem
+avançar pra fase B enquanto o critério de pronto não estiver verde.
+Cenário guia: certificate_duplicate_confused_v1. Provider primário: Ollama.
+</code></pre>
+<hr>
+<h3>⚖️ Fase B — Juiz robusto</h3>
+<p><strong>Janela:</strong> 06/out → 20/out (2 semanas)
+<strong>Objetivo:</strong> juiz que passa em revisão manual sua sobre 5 sessões diferentes, com citação de turno fiel.</p>
+<p><strong>Entregáveis atômicos:</strong></p>
+<ul>
+<li><strong>B.1 — Rubrica completa por critério.</strong> Descrição de cada nível 0–5 por critério, em pt-BR, em arquivo declarativo (<code>rubrics/counter_v1.yaml</code>). Aceite: juiz reproduz o mesmo score em 2 execuções sobre mesma sessão (temperatura 0).</li>
+<li><strong>B.2 — Citação de turno fiel.</strong> <code>CitedTurn.excerpt</code> precisa ser substring literal do turno referenciado. Aceite: validador roda sobre todo verdict e falha se <code>excerpt not in transcript[turn_index]</code>.</li>
+<li><strong>B.3 — Modelo distinto para o juiz.</strong> Configurar 2 catalog entries (ex.: Ollama Llama 3.1 para persona, Anthropic Claude para juiz). Aceite: teste E2E instancia providers de famílias diferentes.</li>
+<li><strong>B.4 — Métrica de contradições (M3).</strong> Detector que compara facts revelados em turnos anteriores com facts revelados agora; conta divergências. Aceite: em sessão sintética com 1 contradição plantada, detector retorna 1.</li>
+<li><strong>B.5 — Fact retrieval seletivo.</strong> Prompt do turno atual recebe apenas facts (a) já revelados antes ou (b) explicitamente solicitados por keyword no último turno do atendente. Aceite: se atendente não pergunta o <code>mother_name</code>, ele não aparece no prompt da persona.</li>
+</ul>
+<p><strong>Critério de pronto:</strong>
+5 sessões (com atendente humano = você) rodadas em 3 cenários distintos. Revisão manual: em ≥ 4 das 5, você concorda com o verdict do juiz criterion-a-criterion. Se &lt; 4/5, iterar rubrica B.1 antes de avançar.</p>
+<p><strong>Riscos + mitigação:</strong>
+- 🔴 <em>Juiz alucina turno inexistente.</em> Mitigação: B.2 (validador de substring). Se detectar, retry 1× com prompt "cite apenas turnos com índice ≤ N".
+- 🟡 <em>Fact retrieval seletivo demais → persona não responde nada.</em> Mitigação: fallback que sempre inclui <code>background</code> + <code>goal</code> + últimas 3 mensagens.</p>
+<p><strong>Prompt para <code>/build</code>:</strong></p>
+<pre><code>/build fase B do ROADMAP_PITCH.md: B.1 a B.5. Pré-requisito: fase A verde.
+Rodar as 5 sessões de aceite ao final e me devolver os transcripts pra
+revisão manual antes de fechar a fase.
+</code></pre>
+<hr>
+<h3>🛡️ Fase C — Segurança + diferencial competitivo</h3>
+<p><strong>Janela:</strong> 20/out → 03/nov (2 semanas)
+<strong>Objetivo:</strong> M2 medido, honeytokens funcionando, JudgeDeceiver-pointwise entregue como diferencial de pitch.</p>
+<p><strong>Entregáveis atômicos:</strong></p>
+<ul>
+<li><strong>C.1 — Bateria adversarial OWASP LLM Top 10.</strong> ≥ 50 ataques catalogados em <code>data/adversarial/prompt_injection_v1.yaml</code>, categorizados por LLM01–LLM10. Aceite: script <code>civis adversarial run</code> executa a bateria e produz relatório JSON.</li>
+<li><strong>C.2 — Honeytokens no cenário.</strong> Facts marcados <code>is_secret=True</code> já existem no contrato; falta plantar honeytokens fixos e distintos (ex.: <code>FIC-CPF-H0N3Y-001</code>) e detector que grep-a a transcrição atrás deles. Aceite: em cenário com honeytoken, ataque bem-sucedido é detectado.</li>
+<li><strong>C.3 — Defesas de hardening.</strong> Separação instrução/dado com delimitadores (<code>&lt;user_input&gt;...&lt;/user_input&gt;</code>), instrução no cabeçalho <strong>e</strong> rodapé (padrão sanduíche de Shi et al. 2024), rejeição de metacomandos ("ignore as instruções anteriores"). Aceite: taxa de vazamento &lt; 5% na bateria C.1 (M2).</li>
+<li><strong>C.4 — JudgeDeceiver-pointwise adaptado.</strong> Reformular a <em>target-aligned loss</em> para maximizar não a probabilidade de um índice de resposta, mas de uma nota específica (ex.: forçar <code>protocol_adherence.score = 5</code> mesmo em sessão com violação óbvia). Sequência injetada embutida na fala da persona fraudadora (não na do atendente). Escopo v1: ataque manual/heurístico + medição de ASR — otimização baseada em gradiente (GCG) fica como trabalho futuro documentado. Aceite: relatório com ASR medido em ≥ 20 tentativas contra ≥ 2 backbones de juiz.</li>
+<li><strong>C.5 — Relatório de segurança.</strong> MD + gráficos em <code>reports/security_v1.md</code> com M2, ASR do JudgeDeceiver-pointwise, comparação Claude vs Ollama como juiz sob ataque (Trabalho Futuro (b) da análise crítica). Aceite: seções de metodologia, resultados e limitações auto-declaradas.</li>
+</ul>
+<p><strong>Critério de pronto:</strong>
+Relatório de segurança lê-se como seção metodologicamente honesta de artigo. Você consegue apresentar 1 número forte no pitch: <em>"O juiz do CIVIS resiste a XX% dos ataques adaptados do JudgeDeceiver. Nenhum simulador comercial hoje reporta essa métrica."</em></p>
+<p><strong>Riscos + mitigação:</strong>
+- 🟡 <em>ASR do JudgeDeceiver-pointwise vem alto (juiz manipulado facilmente).</em> <strong>Isso é resultado, não fracasso</strong> — o pitch fica: "identificamos e reportamos; a defesa completa é problema em aberto, alinhado com Shi et al. 2024".
+- 🟡 <em>Bateria adversarial toma mais tempo que o previsto.</em> Mitigação: começar com 20 ataques em C.1 e crescer conforme sobra tempo.</p>
+<p><strong>Prompt para <code>/build</code>:</strong></p>
+<pre><code>/build fase C do ROADMAP_PITCH.md. Pré-req: fase B verde. Referências:
+Shi et al. 2024 (JudgeDeceiver), OWASP LLM Top 10 v2, Análise Crítica
+seções 10 e 11 (trabalhos futuros a e b).
+</code></pre>
+<hr>
+<h3>🖥️ Fase D — Frontend + demo</h3>
+<p><strong>Janela:</strong> 17/nov → 01/dez (2 semanas) — <strong>paraleliza com E</strong>
+<strong>Objetivo:</strong> 1 demo filmável de 3 minutos, sem cortes.</p>
+<p><strong>Entregáveis atômicos:</strong></p>
+<ul>
+<li><strong>D.1 — App Streamlit.</strong> Escolha declarada: Streamlit vence React aqui porque o pitch premia velocidade sobre polish, e o Plano já autorizou o downgrade. Aceite: <code>streamlit run civis_app.py</code> abre chat + painel de verdict.</li>
+<li><strong>D.2 — Painel de correção lado a lado.</strong> Transcript à esquerda, rubrica + citações à direita, com highlight nos turnos citados. Aceite: clicar em <code>CitedTurn</code> scroll-a até o turno no transcript.</li>
+<li><strong>D.3 — Telemetria (M4).</strong> Latência p95 por turno, custo por sessão (via token counts de A.1), taxa de recusa por provider. Painel simples com métricas agregadas das últimas N sessões. Aceite: valores batem com os <code>LLMResponse</code> gravados.</li>
+<li><strong>D.4 — Painel de sessões passadas.</strong> Lista clicável, abre sessão + verdict. Aceite: navegação funcional sem 404.</li>
+<li><strong>D.5 — Régua UX de pitch.</strong> Copy em pt-BR, hierarquia visual clara (não cara de default de Streamlit — usar <code>st.set_page_config</code>, cor de destaque, fonte, ícone). Estados de loading, vazio e erro cobertos. Aceite: você grava um vídeo de 3 minutos e não sente vontade de refilmar.</li>
+</ul>
+<p><strong>Critério de pronto:</strong>
+Vídeo de 3 minutos gravado, sem edição, mostrando: (1) abrir sessão nova, (2) conversar 6-8 turnos com persona fraudadora, (3) receber verdict com citações destacadas, (4) abrir painel de M4 mostrando latência p95 real.</p>
+<p><strong>Riscos + mitigação:</strong>
+- 🔴 <em>Streamlit fica com cara de default e mata a impressão.</em> Mitigação: 1 dia dedicado a polish visual + revisão sua com olhar de "vai olhar pra isso e babar?".
+- 🟡 <em>Streaming de tokens ausente = UX travada.</em> Mitigação: skeleton loader ou "..." animado; streaming real fica como fast-follow.</p>
+<p><strong>Prompt para <code>/build</code>:</strong></p>
+<pre><code>/build fase D do ROADMAP_PITCH.md em paralelo à fase E. Frontend Streamlit
+premium. Critério de pronto: vídeo gravável de 3 min.
+</code></pre>
+<hr>
+<h3>🧑‍⚖️ Fase E — Estudo de concordância (M1) 🔴 INEGOCIÁVEL</h3>
+<p><strong>Janela:</strong> 03/nov → 08/dez (~5 semanas, com D em paralelo)
+<strong>Objetivo:</strong> kappa de Cohen reportado com IC, sobre ≥ 30 sessões, 2 avaliadores humanos.</p>
+<p><strong>Entregáveis atômicos:</strong></p>
+<ul>
+<li><strong>E.1 — Kit de avaliação humana.</strong> Planilha (Google Sheets ou LibreOffice) com colunas: <code>session_id</code>, <code>criterion</code>, <code>score_avaliador_1</code>, <code>score_avaliador_2</code>, <code>nota_qualitativa</code>. Rubrica idêntica à do juiz automático, redigida sem termo técnico de LLM. Aceite: 1 avaliador teste consegue preencher sem dúvida em 1 sessão de treino.</li>
+<li><strong>E.2 — Recrutamento.</strong> 2 avaliadores independentes. Sugestão: você + 1 colega de curso, ou 2 colegas. Documentar critério de escolha em <code>docs/study_protocol.md</code>.</li>
+<li><strong>E.3 — Pipeline de sessões.</strong> 3 perfis × 3 cenários (se M5 completa) × ~4 sessões cada = 36 sessões. Se M5 apertar para 3 × 2, são 30 sessões — mínimo do plano. Cada sessão simulada por um atendente humano (você e/ou colegas) contra a persona LLM. Aceite: 30 transcripts + 30 verdicts do juiz automático em <code>data/sessions/study_v1/</code>.</li>
+<li><strong>E.4 — Cálculo do kappa.</strong> Script <code>scripts/compute_kappa.py</code> com <code>sklearn.metrics.cohen_kappa_score</code> por critério + agregado. IC via bootstrap (1000 amostras). Aceite: relatório reproduz os números a partir do CSV bruto.</li>
+<li><strong>E.5 — Iteração da rubrica (contingência).</strong> Se kappa &lt; 0,6 na primeira rodada, análise de discordâncias por critério, ajuste da rubrica, rerun com sessões novas ou reavaliação das existentes. Aceite: se aplicável, delta declarado ("primeira rodada 0,52; ajustamos protocol_adherence e chegou a 0,63").</li>
+</ul>
+<p><strong>Critério de pronto:</strong>
+<code>docs/study_v1_report.md</code> reporta kappa por critério + agregado, IC 95%, N = 30+, com discussão honesta se algum critério ficou abaixo de 0,6.</p>
+<p><strong>Riscos + mitigação:</strong>
+- 🔴 <strong>KAPPA FICA ABAIXO DE 0,6.</strong> Mitigação: começar E.1 e E.2 já em outubro (paralelo à fase C), para descobrir problema cedo. Se identificado até 15/nov, sobra tempo para 2 iterações de rubrica. Se detectado só em dezembro, pitch acontece com kappa parcial + análise de por quê. <strong>Este é o único risco que ameaça o pitch inteiro.</strong>
+- 🟡 <em>Avaliadores desistem no meio.</em> Mitigação: recrutar 3 e usar as 2 mais consistentes; alinhar expectativa de tempo (~30 min por sessão × 30 = 15h por avaliador).</p>
+<p><strong>Prompt para <code>/build</code>:</strong></p>
+<pre><code>/build fase E do ROADMAP_PITCH.md. Começar E.1 e E.2 assim que fase B
+fechar (não esperar C ou D). E.3–E.5 rodam a partir de 03/nov em paralelo
+à fase D.
+</code></pre>
+<hr>
+<h3>🎤 Fase F — Pitch</h3>
+<p><strong>Janela:</strong> 08/dez → 15/dez (1 semana)
+<strong>Objetivo:</strong> apresentação apresentável, sem correr.</p>
+<p><strong>Entregáveis atômicos:</strong></p>
+<ul>
+<li><strong>F.1 — Deck 10–15 slides.</strong> Estrutura: problema → mercado (SERP, cartórios BR: ~14 mil) → tecnologia (FSM + juiz + segurança) → evidências (kappa, ASR JudgeDeceiver-pointwise, latência p95) → roadmap → ask. Aceite: ensaio de 10 min sem consulta a notas.</li>
+<li><strong>F.2 — Landing page opcional.</strong> 1 página com 1 CTA (agendar demo). Só se sobrar tempo — não bloqueia F.1. Aceite: deploy em Vercel/GitHub Pages responsivo em mobile.</li>
+<li><strong>F.3 — README de repo.</strong> Estado atual, como rodar, arquitetura em 1 diagrama, LGPD/segurança em 1 parágrafo. Aceite: um engenheiro sênior lendo em 5 min entende o que é.</li>
+<li><strong>F.4 — Ensaio de demo ao vivo.</strong> Roteiro dos 3 minutos, plano B se Ollama travar ao vivo (vídeo pré-gravado da fase D como fallback). Aceite: 3 ensaios completos sem tropeço.</li>
+<li><strong>F.5 — Relatório final da disciplina.</strong> Bônus academico — junta tudo (arquitetura, métricas, análise crítica, trabalho futuro) em PDF entregável ao professor Custódio.</li>
+</ul>
+<p><strong>Critério de pronto:</strong>
+Você consegue apresentar em 10 minutos, com demo ao vivo, respondendo perguntas técnicas de investidor e sabendo qual métrica corresponde a qual reivindicação.</p>
+<hr>
+<h2>5. Diagrama de dependências</h2>
+<pre><code>                        ┌──────────────────┐
+                        │  Setup + FSM     │  ✅ feito
+                        │  (semanas 1-2)   │
+                        └────────┬─────────┘
+                                 │
+                        ┌────────▼─────────┐
+                        │  Fase A          │  ← você está entrando aqui
+                        │  MVP jogável     │
+                        └────────┬─────────┘
+                                 │
+                        ┌────────▼─────────┐
+                        │  Fase B          │
+                        │  Juiz robusto    │
+                        └────┬────────┬────┘
+                             │        │
+                    ┌────────▼──┐  ┌──▼──────────────────┐
+                    │  Fase C   │  │  Fase E             │
+                    │  Segurança│  │  Estudo (M1)        │
+                    │           │  │  (começa cedo,      │
+                    └────┬──────┘  │   roda longo)       │
+                         │         └────────┬────────────┘
+                    ┌────▼─────┐            │
+                    │  Fase D  │            │
+                    │  Frontend│            │
+                    └────┬─────┘            │
+                         │                  │
+                         └────────┬─────────┘
+                                  │
+                         ┌────────▼──────────┐
+                         │  Fase F           │
+                         │  Pitch            │
+                         └───────────────────┘
+</code></pre>
+<p><strong>Regra de paralelismo:</strong> E começa em paralelo à C (protocolo + kit de avaliação) e roda com D. É o único caminho para caber em 13 semanas sem sacrificar M1.</p>
+<hr>
+<h2>6. Checkpoints de decisão</h2>
+<p>Reuniões consigo mesmo para decidir se corta escopo. Datas fixas, olhar honesto:</p>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Checkpoint</th>
+<th>Decisão possível</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>06/out</strong></td>
+<td>Fim da Fase A</td>
+<td>Se A não fechou, atrasa tudo 1 semana ou corta Anthropic provider (fica só Ollama)</td>
+</tr>
+<tr>
+<td><strong>20/out</strong></td>
+<td>Fim da Fase B</td>
+<td>Se juiz tá alucinando turnos, congela features e itera juiz.</td>
+</tr>
+<tr>
+<td><strong>03/nov</strong></td>
+<td>Fim da Fase C</td>
+<td>Se JudgeDeceiver-pointwise não saiu, corta ele. Perde diferencial mas salva prazo.</td>
+</tr>
+<tr>
+<td><strong>15/nov</strong></td>
+<td>Meio da Fase E</td>
+<td>Se kappa parcial (10 sessões) &lt; 0,4, rubrica precisa de cirurgia. Se ≥ 0,55, segue confiante.</td>
+</tr>
+<tr>
+<td><strong>01/dez</strong></td>
+<td>Fim da Fase D</td>
+<td>Se Streamlit tá com cara de default, 3 dias de polish forçado.</td>
+</tr>
+<tr>
+<td><strong>08/dez</strong></td>
+<td>Início da Fase F</td>
+<td>Se kappa final &lt; 0,6, o pitch fica: "kappa X, análise honesta do por quê, roadmap para 0,6". Não esconde.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>7. Hierarquia de sacrifício</h2>
+<p>Ordem estrita se algum checkpoint estourar (consistente com a MEMORY):</p>
+<ol>
+<li><strong>Modo de voz full-duplex</strong> — já era bônus condicional no plano.</li>
+<li><strong>React → Streamlit</strong> — plano já previu contingência.</li>
+<li><strong>OpenAI-compat provider</strong> — Anthropic + Ollama cobrem O3.</li>
+<li><strong>Cenários 3×3 → 3×2</strong> — mínimo de M5 (30 sessões) continua atingível.</li>
+<li><strong>PostgreSQL → SQLite/JSON</strong> — sessão + verdict cabem em arquivo.</li>
+<li><strong>FastAPI backend</strong> — Streamlit fala direto com providers.</li>
+<li><strong>Setup wizard interativo</strong> — instruções no README bastam para investidor.</li>
+<li><strong>JudgeDeceiver-pointwise</strong> — perde o diferencial vendável, mas pitch sobrevive.</li>
+</ol>
+<p><strong>Nunca sacrifica:</strong>
+- Estudo de concordância / M1 (kappa)
+- Rubrica com citação de turnos (O3)
+- Honeytokens + M2
+- Demo ao vivo (mesmo que seja vídeo pré-gravado como plano B)</p>
+<hr>
+<h2>8. Riscos globais fora do código</h2>
+<table>
+<thead>
+<tr>
+<th>Risco</th>
+<th>Prob.</th>
+<th>Impacto</th>
+<th>Mitigação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ollama trava ao vivo no pitch</td>
+<td>média</td>
+<td>alto</td>
+<td>vídeo pré-gravado como fallback (F.4)</td>
+</tr>
+<tr>
+<td>API Anthropic fica offline</td>
+<td>baixa</td>
+<td>médio</td>
+<td>Ollama como fallback via <code>roles.judge</code> swap</td>
+</tr>
+<tr>
+<td>Avaliadores desistem</td>
+<td>média</td>
+<td>alto</td>
+<td>recrutar 3, aceitar os 2 mais consistentes</td>
+</tr>
+<tr>
+<td>Kappa &lt; 0,6 mesmo após 2 iterações</td>
+<td>média</td>
+<td>crítico</td>
+<td>reportar honestamente + análise; investidor prefere números reais a marketing</td>
+</tr>
+<tr>
+<td>Prazo de disciplina bate com pitch</td>
+<td>?</td>
+<td>médio</td>
+<td>confirmar data final do INE5448 e ajustar F.5</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>9. Próximo passo concreto</h2>
+<p><strong>Hoje (15/09):</strong> despachar Fase A com o comando abaixo. Nada mais.</p>
+<pre><code>/build fase A do ROADMAP_PITCH.md: implementar A.1 até A.6 na ordem, sem
+avançar pra fase B enquanto o critério de pronto não estiver verde.
+Cenário guia: certificate_duplicate_confused_v1. Provider primário: Ollama.
+Rodar suite ao final; reportar em 1 mensagem o que ficou verde e o que
+precisa da minha decisão.
+</code></pre>
+<p>Se você quiser rodar Fase A e a preparação da Fase E em paralelo (recrutar avaliadores + rascunhar planilha), pode disparar E.1 e E.2 já — não bloqueia A.</p>
+<hr>
+<p><em>Documento vivo. Ajustar checkpoints e sacrifícios conforme realidade. Última revisão: 15/09/2026.</em></p>
+</body>
+</html>

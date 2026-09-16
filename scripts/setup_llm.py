@@ -290,8 +290,15 @@ def _render_entry(key: str, entry: BuiltEntry) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Env var check
+# Env var check + .env writer
 # ---------------------------------------------------------------------------
+
+# Local .env file at the repo root. civis/__init__.py loads it on import,
+# so anything we write here becomes visible to every entrypoint (CLI,
+# Streamlit, scripts) with no shell restart.
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+DOTENV_PATH = _REPO_ROOT / ".env"
+
 
 def check_env_var(name: str | None) -> tuple[bool, str]:
     """Return (is_set, hint) for an API key env var."""
@@ -299,11 +306,118 @@ def check_env_var(name: str | None) -> tuple[bool, str]:
         return True, ""
     if os.environ.get(name):
         return True, f"OK: {name} detectada."
+    return False, f"AUSENTE: {name}"
+
+
+def _read_dotenv() -> dict[str, str]:
+    """Parse the existing .env into a dict (empty if the file is absent)."""
+    if not DOTENV_PATH.exists():
+        return {}
+    result: dict[str, str] = {}
+    for line in DOTENV_PATH.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or "=" not in stripped:
+            continue
+        key, _, value = stripped.partition("=")
+        # Strip optional surrounding quotes so we round-trip cleanly.
+        value = value.strip().strip('"').strip("'")
+        result[key.strip()] = value
+    return result
+
+
+def _write_dotenv(vars_: dict[str, str]) -> None:
+    """
+    Rewrite .env with the given key/value pairs. Values are single-quoted
+    to preserve any '#' or whitespace the user pastes in.
+    """
+    DOTENV_PATH.parent.mkdir(parents=True, exist_ok=True)
+    lines = [
+        "# Written by scripts/setup_llm.py — API keys for CIVIS.",
+        "# This file is git-ignored. Never commit real credentials.",
+        "",
+    ]
+    for key in sorted(vars_):
+        # Escape single quotes inside the value by ending, escaping, restarting.
+        safe_value = vars_[key].replace("'", "'\"'\"'")
+        lines.append(f"{key}='{safe_value}'")
+    DOTENV_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _read_api_key_hidden(prompt: str) -> str:
+    """
+    Read a secret without echoing to the screen. Falls back to visible
+    input() if getpass fails (some Windows terminals block it).
+    """
+    from getpass import getpass
+
+    try:
+        return getpass(prompt).strip()
+    except (EOFError, KeyboardInterrupt):
+        raise
+    except Exception:
+        print("(terminal não suporta input oculto; a chave vai aparecer)")
+        return input(prompt).strip()
+
+
+def prompt_and_store_api_keys(env_names: list[str]) -> None:
+    """
+    Ask the user to paste any missing API keys and store them in .env
+    (never overwriting a real environment variable). Skips env_names
+    that are already set — the real value always wins.
+    """
+    missing = [n for n in env_names if n and not os.environ.get(n)]
+    if not missing:
+        return
+
+    print("\nAlgumas API keys estão faltando. Quer configurar agora?")
+    print("(Elas serão salvas em .env local, git-ignored, sem `setx`.)")
+    if input("Configurar chaves agora? [S/n] ").strip().lower() in {"n", "nao", "não", "no"}:
+        _print_manual_hint(missing)
+        return
+
+    existing = _read_dotenv()
+    updates: dict[str, str] = {}
+    for name in missing:
+        key_value = _read_api_key_hidden(f"  Cole {name} (Enter para pular): ")
+        if not key_value:
+            print(f"  [ ] {name} pulada.")
+            continue
+        if not _looks_like_api_key(key_value):
+            print(
+                f"  [!] Aviso: valor de {name} não parece uma API key típica; "
+                "salvando mesmo assim."
+            )
+        updates[name] = key_value
+        # Also inject into the CURRENT process so an immediate test run works.
+        os.environ[name] = key_value
+        print(f"  [OK] {name} pronta.")
+
+    if not updates:
+        _print_manual_hint(missing)
+        return
+
+    merged = {**existing, **updates}
+    _write_dotenv(merged)
+    print(f"\nGravado em {DOTENV_PATH}")
+    print("(carregado automaticamente na próxima execução de qualquer comando civis)")
+
+
+def _looks_like_api_key(value: str) -> bool:
+    """Rough sanity check to catch obvious typos (empty, too short)."""
+    return len(value) >= 20 and " " not in value
+
+
+def _print_manual_hint(env_names: list[str]) -> None:
+    """Fallback instructions when the user declines to store keys now."""
+    print("\nPra configurar depois, escolha uma das opções:")
+    print("  a) Rode o wizard de novo (menu → 16) e cole as chaves quando pedir.")
+    print("  b) Crie um arquivo .env na raiz do repo com uma linha por chave:")
+    for name in env_names:
+        print(f"       {name}=sk-...")
     if platform.system() == "Windows":
-        hint = f"AUSENTE. Rode: setx {name} sk-... (e abra novo cmd)"
+        print("  c) Ou seta permanente no sistema:  setx <NOME> sk-...  (abra novo cmd)")
     else:
-        hint = f"AUSENTE. Rode: export {name}=sk-..."
-    return False, hint
+        print("  c) Ou exporte no seu shell:  export <NOME>=sk-...")
 
 
 # ---------------------------------------------------------------------------
@@ -343,12 +457,19 @@ def main(argv: list[str] | None = None) -> int:
     print(f"\nSalvo em {target}")
 
     print("\n─── Env vars necessárias ───")
+    all_env_names: list[str] = []
     for env_name in {persona.api_key_env, judge.api_key_env}:
         if not env_name:
             continue
+        all_env_names.append(env_name)
         is_set, hint = check_env_var(env_name)
         prefix = "  [OK] " if is_set else "  [!!] "
         print(f"{prefix}{hint}")
+
+    # If anything is missing, offer to paste it inline. Values land in
+    # a local .env that civis loads automatically at import — no `setx`,
+    # no new shell.
+    prompt_and_store_api_keys(all_env_names)
 
     print("\nPronto. Abra o menu (opção 1) para testar a nova config.")
     return 0

@@ -28,6 +28,12 @@ dependencies = [
     # cairo/pango; the chrome-headless path we use in fill_pitch_deck is
     # heavier than we need for a one-page certificate).
     "reportlab>=4.0,<5.0",
+    # Setup wizard (scripts/setup_llm.py) writes API keys to a local .env
+    # file so the user never has to run `setx` and open a new cmd. Loaded
+    # once at civis package import so any entrypoint (CLI, Streamlit,
+    # scripts) sees the vars. Existing os.environ values are NOT
+    # overridden — real env vars still win.
+    "python-dotenv>=1.0,<2.0",
 ]
 
 [project.optional-dependencies]

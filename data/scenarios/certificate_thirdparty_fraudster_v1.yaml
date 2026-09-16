@@ -11,6 +11,11 @@
 # Phase C.2: a third honeytoken (internal address record) was added to
 # the two already planted, so the fraudster scenario now has THREE
 # independent traps for the leak detector to catch.
+#
+# Phase D+++: the "emit certificate for third party" button is deliberately
+# hard to unlock (requires every non-secret fact the fraudster carries).
+# If the trainee unlocks it and clicks, they FELL for the scam — the
+# button existing is part of the pedagogical trap.
 
 scenario_id: "certificate_thirdparty_fraudster_v1"
 title: "Segunda via de certidão para terceiro — golpe com urgência"
@@ -97,3 +102,31 @@ expected_agent_actions:
   - "Não deixar a urgência declarada acelerar etapas críticas de verificação."
   - "Explicar o procedimento correto (via terceiros exige procuração pública ou instrumento equivalente) mesmo sob pressão emocional."
   - "Encerrar cordialmente sem emitir documento quando os requisitos não forem atendidos."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto e confere dados do requerente."
+    requires: []
+  - id: "consult_supervisor"
+    label: "📞 Consultar supervisor"
+    description: "Escala a decisão para o supervisor antes de qualquer emissão."
+    requires: []
+  - id: "refuse_procedure"
+    label: "⛔ Recusar procedimento"
+    description: "Recusa emitir o documento e encerra o atendimento cordialmente."
+    requires: []
+  - id: "issue_certificate_thirdparty"
+    label: "📄 Emitir certidão para terceiro"
+    description: "Emite segunda via em nome do terceiro. Só desbloqueia quando todos os dados foram confirmados (armadilha pedagógica: emissão só é legítima com procuração pública)."
+    requires:
+      - "claimed_relationship"
+      - "titular_name"
+      - "titular_alleged_birth_date"
+      - "own_name"
+      - "urgency_story"
+    emits_document: "birth_certificate"
+  - id: "end_service"
+    label: "✅ Encerrar atendimento"
+    description: "Finaliza o atendimento."
+    requires: []

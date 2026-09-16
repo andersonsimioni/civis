@@ -12,6 +12,10 @@ Fase A layout (SQLite / Postgres come later):
         honeytoken_leaks.json   Honeytoken leak detector output (C.2). Present
                                 after any session run — total=0 means the
                                 persona did not pronounce any planted honeytoken.
+        issued_documents/       Phase D+++: one .md file per document the
+                                attendant "issued" during the session
+                                (fake certidão, RG). Absent when no
+                                emission happened.
 
 Two design choices worth calling out:
 
@@ -24,6 +28,12 @@ Two design choices worth calling out:
       rejected with a clear error, per the acceptance criterion of A.6
       ("relançar CLI com mesmo session_id reabre e continua ou erra
       claramente se cenário mudou").
+
+Phase D+++: `Turn.speaker` now also accepts the value ``"action"`` for
+turns that record a clickable-button emission (verify identity, issue
+certificate, ...). Downstream consumers ignore action turns when
+building the persona prompt, so the LLM never sees them as user speech
+— they exist purely as visible artefacts in the transcript.
 """
 
 import hashlib
@@ -42,13 +52,26 @@ HONEYTOKEN_LEAKS_FILENAME = "honeytoken_leaks.json"
 # Phase D sidecar — per-turn LLM telemetry (input tokens, output tokens,
 # latency, provider name). Absent for sessions written before Phase D.
 TURN_TELEMETRY_FILENAME = "turn_telemetry.json"
+# Phase D+++ — subfolder that collects one Markdown file per document
+# the attendant "issued" during the session. Created lazily on the
+# first emission.
+ISSUED_DOCUMENTS_DIRNAME = "issued_documents"
 
 
 class Turn(BaseModel):
-    """One utterance in a session. Ordered by turn_index (0-based)."""
+    """One utterance in a session. Ordered by turn_index (0-based).
+
+    Speaker values:
+        - "agent"   — the trainee's message.
+        - "persona" — the LLM-driven persona reply.
+        - "action"  — Phase D+++ button click. The `content` is a JSON
+                      payload (see `civis.web.pages.new_session._action_turn_content`)
+                      so a single string field carries the id, label and
+                      optional emitted-document details.
+    """
 
     turn_index: int = Field(ge=0)
-    speaker: str = Field(pattern="^(agent|persona)$")
+    speaker: str = Field(pattern="^(agent|persona|action)$")
     content: str
     # ISO-8601 UTC timestamp string. Kept as text for round-trip friendliness
     # with jq / spreadsheets. Parse only when a datetime is needed.
@@ -198,6 +221,39 @@ def save_turn_telemetry_json(
     target = session_dir(base, session_id) / TURN_TELEMETRY_FILENAME
     target.parent.mkdir(parents=True, exist_ok=True)
     _dump_json(target, payload)
+    return target
+
+
+def issued_document_path(
+    session_id: str,
+    document_id: str,
+    base: Path,
+) -> Path:
+    """
+    Return the on-disk path where an issued document markdown file lives.
+    Callers create it via :func:`save_issued_document`.
+    """
+    return (
+        session_dir(base, session_id)
+        / ISSUED_DOCUMENTS_DIRNAME
+        / f"{document_id}.md"
+    )
+
+
+def save_issued_document(
+    session_id: str,
+    document_id: str,
+    body: str,
+    base: Path,
+) -> Path:
+    """
+    Persist a rendered document (Markdown/ASCII body) under
+    ``data/sessions/<sid>/issued_documents/<document_id>.md``. Creates
+    the subdirectory on first call.
+    """
+    target = issued_document_path(session_id, document_id, base)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(body + ("\n" if not body.endswith("\n") else ""), encoding="utf-8")
     return target
 
 

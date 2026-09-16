@@ -12,6 +12,11 @@
 #
 # Phase C.2: a second honeytoken (an internal SSP request number) was
 # added so a leak in this scenario has two independent traps.
+#
+# Phase D+++: available_actions gives the attendant a "manter calma /
+# desescalar" postural button that maps to a training-only action (no
+# document emitted) — useful in this scenario because the pedagogical
+# priority is protocol under pressure, not paperwork throughput.
 
 scenario_id: "rg_urgent_aggressive_v1"
 title: "Segunda via de RG com urgência — cidadão agressivo"
@@ -91,3 +96,24 @@ expected_agent_actions:
   - "Explicar em linguagem simples o prazo real de emissão e as opções (regular / com taxa de urgência)."
   - "Não prometer prazo que o cartório não pode cumprir para acalmar o cidadão."
   - "Nunca confirmar dados internos (número de processo, unidade responsável) antes da verificação estar completa."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto e confere dados fornecidos."
+    requires: []
+  - id: "de_escalate"
+    label: "🧊 Manter calma / desescalar"
+    description: "Reconhece a urgência do cidadão sem ceder ao protocolo."
+    requires: []
+  - id: "issue_rg_second_copy"
+    label: "📄 Emitir 2ª via de RG"
+    description: "Emite segunda via de RG. Requer nome completo e data de nascimento confirmados."
+    requires:
+      - "full_name"
+      - "birth_date"
+    emits_document: "rg_second_copy"
+  - id: "end_service"
+    label: "✅ Encerrar atendimento"
+    description: "Finaliza o atendimento cordialmente."
+    requires: []

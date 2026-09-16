@@ -46,8 +46,20 @@ def render_transcript(transcript: SessionTranscript) -> None:
         )
         return
 
-    html_blocks = [_render_turn_html(t.turn_index, t.speaker, t.content, t.timestamp)
-                   for t in transcript.turns]
+    html_blocks: list[str] = []
+    for t in transcript.turns:
+        if t.speaker == "action":
+            # Phase D+++: action turns carry a JSON payload that describes
+            # a clickable-button emission (verify identity, issue document).
+            # Render a compact bubble that shows the human-readable label
+            # and, when present, the ASCII document body inline.
+            html_blocks.append(
+                _render_action_html(t.turn_index, t.content, t.timestamp)
+            )
+        else:
+            html_blocks.append(
+                _render_turn_html(t.turn_index, t.speaker, t.content, t.timestamp)
+            )
     st.markdown("\n".join(html_blocks), unsafe_allow_html=True)
 
     _emit_highlight_script_if_pending()
@@ -75,6 +87,58 @@ def _render_turn_html(
         f'    {speaker_icon} <b>{speaker_label}</b> · turno {turn_index} · {friendly_ts}'
         f'  </div>'
         f'  <div class="civis-turn-body">{safe_content}</div>'
+        f'</div>'
+    )
+
+
+def _render_action_html(
+    turn_index: int,
+    content: str,
+    timestamp: str,
+) -> str:
+    """
+    Render one Phase D+++ action turn as a bordered card.
+
+    The stored content is a JSON payload — see
+    civis.web.pages.new_session._action_turn_content. When the
+    payload includes a document block, its body is rendered
+    inline inside a monospace <pre> so the historic view of a past
+    session shows the exact same document the trainee saw at emission
+    time.
+    """
+    import json as _json
+
+    friendly_ts = escape(format_session_datetime(timestamp))
+    try:
+        payload = _json.loads(content)
+    except (ValueError, TypeError):
+        # Corrupt payload — degrade gracefully.
+        payload = {"label": content}
+
+    label = escape(str(payload.get("label", payload.get("action_id", "ação"))))
+    document = payload.get("document") or None
+
+    meta = (
+        f'<div class="civis-turn-meta">'
+        f'  🏛️ <b>Ação do atendente</b> · turno {turn_index} · {friendly_ts}'
+        f'</div>'
+    )
+    body_bits: list[str] = [f'<div class="civis-action-label">{label}</div>']
+    if isinstance(document, dict):
+        doc_title = escape(str(document.get("title", "Documento emitido")))
+        doc_body = escape(str(document.get("body", "")))
+        body_bits.append(
+            f'<div class="civis-document">'
+            f'  <div class="civis-document-title">{doc_title}</div>'
+            f'  <pre class="civis-document-body">{doc_body}</pre>'
+            f'</div>'
+        )
+    body = "".join(body_bits)
+
+    return (
+        f'<div id="turn-{turn_index}" class="civis-turn civis-turn-action">'
+        f'  {meta}'
+        f'  <div class="civis-turn-body">{body}</div>'
         f'</div>'
     )
 

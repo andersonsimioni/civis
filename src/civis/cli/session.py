@@ -74,6 +74,7 @@ from civis.session.storage import (
     save_honeytoken_leaks_json,
     save_metadata,
     save_transcript,
+    save_turn_telemetry_json,
     save_verdict_json,
     scenario_hash,
     session_dir,
@@ -217,6 +218,11 @@ def session_command(
     typer.echo("")
 
     # -- turn loop --------------------------------------------------------
+    # Accumulate per-turn LLM telemetry so the M4 metrics panel in the
+    # Streamlit UI can compute latency p95 and cost. One entry per persona
+    # turn (agent turns cost no tokens). Written after each turn so a
+    # crash mid-session does not lose the data collected so far.
+    telemetry_rows: list[dict] = []
     agent_turns_done = 0
     while agent_turns_done < max_turns:
         try:
@@ -239,6 +245,24 @@ def session_command(
         save_transcript(orchestrator.transcript, base=output_dir)
         metadata = touch_metadata(metadata)
         save_metadata(metadata, base=output_dir)
+
+        # Per-turn telemetry sidecar (Phase D). run_agent_turn always
+        # attaches result.llm_response for a successful turn, so a missing
+        # response only happens if the provider stubbed None; guard for
+        # that so the CLI does not crash.
+        if result.llm_response is not None:
+            telemetry_rows.append({
+                "turn_index": result.persona_reply.turn_index,
+                "input_tokens": result.llm_response.input_tokens,
+                "output_tokens": result.llm_response.output_tokens,
+                "latency_ms": result.llm_response.latency_ms,
+                "provider_name": result.llm_response.provider_name,
+            })
+            save_turn_telemetry_json(
+                {"session_id": session_id, "turns": telemetry_rows},
+                session_id=session_id,
+                base=output_dir,
+            )
 
         agent_turns_done += 1
 

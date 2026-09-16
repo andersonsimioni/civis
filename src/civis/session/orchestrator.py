@@ -13,6 +13,10 @@ Responsibilities:
        the persona reply), so the contradiction detector (B.4) and other
        downstream analysers can walk the session without re-parsing the
        transcript.
+    6. (Phase D) Expose the LLMResponse of every persona turn on the
+       returned TurnResult so the CLI can persist per-turn telemetry
+       (input/output tokens, latency, provider name) for the M4
+       metrics panel.
 
 Design notes:
     - The orchestrator does NOT own the LLM provider — it receives one
@@ -35,7 +39,7 @@ from dataclasses import dataclass, field
 from pydantic import BaseModel
 
 from civis.fsm.engine import advance_turn
-from civis.llm.provider import LLMMessage, LLMProvider
+from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse
 from civis.personas.base import PersonaState
 from civis.prompts.fact_retrieval import fact_keys_matched_by_agent_message
 from civis.prompts.persona import build_persona_prompt
@@ -58,6 +62,10 @@ class TurnResult(BaseModel):
     # keywords). The persona reply is treated as the OBSERVED VALUE for
     # each of these keys — the contradiction detector uses that mapping.
     matched_fact_keys: list[str] = []
+    # Phase D: expose the raw LLMResponse so the CLI can persist per-turn
+    # telemetry (tokens, latency, provider name). Optional — tests that
+    # only check FSM behaviour don't need to inspect it.
+    llm_response: LLMResponse | None = None
 
 
 @dataclass
@@ -143,6 +151,7 @@ class SessionOrchestrator:
             state_after=self.state,
             newly_revealed_fact_keys=newly_revealed,
             matched_fact_keys=matched_keys,
+            llm_response=response,
         )
 
     def _absorb_revealed_facts(

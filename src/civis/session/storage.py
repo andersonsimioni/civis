@@ -39,6 +39,9 @@ METADATA_FILENAME = "metadata.json"
 VERDICT_FILENAME = "verdict.json"
 CONTRADICTIONS_FILENAME = "contradictions.json"
 HONEYTOKEN_LEAKS_FILENAME = "honeytoken_leaks.json"
+# Phase D sidecar — per-turn LLM telemetry (input tokens, output tokens,
+# latency, provider name). Absent for sessions written before Phase D.
+TURN_TELEMETRY_FILENAME = "turn_telemetry.json"
 
 
 class Turn(BaseModel):
@@ -173,6 +176,28 @@ def save_honeytoken_leaks_json(
     target = session_dir(base, session_id) / HONEYTOKEN_LEAKS_FILENAME
     target.parent.mkdir(parents=True, exist_ok=True)
     _dump_json(target, report_payload)
+    return target
+
+
+def save_turn_telemetry_json(
+    payload: dict,
+    session_id: str,
+    base: Path,
+) -> Path:
+    """
+    Persist per-turn LLM telemetry (input/output tokens, latency,
+    provider name) for the M4 metrics panel. Payload shape:
+
+        {"session_id": ..., "turns": [{"turn_index", "input_tokens",
+         "output_tokens", "latency_ms", "provider_name"}, ...]}
+
+    The CLI accumulates one entry per persona turn (agent turns cost no
+    tokens) and rewrites this file on every turn so a crash mid-session
+    does not lose the telemetry recorded so far.
+    """
+    target = session_dir(base, session_id) / TURN_TELEMETRY_FILENAME
+    target.parent.mkdir(parents=True, exist_ok=True)
+    _dump_json(target, payload)
     return target
 
 

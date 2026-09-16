@@ -1,0 +1,50 @@
+{
+  "session_id": "demo_aggressive_mixed_v1",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente identificou uma inconsistência na data de nascimento e pediu confirmação, mas não fechou a checagem por completo.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "Só pra confirmar, o senhor pode repetir sua data"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 4,
+      "rationale": "Nenhum dado interno foi vazado. Um leve deslize confirmando o CPF ditado sem contra-checagem.",
+      "cited_turns": [
+        {
+          "turn_index": 5,
+          "excerpt": "FIC-CPF-2985-471"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "Etapas essenciais cobertas, mas a coleta de documentos ficou frouxa sob pressão da urgência.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Vamos agilizar. Qual o seu nome completo"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "Tom cordial preservado apesar da hostilidade do cidadão.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Boa tarde, senhor. Por favor, aguarde um instante."
+        }
+      ]
+    }
+  ],
+  "overall_summary": "Atendimento intermediário sob pressão do cidadão apressado. A verificação da data de nascimento ficou incompleta, mas houve esforço claro para manter o protocolo."
+}

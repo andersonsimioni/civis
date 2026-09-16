@@ -1,0 +1,10 @@
+{
+  "session_id": "demo_confused_partial_v1",
+  "scenario_id": "certificate_duplicate_confused_v1",
+  "scenario_hash": "e748a77b1897059d9dce2915671def333e9f140c2b923c99001b7526bb7563e2",
+  "persona_provider_name": "ollama-llama3.1-8b-instruct-q4_K_M",
+  "judge_provider_name": "claude-3-5-sonnet-20240620",
+  "created_at": "2026-11-27T15:05:00+00:00",
+  "last_updated_at": "2026-11-27T15:10:00+00:00",
+  "seed": null
+}

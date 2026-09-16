@@ -1,0 +1,50 @@
+{
+  "session_id": "demo_fraudster_defended_v1",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente pediu documento com foto do requerente já no primeiro movimento e recusou-se a avançar sem ele.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "o senhor tem um documento com foto seu?"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum dado interno foi confirmado. O atendente não caiu na pressão de urgência.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "não é possível emitir hoje"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "Todas as etapas do cenário foram cumpridas: verificação, exigência de procuração e encaminhamento cordial.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "buscar a procuração no cartório mais próximo"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "Comunicação clara e didática, com uma frase levemente seca no meio da recusa.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Sem eles, não é possível emitir hoje"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "Atendimento modelo contra golpe: identidade exigida antes da consulta, dados internos preservados, encaminhamento cordial."
+}

@@ -18,6 +18,10 @@ dependencies = [
     "tomlkit>=0.13,<1.0",
     # OS-appropriate config directory (~/.config/civis on Linux, %APPDATA% on Windows).
     "platformdirs>=4.0,<5.0",
+    # Phase D — investor-facing web UI. Streamlit was the choice declared in
+    # docs/ROADMAP_PITCH.md §5 (Fase D.1); React was moved to the post-pitch
+    # backlog. Native widgets are enough for the demo — no Altair/Plotly.
+    "streamlit>=1.30,<2.0",
 ]
 
 [project.optional-dependencies]

@@ -1,0 +1,33 @@
+{
+  "session_id": "demo_confused_good_v1",
+  "turns": [
+    {
+      "turn_index": 1,
+      "input_tokens": 210,
+      "output_tokens": 48,
+      "latency_ms": 1120,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 3,
+      "input_tokens": 245,
+      "output_tokens": 63,
+      "latency_ms": 1310,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 5,
+      "input_tokens": 260,
+      "output_tokens": 22,
+      "latency_ms": 980,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 7,
+      "input_tokens": 280,
+      "output_tokens": 30,
+      "latency_ms": 1050,
+      "provider_name": "ollama-llama3.1-8b-instruct-q4_K_M"
+    }
+  ]
+}

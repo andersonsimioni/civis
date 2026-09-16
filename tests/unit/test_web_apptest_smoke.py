@@ -74,12 +74,22 @@ def test_default_page_is_new_session() -> None:
     assert any("Nova sessão" in t for t in titles)
 
 
-def test_new_session_page_shows_repl_placeholder() -> None:
-    """Skeleton stage: page mounts and shows the transitional info message."""
+def test_new_session_page_shows_scenario_landing() -> None:
+    """
+    D.5 polish: the page renders three scripted-scenario cards plus the
+    "Como executar agora" runner section. Pinning the subheader and a
+    known scenario id catches accidental regressions during polish.
+    """
     at = AppTest.from_file(str(_APP_PATH))
     _switch_to(at, "new_session.py")
-    info_messages = [i.value for i in at.info]
-    assert any("REPL em construção" in msg for msg in info_messages)
+    subheaders = [s.value for s in at.subheader]
+    assert "Como executar agora" in subheaders
+    # Each card contains a copy-friendly CLI command in a code block —
+    # AppTest exposes code blocks via at.code with the raw command text.
+    code_texts = " ".join(c.value for c in at.code)
+    assert "certificate_thirdparty_fraudster_v1" in code_texts
+    assert "certificate_duplicate_confused_v1" in code_texts
+    assert "rg_urgent_aggressive_v1" in code_texts
 
 
 def test_past_sessions_lists_demo_fixture(demo_sessions_env: Path) -> None:
@@ -239,6 +249,31 @@ def test_env_override_takes_effect_on_past_sessions(
     _switch_to(at_empty, "past_sessions.py")
     md_empty = " ".join(m.value for m in at_empty.markdown)
     assert "Nenhuma sessão ainda" in md_empty
+
+
+def test_sidebar_footer_carries_attribution() -> None:
+    """D.5 polish: the sidebar closes with author + course attribution."""
+    at = AppTest.from_file(str(_APP_PATH))
+    at.run()
+    sidebar_captions = " ".join(c.value for c in at.sidebar.caption)
+    assert "Anderson" in sidebar_captions
+    assert "UFSC" in sidebar_captions
+
+
+def test_about_page_renders_scannable_metric_row() -> None:
+    """
+    D.5 polish: the About page shows a four-metric summary row so a
+    cold visitor gets a numeric anchor before reading the prose.
+    """
+    at = AppTest.from_file(str(_APP_PATH))
+    _switch_to(at, "about.py")
+    metric_labels = [m.label for m in at.metric]
+    assert "Perfis de persona" in metric_labels
+    assert "Cenários prontos" in metric_labels
+    assert "Critérios da rubrica" in metric_labels
+    assert "Bateria adversarial" in metric_labels
+
+
 
 
 # Silence a warning caused by unused fixtures in parametrised tests.

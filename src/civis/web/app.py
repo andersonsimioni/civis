@@ -28,6 +28,7 @@ from civis.web.theme import (
     APP_ICON,
     APP_TAGLINE,
     APP_TITLE,
+    PRIMARY_COLOR_DEEP,
     apply_page_config,
     inject_base_css,
 )
@@ -39,12 +40,38 @@ _PAGES_DIR = Path(__file__).resolve().parent / "pages"
 
 
 def _sidebar_header() -> None:
-    """Render the sidebar identity block above the navigation tree."""
+    """
+    Render the sidebar identity block above the navigation tree. A small
+    HTML card gives the product name real presence — the default h3
+    render looks too casual for an investor demo.
+    """
     st.sidebar.markdown(
-        f"### {APP_ICON} {APP_TITLE}\n"
-        f"*{APP_TAGLINE}*"
+        f"""
+        <div style="padding: 0.4rem 0 0.9rem 0;">
+            <div style="font-size:1.65rem; line-height:1;">
+                {APP_ICON}
+                <span style="font-weight:700; color:{PRIMARY_COLOR_DEEP};
+                             letter-spacing:0.02em; margin-left:0.3rem;">
+                    {APP_TITLE}
+                </span>
+            </div>
+            <div style="font-size:0.85rem; color:#5b6473; margin-top:0.2rem;">
+                {APP_TAGLINE}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
     st.sidebar.markdown("---")
+
+
+def _sidebar_footer() -> None:
+    """Attribution and version footer at the bottom of the sidebar."""
+    st.sidebar.markdown("---")
+    st.sidebar.caption(
+        "Projeto acadêmico · UFSC INE5448  \n"
+        "Anderson Simioni Assunção · 2026"
+    )
 
 
 def _build_navigation() -> st.navigation:
@@ -90,6 +117,7 @@ def main() -> None:
     inject_base_css()
     _sidebar_header()
     _build_navigation().run()
+    _sidebar_footer()
 
 
 main()

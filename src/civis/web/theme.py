@@ -251,6 +251,138 @@ BASE_CSS = f"""
         color: {NEUTRAL_SUBTLE};
         margin: 0.6rem 0 0.3rem 0;
     }}
+    /* Onda 2 T1.2 — chat header timer badge. Colour comes from the
+       phase attribute set inline on the container. Monospace so the
+       digits do not jump between reruns. */
+    .civis-timer {{
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: "SFMono-Regular", "Menlo", "Consolas",
+                     "Liberation Mono", monospace;
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 0.35rem 0.75rem;
+        border-radius: 8px;
+        letter-spacing: 0.05em;
+        border: 2px solid transparent;
+    }}
+    .civis-timer[data-phase="green"] {{
+        background: #eaf7ec;
+        color: #1f7a34;
+        border-color: #3f8f4a;
+    }}
+    .civis-timer[data-phase="amber"] {{
+        background: #fff8d6;
+        color: #8a6d1a;
+        border-color: #c9a521;
+    }}
+    .civis-timer[data-phase="warning"] {{
+        background: #fdecd6;
+        color: #a04a10;
+        border-color: #d68f1f;
+    }}
+    .civis-timer[data-phase="red"] {{
+        background: #fbe0dd;
+        color: #8a1a12;
+        border-color: #b3261e;
+    }}
+    .civis-timer-label {{
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.75;
+    }}
+    /* Onda 2 M2.4 — mystery-shopper reveal card on the verdict page.
+       Deliberately noisier than a rubric card (purple/orange border)
+       so an investor sees this is a different event from the judge
+       verdict. */
+    .civis-audit-header {{
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        color: #6a2b8c;
+        margin: 0.6rem 0 0.5rem 0;
+    }}
+    .civis-audit-reveal {{
+        border: 2px solid #6a2b8c;
+        background: #f6ebfa;
+        color: {NEUTRAL_TEXT};
+        border-radius: 8px;
+        padding: 0.9rem 1rem;
+        line-height: 1.45;
+        margin-bottom: 0.9rem;
+    }}
+    .civis-audit-criteria-label {{
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: {NEUTRAL_SUBTLE};
+        margin: 0.6rem 0 0.35rem 0;
+    }}
+    .civis-audit-row {{
+        border: 1px solid #dfe3ea;
+        border-left: 4px solid #d68f1f;
+        border-radius: 6px;
+        padding: 0.55rem 0.8rem;
+        margin-bottom: 0.4rem;
+        background: white;
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-audit-pill {{
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 0.12rem 0.55rem;
+        border-radius: 999px;
+        color: white;
+        margin-right: 0.55rem;
+        background: {NEUTRAL_SUBTLE};
+    }}
+    .civis-audit-pill[data-status="passed"] {{
+        background: #1f7a34;
+    }}
+    .civis-audit-pill[data-status="failed"] {{
+        background: #b3261e;
+    }}
+    .civis-audit-pill[data-status="inconclusive"] {{
+        background: #b58900;
+    }}
+    .civis-audit-row-label {{
+        font-weight: 600;
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-audit-row-reason {{
+        color: {NEUTRAL_SUBTLE};
+        font-size: 0.88rem;
+        margin-top: 0.2rem;
+    }}
+    /* Onda 2 T1.3 — a "queue" turn (customer waiting complaining).
+       Shown as an assistant bubble but with a coloured border so the
+       trainee sees it is not the persona speaking. Orange for warning
+       phase, red for critical. */
+    .civis-turn-queue {{
+        border-left: 4px solid #d68f1f;
+        background: #fdf3e2;
+        padding: 0.6rem 0.85rem;
+        border-radius: 4px;
+        color: {NEUTRAL_TEXT};
+        margin: 0.3rem 0;
+    }}
+    .civis-turn-queue[data-severity="critical"] {{
+        border-left-color: #b3261e;
+        background: #fbe2df;
+    }}
+    .civis-queue-label {{
+        font-weight: 700;
+        color: #8a4a10;
+        margin-bottom: 0.25rem;
+    }}
+    .civis-turn-queue[data-severity="critical"] .civis-queue-label {{
+        color: #7a1a12;
+    }}
 </style>
 """
 

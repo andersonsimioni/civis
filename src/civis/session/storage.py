@@ -34,6 +34,13 @@ turns that record a clickable-button emission (verify identity, issue
 certificate, ...). Downstream consumers ignore action turns when
 building the persona prompt, so the LLM never sees them as user speech
 — they exist purely as visible artefacts in the transcript.
+
+Onda 2 T1.3: `Turn.speaker` also accepts ``"queue"`` — a pressure
+event injected by the web chat when the session timer crosses the
+warning / critical thresholds declared in the scenario's
+``service_sla``. Queue turns are also filtered out of the persona and
+judge prompts (same logic as action turns), so they never contaminate
+the LLM context.
 """
 
 import hashlib
@@ -68,10 +75,17 @@ class Turn(BaseModel):
                       payload (see `civis.web.pages.new_session._action_turn_content`)
                       so a single string field carries the id, label and
                       optional emitted-document details.
+        - "queue"   — Onda 2 T1.3 pressure event. Injected by the chat
+                      view when the elapsed session time crosses the
+                      warning / critical SLA thresholds. The `content`
+                      is a JSON payload with the severity, minutes
+                      waited and the pt-BR complaint line. Filtered out
+                      of both the persona prompt and the judge prompt,
+                      so it never leaks into the LLM context.
     """
 
     turn_index: int = Field(ge=0)
-    speaker: str = Field(pattern="^(agent|persona|action)$")
+    speaker: str = Field(pattern="^(agent|persona|action|queue)$")
     content: str
     # ISO-8601 UTC timestamp string. Kept as text for round-trip friendliness
     # with jq / spreadsheets. Parse only when a datetime is needed.

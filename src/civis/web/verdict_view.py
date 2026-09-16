@@ -23,6 +23,9 @@ from typing import Any
 import streamlit as st
 
 from civis.judge.rubric import JudgeVerdict
+from civis.scenarios.audit_check import AuditOutcome, evaluate_hidden_agenda
+from civis.session.scenario import ScenarioFile
+from civis.session.storage import SessionTranscript
 from civis.web.formatting import (
     criterion_label,
     format_score_badge_html,
@@ -158,3 +161,99 @@ def render_honeytoken_leaks(payload: dict[str, Any] | None) -> None:
                 f"`{fact_key}`: "
                 f"\"{escape(str(context))}\""
             )
+
+
+def render_audit_reveal(
+    scenario_file: ScenarioFile,
+    transcript: SessionTranscript,
+) -> AuditOutcome | None:
+    """Render the mystery-shopper reveal card (Onda 2 M2.4).
+
+    Returns the computed :class:`AuditOutcome` when the scenario has a
+    hidden agenda so the caller can persist it, or ``None`` when the
+    scenario does not carry one (in which case nothing renders).
+
+    Layout:
+
+        - A prominent header row with a magnifying-glass icon and the
+          "AUDITORIA REVELADA" copy.
+        - The auditor's reveal_message rendered as a bordered card.
+        - One status pill per success criterion: ``PASSOU`` / ``FALHOU``
+          / ``INCONCLUSIVO``, with the reason from the evaluator.
+
+    Colour palette lives in ``theme.py`` under ``.civis-audit-*`` so
+    the card is styled by CSS class alone.
+    """
+    agenda = scenario_file.hidden_agenda
+    if agenda is None:
+        return None
+
+    outcome = evaluate_hidden_agenda(agenda, transcript)
+
+    st.markdown(
+        "<div class='civis-audit-header'>"
+        "🕵️ AUDITORIA REVELADA"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        "<div class='civis-audit-reveal'>"
+        f"{escape(agenda.reveal_message).replace(chr(10), '<br>')}"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    # Overall status pill first — makes the pass/fail visible at a glance.
+    _render_audit_status_row(
+        label="Resultado geral",
+        status=outcome.overall_status,
+        reason=agenda.description,
+    )
+
+    st.markdown(
+        "<div class='civis-audit-criteria-label'>"
+        "Critérios avaliados"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    for criterion_outcome in outcome.criteria_outcomes:
+        _render_audit_status_row(
+            label=(
+                f"{criterion_outcome.action_required} → "
+                f"antes de {criterion_outcome.before_action}"
+            ),
+            status=criterion_outcome.status,
+            reason=criterion_outcome.reason,
+        )
+
+    return outcome
+
+
+def _render_audit_status_row(label: str, status: str, reason: str) -> None:
+    """Render one line of the audit reveal card.
+
+    A status pill (colour by CSS class) on the left, a short reason
+    on the right. Keeping this in a helper means the overall status
+    and the per-criterion rows share exactly the same layout.
+    """
+    status_label = _AUDIT_STATUS_LABELS.get(status, status.upper())
+    st.markdown(
+        f"<div class='civis-audit-row'>"
+        f"  <span class='civis-audit-pill' data-status='{escape(status)}'>"
+        f"    {escape(status_label)}"
+        f"  </span>"
+        f"  <span class='civis-audit-row-label'>{escape(label)}</span>"
+        f"  <div class='civis-audit-row-reason'>{escape(reason)}</div>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+
+# pt-BR labels for the three possible statuses. Kept as a module-level
+# constant so tests can import and assert on the exact copy.
+_AUDIT_STATUS_LABELS: dict[str, str] = {
+    "passed": "PASSOU",
+    "failed": "FALHOU",
+    "inconclusive": "INCONCLUSIVO",
+}

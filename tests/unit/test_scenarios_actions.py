@@ -22,7 +22,6 @@ from civis.session.scenario import (
     load_scenario_from_text,
 )
 
-
 # ---------------------------------------------------------------------------
 # Small YAML fragments — one persona with two facts, then a variable
 # `available_actions` block. Keeps each test focused on one thing.

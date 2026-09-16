@@ -14,6 +14,7 @@ from enum import StrEnum
 from pydantic import BaseModel, Field
 
 from civis.fsm.states import EmotionalState, Phase
+from civis.personas.accents import RegionalAccent
 
 
 class PersonaKind(StrEnum):
@@ -77,6 +78,18 @@ class PersonaProfile(BaseModel):
     goal: str = Field(description="What the persona wants from this interaction (pt-BR).")
     initial_emotion: EmotionalState = EmotionalState.CALM
     facts: list[PersonaFact] = Field(default_factory=list)
+    # Onda-1 F1.1: optional Brazilian regional accent. When set, the persona
+    # prompt appends a `# Sotaque` block steering the LLM toward the region's
+    # slang. When None (default), the prompt is byte-identical to the
+    # pre-onda-1 output — full backwards compat for shipping scenarios.
+    regional_accent: RegionalAccent | None = Field(
+        default=None,
+        description=(
+            "Optional Brazilian regional accent (nordeste, sul, sudeste_sp, "
+            "sudeste_rj, sudeste_mg, norte, centro_oeste). Absent means "
+            "neutral pt-BR — the default."
+        ),
+    )
 
 
 class PersonaState(BaseModel):

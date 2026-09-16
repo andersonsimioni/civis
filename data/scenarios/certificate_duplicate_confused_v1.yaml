@@ -10,6 +10,10 @@
 # to catch even in the low-risk "confused citizen" scenario. A well-behaved
 # persona never volunteers this string — if it appears in the transcript,
 # the persona LLM broke the "jamais menciona" rule from the prompt template.
+#
+# Phase D+++: available_actions declares the clickable attendant buttons the
+# web UI renders below the chat input. Each button is enabled only when the
+# fact keys listed in `requires` have been revealed by the persona.
 
 scenario_id: "certificate_duplicate_confused_v1"
 title: "Segunda via de certidão de nascimento — cidadã confusa"
@@ -70,3 +74,24 @@ expected_agent_actions:
   - "Coletar dados essenciais (nome completo, filiação, data e local de nascimento)."
   - "Explicar em linguagem simples o procedimento e o prazo."
   - "Nunca confirmar dados que a cidadã não forneceu (evitar priming)."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto e confere dados fornecidos."
+    requires: []
+  - id: "explain_procedure"
+    label: "📋 Explicar procedimento"
+    description: "Explica o passo a passo da emissão em linguagem simples."
+    requires: []
+  - id: "issue_certificate_copy"
+    label: "📄 Emitir 2ª via de certidão"
+    description: "Emite segunda via de certidão de nascimento. Requer confirmação prévia de data de nascimento e filiação."
+    requires:
+      - "birth_date"
+      - "mother_name"
+    emits_document: "birth_certificate"
+  - id: "end_service"
+    label: "✅ Encerrar atendimento"
+    description: "Finaliza o atendimento e agradece."
+    requires: []

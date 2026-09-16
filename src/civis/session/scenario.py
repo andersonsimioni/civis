@@ -15,6 +15,12 @@ clickable attendant buttons the web UI renders under the chat input.
 Absent from the YAML → the field defaults to an empty catalog and the
 UI simply renders no buttons (fully backwards compatible with the
 Phase A-D++ scenarios).
+
+Onda 2 T1.1: an optional `service_sla` block declares the time
+budget of the session (target / warning / critical seconds). Absent
+from the YAML → the field defaults to a ServiceSLA with the standard
+480 / 720 / 900 numbers, so existing scenarios keep working while
+still exposing a sensible SLA to the timer UI.
 """
 
 from pathlib import Path
@@ -24,6 +30,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from civis.personas.base import PersonaProfile
 from civis.scenarios.actions import AgentActionCatalog
+from civis.scenarios.sla import ServiceSLA
 
 
 class ScenarioFile(BaseModel):
@@ -39,6 +46,11 @@ class ScenarioFile(BaseModel):
     available_actions: AgentActionCatalog = Field(
         default_factory=AgentActionCatalog
     )
+    # Onda 2 T1.1: SLA thresholds driving the chat header timer and
+    # the queue-complaint injector. Optional in the YAML — a scenario
+    # without this block gets the shared defaults so the timer never
+    # renders a bare "no SLA" state.
+    service_sla: ServiceSLA = Field(default_factory=ServiceSLA)
 
     @model_validator(mode="after")
     def _action_requires_must_reference_real_fact_keys(self) -> "ScenarioFile":

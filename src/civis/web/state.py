@@ -33,6 +33,18 @@ REPORTS_DIR_ENV = "CIVIS_REPORTS_DIR"
 # extension can't accidentally collide with them.
 SELECTED_SESSION_KEY = "civis.selected_session_id"
 HIGHLIGHT_TURN_KEY = "civis.highlight_turn_index"
+# ONDA 3 (R1.3): toggle for the replay timeline above the transcript
+# in the drill-down. Stored per-page rather than per-session so the
+# viewer's preference sticks while they hop between sessions.
+SHOW_REPLAY_KEY = "civis.show_replay_timeline"
+# ONDA 3 (C3.2): toggle for the real-time coach in the new-session
+# page. Default off — an investor sees the coach only after the
+# demo explicitly enables it.
+COACH_ENABLED_KEY = "civis.coach_enabled"
+# ONDA 3 (C3.2): last CoachSuggestion produced for the current
+# turn, so the sidebar rerender can show it without re-invoking
+# the LLM.
+COACH_LAST_SUGGESTION_KEY = "civis.coach_last_suggestion"
 
 
 def get_sessions_dir() -> Path:

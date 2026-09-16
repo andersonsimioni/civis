@@ -223,11 +223,13 @@ def test_coach_stays_silent_when_disabled(chat_env: Path) -> None:
 
 
 def _transcript() -> SessionTranscript:
+    ts_agent = "2026-09-16T10:00:00+00:00"
+    ts_persona = "2026-09-16T10:00:01+00:00"
     return SessionTranscript(
         session_id="s1",
         turns=[
-            Turn(turn_index=0, speaker="agent", content="oi", timestamp="2026-09-16T10:00:00+00:00"),
-            Turn(turn_index=1, speaker="persona", content="oi", timestamp="2026-09-16T10:00:01+00:00"),
+            Turn(turn_index=0, speaker="agent", content="oi", timestamp=ts_agent),
+            Turn(turn_index=1, speaker="persona", content="oi", timestamp=ts_persona),
         ],
     )
 

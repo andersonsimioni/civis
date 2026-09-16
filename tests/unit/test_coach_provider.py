@@ -23,7 +23,6 @@ from civis.personas.base import PersonaFact, PersonaProfile
 from civis.session.scenario import ScenarioFile
 from civis.session.storage import SessionTranscript, Turn
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------

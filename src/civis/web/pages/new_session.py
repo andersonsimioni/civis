@@ -64,6 +64,7 @@ from civis.cli.wiring import (
     build_provider_from_config,
     load_or_default_config,
 )
+from civis.coach.coach import Coach
 from civis.documents.templates import RenderedDocument, render_document
 from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
 from civis.llm.provider import LLMProvider
@@ -90,7 +91,6 @@ from civis.session.storage import (
     scenario_hash,
     touch_metadata,
 )
-from civis.coach.coach import Coach
 from civis.web.coach_view import (
     clear_suggestion,
     compute_suggestion,

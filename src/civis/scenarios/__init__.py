@@ -19,10 +19,13 @@ Keeping this in its own package lets us grow the declarative surface
 """
 
 from civis.scenarios.actions import AgentAction, AgentActionCatalog
+from civis.scenarios.hidden_agenda import HiddenAgenda, SuccessCriterion
 from civis.scenarios.sla import ServiceSLA
 
 __all__ = [
     "AgentAction",
     "AgentActionCatalog",
+    "HiddenAgenda",
     "ServiceSLA",
+    "SuccessCriterion",
 ]

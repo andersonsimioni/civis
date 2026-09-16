@@ -30,6 +30,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from civis.personas.base import PersonaProfile
 from civis.scenarios.actions import AgentActionCatalog
+from civis.scenarios.hidden_agenda import HiddenAgenda
 from civis.scenarios.sla import ServiceSLA
 
 
@@ -51,6 +52,12 @@ class ScenarioFile(BaseModel):
     # without this block gets the shared defaults so the timer never
     # renders a bare "no SLA" state.
     service_sla: ServiceSLA = Field(default_factory=ServiceSLA)
+    # Onda 2 M2.1: optional mystery-shopper mission. Absent from the
+    # YAML → the field stays None and the verdict screen renders the
+    # standard layout. Present → the verdict screen adds an audit
+    # reveal card above the judge rubric. The persona prompt does NOT
+    # read this field, so the LLM is never told it is being audited.
+    hidden_agenda: HiddenAgenda | None = None
 
     @model_validator(mode="after")
     def _action_requires_must_reference_real_fact_keys(self) -> "ScenarioFile":
@@ -74,6 +81,31 @@ class ScenarioFile(BaseModel):
             raise ValueError(
                 "Scenario available_actions reference unknown persona fact "
                 f"keys: {details}. Known keys: {sorted(known_keys)}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _hidden_agenda_must_reference_real_actions(self) -> "ScenarioFile":
+        """
+        Onda 2 M2.1: every action id in a hidden_agenda's success
+        criteria must match an action declared in ``available_actions``.
+        A typo here would leave the audit permanently inconclusive and
+        make the mystery-shopper reveal misleading, so we fail fast.
+        """
+        if self.hidden_agenda is None:
+            return self
+        known_action_ids = {action.id for action in self.available_actions.actions}
+        unknown: list[tuple[str, str]] = []
+        for criterion in self.hidden_agenda.success_criteria:
+            if criterion.action_required not in known_action_ids:
+                unknown.append(("action_required", criterion.action_required))
+            if criterion.before_action not in known_action_ids:
+                unknown.append(("before_action", criterion.before_action))
+        if unknown:
+            details = ", ".join(f"{role} '{aid}'" for role, aid in unknown)
+            raise ValueError(
+                "Scenario hidden_agenda references unknown action ids: "
+                f"{details}. Known action ids: {sorted(known_action_ids)}."
             )
         return self
 

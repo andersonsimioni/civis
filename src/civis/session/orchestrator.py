@@ -37,6 +37,10 @@ Design notes:
             contains a fact's retrieval_keywords, we record the persona
             reply as the "observed value" for that fact_key. The
             contradiction detector compares observed values across turns.
+    - (Phase D+++) Action turns (speaker=="action") are recorded in the
+      transcript by the web layer but STRIPPED here before the history
+      reaches the persona prompt — the LLM must never see a JSON action
+      payload as if it were user speech.
 """
 
 from collections.abc import Iterator
@@ -344,6 +348,15 @@ def _transcript_history(
     list the prompt builder expects. When exclude_last=True we drop the
     freshest agent turn (we're about to render it separately inside
     <user_input> in the user prompt).
+
+    Phase D+++: turns with ``speaker == "action"`` are STRIPPED here so
+    the persona LLM never sees a JSON action payload as if it were user
+    speech. Action turns are pure UI artefacts — they belong in the
+    on-disk transcript for replay / auditing but not in the prompt.
     """
     turns = transcript.turns[:-1] if exclude_last else transcript.turns
-    return [(t.speaker, t.content) for t in turns]
+    return [
+        (t.speaker, t.content)
+        for t in turns
+        if t.speaker in ("agent", "persona")
+    ]

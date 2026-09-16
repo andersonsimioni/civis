@@ -355,7 +355,15 @@ def run_judge_with_validation(
     Exposed as a top-level helper so the E2E test in B.3 can drive it
     without instantiating the Typer command.
     """
-    turn_pairs = [(t.speaker, t.content) for t in transcript.turns]
+    # Phase D+++: strip action turns before handing the transcript to
+    # the judge. Action turns are UI artefacts (JSON payloads carrying
+    # button ids + document renderings) that would confuse the judge
+    # and its citation validator.
+    turn_pairs = [
+        (t.speaker, t.content)
+        for t in transcript.turns
+        if t.speaker in ("agent", "persona")
+    ]
 
     verdict = _call_judge_and_parse(
         session_id=session_id,
@@ -479,9 +487,12 @@ def _rebuild_state_from_transcript(
     from civis.fsm.engine import advance_turn as _adv
 
     for turn in transcript.turns:
+        # Phase D+++: action turns don't advance the FSM and their content
+        # is a JSON payload, not persona speech. Skip them so a resumed
+        # session reconstructs the same state a fresh live session would.
         if turn.speaker == "agent":
             tmp.state = _adv(tmp.state)
-        else:
+        elif turn.speaker == "persona":
             tmp._absorb_revealed_facts(turn.content, last_agent_message=None)
 
     return tmp.state

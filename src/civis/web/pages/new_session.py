@@ -44,10 +44,12 @@ If absent, the page falls back to ``load_or_default_config`` +
 
 from __future__ import annotations
 
+import json
 import random
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from html import escape
 from pathlib import Path
 from typing import Any
 
@@ -61,9 +63,11 @@ from civis.cli.wiring import (
     build_provider_from_config,
     load_or_default_config,
 )
+from civis.documents.templates import RenderedDocument, render_document
 from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
 from civis.llm.provider import LLMProvider
 from civis.personas.base import PersonaState
+from civis.scenarios.actions import AgentAction
 from civis.session.contradiction_detector import detect_contradictions
 from civis.session.orchestrator import SessionOrchestrator, TurnResult
 from civis.session.scenario import (
@@ -77,6 +81,7 @@ from civis.session.storage import (
     new_session_id,
     save_contradictions_json,
     save_honeytoken_leaks_json,
+    save_issued_document,
     save_metadata,
     save_transcript,
     save_turn_telemetry_json,
@@ -432,7 +437,7 @@ def _build_provider(role_key: str) -> LLMProvider:
 
 
 def _render_chat_view() -> None:
-    """Chat header + bubbles + chat_input feed line."""
+    """Chat header + bubbles + chat_input feed line + action buttons."""
     orchestrator: SessionOrchestrator | None = st.session_state.get(ORCH_KEY)
     if orchestrator is None:
         # Someone landed here directly without a live orchestrator —
@@ -444,6 +449,10 @@ def _render_chat_view() -> None:
     _render_chat_header()
     _render_chat_body(orchestrator)
     _render_chat_input(orchestrator)
+    # Phase D+++: clickable action buttons live under the chat input so
+    # the trainee (and the investor watching) sees the counter's toolkit
+    # right next to where they type.
+    _render_action_buttons(orchestrator)
 
 
 def _render_chat_header() -> None:
@@ -486,7 +495,13 @@ def _render_chat_header() -> None:
 
 
 def _render_chat_body(orchestrator: SessionOrchestrator) -> None:
-    """Render every turn as a chat bubble (agent → user, persona → assistant)."""
+    """Render every turn as a chat bubble.
+
+    Speaker mapping:
+        - "agent"   → user bubble.
+        - "persona" → assistant bubble.
+        - "action"  → assistant bubble with a document card (Phase D+++).
+    """
     if not orchestrator.transcript.turns:
         st.info(
             "A pessoa está aguardando o seu primeiro contato. Digite abaixo "
@@ -497,6 +512,8 @@ def _render_chat_body(orchestrator: SessionOrchestrator) -> None:
         if turn.speaker == "agent":
             with st.chat_message("user", avatar="👤"):
                 st.markdown(turn.content)
+        elif turn.speaker == "action":
+            _render_action_turn_in_chat(turn.content)
         else:
             with st.chat_message("assistant", avatar="🧑‍💼"):
                 st.markdown(turn.content)
@@ -840,5 +857,246 @@ def _format_provider_error(exc: BaseException) -> str:
         )
     return f"{type(exc).__name__}: {exc}"
 
+
+
+# ---------------------------------------------------------------------------
+# Phase D+++ — action buttons + inline document emission
+# ---------------------------------------------------------------------------
+#
+# The chat view exposes a grid of clickable actions ("verify identity",
+# "issue certificate copy", ...) under the chat input. Each action is
+# declared in the scenario YAML as an AgentAction. A button is enabled
+# only when every fact_key in ``requires`` has been revealed by the
+# persona. On click, the action is executed by :func:`_execute_action`
+# — a new turn (speaker="action") is appended to the transcript and,
+# when the action carries ``emits_document``, a fake document is
+# rendered inline in the chat and persisted under
+# ``data/sessions/<sid>/issued_documents/<doc_id>.md``.
+#
+# Design decisions:
+#   * The action turn's ``content`` is a JSON payload. A single string
+#     field on ``Turn`` is enough to carry action_id + label + optional
+#     rendered document. The orchestrator strips these turns from the
+#     history it feeds to the persona prompt.
+#   * The document body is stored inside the JSON payload AND as a
+#     standalone .md file. The chat card renders directly from the JSON
+#     so a rerun without re-reading disk still shows the paper. The .md
+#     file exists so replay / audit tooling can grep across sessions.
+#   * We DO NOT trigger a persona reply after an action. The action is
+#     a silent counter act — the next natural turn from the trainee is
+#     when the persona speaks again.
+
+
+def _render_action_buttons(orchestrator: SessionOrchestrator) -> None:
+    """Grid of clickable action buttons underneath the chat input.
+
+    A button is disabled (with a helpful tooltip) when its declared
+    ``requires`` are not yet fully revealed. Scenarios with an empty
+    ``available_actions`` list render nothing so Phase A-D++ demos are
+    unaffected.
+    """
+    scenario_file: ScenarioFile = st.session_state[SCENARIO_FILE_KEY]
+    catalog = scenario_file.available_actions
+    if len(catalog) == 0:
+        return
+
+    revealed: set[str] = set(orchestrator.state.revealed_fact_keys)
+
+    # Small caption above the grid so an investor understands what the
+    # row of buttons means — no chrome, just one line.
+    st.markdown(
+        "<div class='civis-action-grid-label'>Ações do atendente</div>",
+        unsafe_allow_html=True,
+    )
+
+    # Grid of up to 4 buttons per row.
+    columns_per_row = 4
+    actions = list(catalog)
+    for row_start in range(0, len(actions), columns_per_row):
+        row = actions[row_start : row_start + columns_per_row]
+        cols = st.columns(len(row), gap="small")
+        for col, action in zip(cols, row, strict=True):
+            with col:
+                _render_single_action_button(action, revealed, orchestrator)
+
+
+def _render_single_action_button(
+    action: AgentAction,
+    revealed_fact_keys: set[str],
+    orchestrator: SessionOrchestrator,
+) -> None:
+    """Render one button and wire its click to :func:`_execute_action`.
+
+    The tooltip explains WHY a disabled button is disabled (which fact
+    keys are still missing) — critical for the demo: an investor sees
+    the button greyed out, hovers, and understands the mechanic in a
+    second.
+    """
+    missing = [key for key in action.requires if key not in revealed_fact_keys]
+    disabled = bool(missing)
+
+    if disabled:
+        help_text = (
+            f"{action.description} — bloqueado até revelar: "
+            + ", ".join(missing)
+        )
+    else:
+        help_text = action.description
+
+    if st.button(
+        action.label,
+        key=f"action_{action.id}",
+        help=help_text,
+        disabled=disabled,
+        use_container_width=True,
+    ):
+        _execute_action(action, orchestrator)
+
+
+def _execute_action(
+    action: AgentAction,
+    orchestrator: SessionOrchestrator,
+) -> None:
+    """Record the action as a new transcript turn (+ optional document).
+
+    Defence-in-depth: even though the button is rendered disabled when
+    requires aren't met, we re-check the gate here so a stale rerun or
+    a scripted test can't bypass it.
+    """
+    revealed = set(orchestrator.state.revealed_fact_keys)
+    missing = [key for key in action.requires if key not in revealed]
+    if missing:
+        st.session_state[ERROR_KEY] = (
+            f"Ação '{action.label}' bloqueada — ainda faltam: {', '.join(missing)}."
+        )
+        st.rerun()
+        return
+
+    session_id: str = st.session_state[SESSION_ID_KEY]
+    output_dir: Path = st.session_state[OUTPUT_DIR_KEY]
+
+    document_payload: dict[str, str] | None = None
+    if action.emits_document:
+        try:
+            rendered = _render_action_document(
+                action.emits_document,
+                orchestrator=orchestrator,
+                session_id=session_id,
+            )
+        except KeyError as exc:
+            st.session_state[ERROR_KEY] = (
+                f"Template de documento desconhecido: {exc}. "
+                "Revise o campo 'emits_document' do cenário."
+            )
+            st.rerun()
+            return
+
+        # Persist the document as a standalone .md so replay tooling
+        # can grep across sessions.
+        doc_path = save_issued_document(
+            session_id=session_id,
+            document_id=rendered.id,
+            body=rendered.body,
+            base=output_dir,
+        )
+        document_payload = {
+            "id": rendered.id,
+            "title": rendered.title,
+            "body": rendered.body,
+            "path": str(doc_path),
+        }
+
+    turn_content = _action_turn_content(
+        action=action,
+        document=document_payload,
+    )
+    orchestrator.transcript.append("action", turn_content)
+    # Emit a TurnEvent too so replayers see the action in the observable
+    # stream. Action events carry no facts / observed values.
+    orchestrator._emit_turn_event(
+        turn_index=orchestrator.transcript.turns[-1].turn_index,
+        speaker="action",
+        content=turn_content,
+        newly_revealed_fact_keys=[],
+        observed_fact_values={},
+    )
+
+    save_transcript(orchestrator.transcript, base=output_dir)
+    metadata: SessionMetadata = touch_metadata(st.session_state[METADATA_KEY])
+    st.session_state[METADATA_KEY] = metadata
+    save_metadata(metadata, base=output_dir)
+
+    st.rerun()
+
+
+def _render_action_document(
+    template_id: str,
+    *,
+    orchestrator: SessionOrchestrator,
+    session_id: str,
+) -> RenderedDocument:
+    """Look up the template and render it against the persona facts.
+
+    Facts are pulled from the scenario's persona (not from revealed
+    facts alone) so the document is complete even for keys the persona
+    never volunteered — the button gate already ensured the trainee did
+    ask for the important ones.
+    """
+    persona = orchestrator.scenario.persona
+    persona_facts: dict[str, str] = {"name": persona.name}
+    for fact in persona.facts:
+        if fact.is_secret:
+            continue
+        persona_facts.setdefault(fact.key, fact.value)
+    return render_document(template_id, persona_facts, session_id)
+
+
+def _action_turn_content(
+    *,
+    action: AgentAction,
+    document: dict[str, str] | None,
+) -> str:
+    """Serialise the action turn payload as a JSON string.
+
+    The chosen shape keeps the historic viewer (``web.chat_view``) and
+    the live viewer here in sync: both parse the same JSON.
+    """
+    payload: dict[str, Any] = {
+        "action_id": action.id,
+        "label": action.label,
+    }
+    if document is not None:
+        payload["document"] = document
+    return json.dumps(payload, ensure_ascii=False)
+
+
+def _render_action_turn_in_chat(content: str) -> None:
+    """Live-view renderer for one action turn inside the chat body.
+
+    Mirrors ``civis.web.chat_view._render_action_html`` (historic view)
+    but uses ``st.chat_message`` so it aligns with the live streaming
+    UX. The document body sits inside a ``<pre>`` styled by the
+    ``.civis-document`` CSS class defined in theme.py.
+    """
+    try:
+        payload = json.loads(content)
+    except (ValueError, TypeError):
+        payload = {"label": content}
+
+    label = str(payload.get("label", payload.get("action_id", "ação")))
+    document = payload.get("document") or None
+
+    with st.chat_message("assistant", avatar="🏛️"):
+        st.markdown(f"**Ação:** {escape(label)}", unsafe_allow_html=True)
+        if isinstance(document, dict):
+            title = escape(str(document.get("title", "Documento emitido")))
+            body = escape(str(document.get("body", "")))
+            st.markdown(
+                f"<div class='civis-document'>"
+                f"  <div class='civis-document-title'>{title}</div>"
+                f"  <pre class='civis-document-body'>{body}</pre>"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
 
 render()

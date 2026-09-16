@@ -205,6 +205,52 @@ BASE_CSS = f"""
         border-radius: 4px;
         border: 1px solid {BORDER_COLOR};
     }}
+    /* Phase D+++: attendant action turn — dashed border to set it apart
+       from human/persona speech; document block uses a beige paper
+       background and monospace so a screenshot passes for real. */
+    .civis-turn-action {{
+        background: #fdfaf3;
+        border: 1px dashed {ACCENT_COLOR};
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-action-label {{
+        font-weight: 600;
+        color: {PRIMARY_COLOR_DEEP};
+        margin-bottom: 0.4rem;
+    }}
+    .civis-document {{
+        background: #fbf5e2;
+        border: 3px double #a58a3a;
+        border-radius: 6px;
+        padding: 0.7rem 0.9rem;
+        margin-top: 0.5rem;
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-document-title {{
+        font-weight: 700;
+        color: #6b5410;
+        letter-spacing: 0.02em;
+        margin-bottom: 0.35rem;
+    }}
+    .civis-document-body {{
+        font-family: "SFMono-Regular", "Menlo", "Consolas",
+                     "Liberation Mono", monospace;
+        font-size: 0.86rem;
+        line-height: 1.25;
+        white-space: pre;
+        color: #2b2200;
+        margin: 0;
+        background: transparent;
+        border: none;
+    }}
+    /* Grid of clickable action buttons under the chat input. */
+    .civis-action-grid-label {{
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: {NEUTRAL_SUBTLE};
+        margin: 0.6rem 0 0.3rem 0;
+    }}
 </style>
 """
 

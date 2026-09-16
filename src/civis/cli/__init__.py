@@ -2,14 +2,15 @@
 CIVIS command-line entry point.
 
 Wired with Typer. Subcommands live in sibling modules (session.py for
-fase A, adversarial.py for fase C; others will land in later phases).
-This file assembles the app and exports `main` so `python -m civis` and
-`python -m civis.cli` find it.
+fase A, adversarial.py for fase C, certify.py for onda-1 F2.3); others
+will land in later phases. This file assembles the app and exports
+`main` so `python -m civis` and `python -m civis.cli` find it.
 """
 
 import typer
 
 from civis.cli.adversarial import adversarial_app
+from civis.cli.certify import certify_command
 from civis.cli.session import session_command
 
 # no_args_is_help=True prints help when the user runs `python -m civis` with
@@ -39,6 +40,10 @@ app.add_typer(
     name="adversarial",
     help="Run adversarial batteries and JudgeDeceiver-pointwise attacks.",
 )
+app.command(
+    "certify",
+    help="Issue a proficiency certificate PDF based on recorded sessions.",
+)(certify_command)
 
 
 def main() -> None:

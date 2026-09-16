@@ -1,155 +1,172 @@
-# CIVIS — Protocolo do Estudo de Concordância Juiz-Humano
+# CIVIS — Protocolo do Estudo de Validação do Juiz Automático (M1 híbrida)
 
-**Versão:** v1.0
+**Versão:** v2.0 (substitui v1.0 do estudo juiz-humano)
 **Data de emissão:** 15 de setembro de 2026
 **Coordenador:** Anderson Simioni Assunção
 **Contato:** anderson.simioni22@gmail.com
-**Aprovação ética:** não se aplica — o estudo avalia diálogos 100% sintéticos, sem envolver dados de pessoas reais nem coleta de dados dos avaliadores além do próprio julgamento anônimo.
+**Mudança em relação a v1.0:** o projeto é tocado sozinho — sem 2 avaliadores humanos externos independentes, o estudo original de kappa juiz-humano não é executável no prazo do pitch. Este documento redefine M1 como uma **validação híbrida** com duas componentes: kappa inter-modelo (formal, quantitativa) + amostragem manual do coordenador (qualitativa, N pequeno). O estudo completo juiz-humano fica documentado como próximo passo do piloto pago.
 
 ---
 
 ## 1. Por que este estudo existe
 
-O CIVIS é um simulador conversacional que treina atendentes de balcão em serviços registrais contra personas geradas por LLM. Ao final de cada sessão, um **juiz automático** (outro LLM) atribui notas de rubrica ao atendimento e cita os turnos exatos onde cada critério foi atendido ou violado.
+O CIVIS entrega uma nota automática de rubrica ao final de cada sessão. Sem validação, essa nota é opinião de LLM sem controle — bonita para investidor, inútil para o profissional em treinamento.
 
-Esse juiz só é confiável se, em média, ele **concordar com humanos treinados** em nível estatisticamente substancial. Sem essa validação, a nota automática vira ruído colorido: bonita para investidor, inútil para o profissional em treinamento.
+A pergunta original ("um segundo humano concorda com o juiz?") continua legítima, mas **o CIVIS na fase atual não pode responder essa pergunta com N ≥ 30 e 2 avaliadores independentes**. Este protocolo responde uma pergunta correlata e defensável:
 
-Este protocolo descreve como medimos essa concordância.
+> "Dois modelos independentes de famílias distintas concordam entre si? E onde eles discordam, o julgamento manual do autor confirma qual deles está mais próximo do razoável?"
+
+Isso não é o mesmo que validação humana ampla, mas é uma métrica quantitativa reproduzível e honesta.
 
 ## 2. Objetivo
 
-Estimar a **concordância entre o juiz automático do CIVIS e dois avaliadores humanos independentes**, expressa pelo **kappa de Cohen** por critério de rubrica e no agregado.
+Reportar, no pitch de 15/12/2026, duas evidências combinadas de qualidade do juiz automático do CIVIS:
 
-**Meta declarada no plano de trabalho:** kappa ≥ 0,6 (concordância substancial, faixa de Landis & Koch 1977) sobre ≥ 30 sessões.
+**A. Kappa inter-modelo** — concordância de Cohen entre dois LLMs independentes atuando como juiz sobre as mesmas sessões, com IC 95% via bootstrap.
 
-**Interpretação da faixa (para justificar o que é "substancial"):**
+**C. Amostragem manual** — julgamento manual do coordenador sobre ≥ 10 sessões, comparando criterion-a-criterion com o verdict do juiz automático padrão, com análise qualitativa das discordâncias.
 
-| Kappa | Interpretação |
-|---|---|
-| < 0,00 | pior que acaso |
-| 0,00 – 0,20 | leve |
-| 0,21 – 0,40 | razoável |
-| 0,41 – 0,60 | moderada |
-| **0,61 – 0,80** | **substancial** ← alvo |
-| 0,81 – 1,00 | quase perfeita |
+**Alvo indicativo do componente A:** kappa ≥ 0,6 (concordância substancial, Landis & Koch 1977). Não é hard-gate — kappa mais baixo é resultado a discutir, não fracasso a esconder.
+
+**Alvo do componente C:** ≥ 8/10 sessões com concordância criterion-a-criterion. Discordâncias em ≥ 2 sessões viram iteração de rubrica antes do pitch.
 
 ## 3. Escopo
 
-- **Sessões avaliadas:** ≥ 30. Distribuídas em 3 perfis de persona (confusa, agressiva, fraudadora) × ao menos 2 cenários por perfil.
-- **Avaliadores humanos:** 2, independentes, sem visibilidade dos escores um do outro nem do juiz automático até o término da coleta.
-- **Sessões que estão fora do escopo:** ataques adversariais (avaliados na bateria de segurança M2, não aqui).
-- **Idioma:** todas as transcrições e a rubrica em português brasileiro.
+- **Sessões avaliadas:** ≥ 30 (mesmo N do plano original, mantém rigor estatístico do kappa).
+- **Raters:**
+  - **A_juiz_1:** Ollama-dual configurado (`qwen2.5:7b` persona + `llama3.1:8b` judge), padrão dev.
+  - **A_juiz_2:** Ollama persona + Claude Sonnet judge (via `data/configs/config.claude-judge.example.toml` + `ANTHROPIC_API_KEY`).
+  - **C_manual:** o coordenador (Anderson) avaliando manualmente ≥ 10 sessões escolhidas aleatoriamente entre as 30, com uma semana de intervalo mínimo entre a execução da sessão e a avaliação manual (mitiga viés de memória).
+- **Distribuição:** 3 perfis (confused, aggressive, fraudster) × ≥ 10 sessões cada, se possível.
+- **Fora de escopo:** ataques adversariais (avaliados em `reports/security_v1.md` da Fase C).
+- **Idioma:** todas as transcrições em português brasileiro, rubrica idêntica à do juiz automático (`data/rubrics/counter_v1.yaml`).
 
 ## 4. Rubrica
 
-Idêntica em critérios à rubrica do juiz automático, redigida sem termos técnicos de LLM para não enviesar avaliadores leigos em IA. Ver arquivo separado: `data/study/rubric_evaluator.md`.
+Idêntica à do juiz automático (`data/rubrics/counter_v1.yaml`). O componente C usa a versão leiga em pt-BR de `data/study/rubric_evaluator.md` para o coordenador ancorar seu julgamento sem depender das instruções técnicas do juiz.
 
 **Quatro critérios, escala 0–5:**
 
-1. **Verificação de fatos** — o atendente confirmou a identidade da pessoa antes de qualquer ação sensível?
-2. **Proteção de dados** — o atendente evitou vazar dados sigilosos do cenário?
-3. **Aderência ao protocolo** — o atendente seguiu o procedimento esperado?
-4. **Comunicação** — o atendente foi claro, respeitoso e didático?
+1. Verificação de fatos
+2. Proteção de dados
+3. Aderência ao protocolo
+4. Comunicação
 
-## 5. Procedimento por avaliador
+## 5. Procedimento — Componente A (kappa inter-modelo)
 
-Cada avaliador recebe:
+Execução do coordenador, 100% automatizável:
 
-1. Um **link/pasta compartilhada** com as transcrições numeradas (`session_001.md` a `session_030.md`, formato conversacional simples).
-2. Uma **cópia própria** do `data/study/evaluator_template.csv`, já preenchida com as colunas `session_id` e `criterion`.
-3. O **arquivo de rubrica** (`rubric_evaluator.md`) para consulta contínua.
+1. Rodar as 30 sessões com o setup **A_juiz_1** (Ollama-dual). Cada sessão gera `data/sessions/study_v2_<id>/verdict.json`.
+2. Sem alterar nada da sessão, rerodar o juiz sobre as mesmas transcrições com o setup **A_juiz_2** (Claude judge). Gerar `verdict_claude.json` na mesma pasta.
+3. Consolidar em CSVs no formato de `data/study/evaluator_template.csv`:
+   - `data/study/judge_ollama_v2.csv` (colunas: `session_id`, `criterion`, `score`)
+   - `data/study/judge_claude_v2.csv` (mesmo esquema)
+4. Rodar `scripts/compute_kappa.py`:
+   ```bash
+   python scripts/compute_kappa.py \
+     --judge data/study/judge_ollama_v2.csv \
+     --evaluator-1 data/study/judge_claude_v2.csv \
+     --evaluator-2 data/study/judge_claude_v2.csv \
+     --report reports/study_v2_intermodel.md
+   ```
+   (O script computa 3 pares; o "sanity" avaliador_1 vs avaliador_2 vira redundante mas não atrapalha.)
+5. Reportar kappa por critério + agregado quadratic-weighted + IC 95%.
 
-**Fluxo esperado por sessão (~30 minutos cada):**
+**Custo:** ~R$ 30–80 em API Claude (~30 sessões × 4 critérios × ~2k tokens output cada, com preço Sonnet). Plausível.
+**Tempo:** ~4-6 horas de compute + análise.
 
-1. Ler a transcrição na íntegra sem consultar a rubrica (impressão global primeiro).
-2. Reler consultando a rubrica, critério a critério.
-3. Atribuir score 0–5 por critério e escrever uma nota qualitativa curta (1 linha) justificando o score.
-4. Preencher a coluna `evaluated_at` com o timestamp ISO 8601.
-5. Nunca voltar em sessões já avaliadas (a rubrica pode ser refinada mentalmente pela experiência, mas cada linha final é a impressão do momento).
+## 6. Procedimento — Componente C (amostragem manual)
 
-**Compromisso total de tempo por avaliador:** 30 sessões × 30 min = **~15 horas**, distribuídas em janela flexível (sugestão: 5 sessões/semana durante 6 semanas).
+Execução do coordenador, com regras anti-viés:
 
-## 6. Regras de independência
+1. **Selecionar 10 sessões aleatoriamente** das 30 executadas em §5. Use seed fixa (`random.seed(42)`) para reproduzibilidade.
+2. **Aguardar 7 dias** desde a última interação com cada sessão selecionada (para reduzir viés de memória).
+3. Para cada uma dessas 10:
+   - Ler a transcrição SEM olhar o verdict do juiz automático.
+   - Atribuir score 0–5 por critério consultando `data/study/rubric_evaluator.md`.
+   - Escrever nota qualitativa de 1 linha por critério.
+   - Timestamp ISO 8601 no momento da avaliação.
+4. Preencher `data/study/manual_sample_v2.csv` (mesmo formato do template).
+5. Comparar com o verdict do juiz Ollama-dual (o padrão dev):
+   - **Concordância criterion-a-criterion:** score dentro de ±1 nível (ordinal, discordância de 1 ponto é aceitável).
+   - **Discordância séria:** score difere em ≥ 2 níveis. Analisar cada caso e classificar em: (a) juiz está certo, autor errou; (b) autor está certo, juiz errou; (c) rubrica ambígua, precisa iteração.
+6. Reportar: X/10 sessões com concordância em todos os 4 critérios, número de discordâncias sérias por categoria (a/b/c).
 
-Isto é o que separa o estudo de uma revisão em pares informal:
+**Custo:** 0 R$. **Tempo:** ~5 horas do coordenador.
 
-- Avaliadores **não conversam sobre sessões específicas** durante a coleta.
-- Avaliadores **não veem** o score do outro avaliador nem do juiz automático até o término.
-- O coordenador consolida os 3 conjuntos de escores apenas após o último dia da coleta.
-- Se um avaliador tiver dúvida procedimental (não sobre uma sessão), pergunta ao coordenador, que responde a ambos em canal comum.
+## 7. Regras de independência (adaptadas ao setup solo)
 
-## 7. Perfil desejado do avaliador
-
-- Familiaridade com atendimento ao público, direito registral, ou treinamento de agentes públicos (bônus, não obrigatório).
-- Leitura confortável em português brasileiro formal.
-- Disponibilidade de ~15 horas em janela de até 8 semanas.
-- Sem conflito de interesse comercial com o CIVIS.
-- Sem viés de "torcida" — o objetivo do avaliador é discordar do juiz automático quando ele errar, não confirmá-lo.
-
-**Sugestão de recrutamento:** 2 colegas do curso INE5448 ou de disciplinas correlatas, ou 1 colega + 1 servidor público com experiência de balcão. Recrutar 3 e usar as 2 avaliações mais consistentes (kappa avaliador-avaliador ≥ 0,5) se um desistir.
+- Sessões são executadas ANTES da avaliação manual — coordenador não interfere no fluxo da conversa antes de avaliar.
+- Sessões selecionadas para C são escolhidas por seed fixa, não a dedo.
+- Coordenador não olha o verdict automático antes de avaliar manualmente uma sessão.
+- Se um viés for identificado retrospectivamente (ex.: coordenador percebeu que tende a punir persona confusa), reportar honestamente no relatório final.
 
 ## 8. Aspectos éticos e privacidade
 
-- **Dados sintéticos:** todas as transcrições avaliadas foram geradas contra personas fictícias (nomes, CPFs, RGs marcados com prefixo `FIC-`). Nenhuma pessoa real é representada. Base construída conforme LGPD (§6 do plano de trabalho).
-- **Dados dos avaliadores:** apenas o nome (ou pseudônimo, se preferirem) para agregação. Nenhum dado sensível coletado. Escores são armazenados anonimamente (`avaliador_1`, `avaliador_2`).
-- **Consentimento:** avaliador declara ciência deste protocolo antes de iniciar (assinatura eletrônica em e-mail é suficiente para este piloto acadêmico).
-- **Direito de saída:** avaliador pode encerrar a qualquer momento; escores parciais não são utilizados sem consentimento explícito.
+- **Dados sintéticos:** todas as transcrições geradas contra personas fictícias (nomes, CPFs, RGs marcados com prefixo `FIC-`). Nenhuma pessoa real é representada.
+- **Sem dados pessoais coletados:** o coordenador é o único avaliador humano; ele é o autor do projeto e não pertence a categoria protegida como sujeito de pesquisa.
+- **Publicação dos dados brutos:** transcrições sintéticas, CSVs de avaliação e script de cálculo são publicados no repositório para reprodutibilidade (goal O6).
 
-## 9. Cálculo do kappa
+## 9. Cálculo estatístico
 
-Executado por `scripts/compute_kappa.py` (implementação verificada com dados sintéticos e casos-limite documentados no próprio script).
+`scripts/compute_kappa.py` computa:
 
-**Kappa reportado:**
+- Kappa de Cohen **quadratic-weighted** (métrica primária — escala ordinal 0–5).
+- Kappa linear-weighted e unweighted (transparência).
+- IC 95% via bootstrap com 1 000 amostras.
+- Per-criterion + agregado.
 
-- **Por critério** (4 valores).
-- **Agregado** (média ponderada por N de sessões).
-- **Avaliador humano × juiz automático** (foco do estudo — 2 comparações: juiz vs avaliador_1 e juiz vs avaliador_2).
-- **Avaliador humano × avaliador humano** (sanity check — se estiver baixo, o problema é a rubrica, não o juiz).
+**Fórmula (weighted):**
+$$\kappa = 1 - \frac{\sum w_{ij} O_{ij}}{\sum w_{ij} E_{ij}}$$
 
-**Ponderação:** quadratic weighted kappa por padrão. Justificativa: os escores são ordinais (0–5), e discordância de 1 ponto é substancialmente menos grave que discordância de 4 pontos — quadratic captura essa nuance. Linear weighted e unweighted também são reportados para transparência.
+onde $O$ é a matriz de frequência observada, $E$ é a matriz esperada sob independência, e $w_{ij}$ é o peso de discordância (0 na diagonal, quadrático no offset para a variante primária).
 
-**Intervalo de confiança:** 95% via bootstrap com 1 000 amostras. Necessário para o pitch — investidor sério pergunta o IC.
+## 10. Cronograma do estudo (revisado)
 
-## 10. Cronograma do estudo
-
-Alinhado com a Fase E do `docs/ROADMAP_PITCH.md`:
+Alinhado com o `docs/ROADMAP_PITCH.md`, considerando que E ficou mais leve por não depender de avaliadores externos:
 
 | Data-limite | Marco |
 |---|---|
-| **06/10/2026** | Rubrica e template CSV finalizados, avaliadores recrutados |
-| **13/10/2026** | Sessão-piloto (1 sessão avaliada por ambos, calibração da rubrica) |
-| **03/11/2026** | Primeiras 10 sessões avaliadas — checkpoint intermediário (§11) |
-| **08/12/2026** | 30 sessões completas, kappa final calculado |
-| **15/12/2026** | Resultado no deck de pitch |
+| **20/10/2026** | Componente A: 30 sessões executadas com Ollama-dual |
+| **27/10/2026** | Componente A: sessões reavaliadas com Claude judge, kappa computado |
+| **10/11/2026** | Componente C: 10 sessões avaliadas manualmente (após janela de 7 dias) |
+| **17/11/2026** | Análise de discordâncias, iteração de rubrica se necessário |
+| **01/12/2026** | Relatório final `reports/study_v2_report.md` |
+| **15/12/2026** | Números no deck de pitch |
 
-## 11. Checkpoint intermediário (crítico)
+## 11. Checkpoint intermediário
 
-Em 03/11 rodar `compute_kappa.py` sobre as primeiras 10 sessões:
+Em 27/10/2026, após rodar componente A (kappa inter-modelo):
 
-- **Kappa ≥ 0,55:** seguir sem mudanças, com confiança de que o alvo final ≥ 0,6 é factível.
-- **Kappa 0,4 – 0,55:** analisar discordâncias por critério, ajustar rubrica se um critério estiver puxando pra baixo. Rerun das 10 sessões existentes com rubrica ajustada.
-- **Kappa < 0,4:** parar coleta. Problema estrutural — ou a rubrica está ambígua, ou o juiz automático está muito mal calibrado. Corrigir raiz antes de gastar as 20 sessões restantes.
+- **Kappa ≥ 0,6:** seguir com componente C sem mudanças; pitch vai ter argumento quantitativo sólido.
+- **Kappa 0,4 – 0,6:** ainda apresentável — reportar honestamente com discussão de por quê (provavelmente rubrica precisa de níveis mais discretos).
+- **Kappa < 0,4:** problema estrutural. Reformular rubrica (v2 do YAML), reexecutar A com 10-15 sessões pra validar antes de gastar as 20 restantes.
 
-Este checkpoint é o que protege o pitch: se descobrimos problema em 3/11, sobra 5 semanas para corrigir. Se descobrimos em 8/12, o pitch acontece com kappa parcial + análise honesta do por quê — pior cenário, mas ainda apresentável.
+## 12. Uso dos resultados no pitch
 
-## 12. Uso dos resultados
+**Slide 7 do deck** ganha 2 linhas:
 
-- **Relatório final da disciplina INE5448** (docente: Prof. Ricardo Felipe Custódio) — resultado quantitativo do M1, discussão de limitações, cumprimento do objetivo O5.
-- **Deck de pitch de investidor** (15/12/2026) — kappa como prova de que a nota automática do CIVIS é validada e não é ruído.
-- **Publicação futura opcional** — se o kappa for substancial e o método for reproduzível, submeter para venue nacional (ex.: SBSeg ou SBIE).
+> "Concordância inter-modelo (Ollama vs Claude, 30 sessões): kappa = X (IC 95% [Y, Z])"
+>
+> "Supervisão humana amostral (10 sessões): concordância em N/10 criterion-a-criterion"
 
-Todos os dados brutos (transcrições sintéticas, CSVs de avaliação, script de cálculo) serão publicados junto com o relatório para reprodutibilidade — em linha com o goal O6.
+**Slide 12 (perguntas prováveis)** ganha esta:
+
+> **"E validação com humanos externos?"**
+> "Está no próximo passo declarado do roadmap. O piloto pago em cartório parceiro roda o estudo formal com 2 avaliadores independentes — essa é a métrica que fecha o argumento científico, e não faz sentido rodar antes de ter o produto validado em ambiente real."
+
+Essa é uma resposta honesta que **muda a discussão de "vocês não têm humanos" para "vocês têm um plano de validação humana pós-financiamento"** — o que já é uma sinalização positiva para investidor.
 
 ## 13. Riscos declarados
 
 | Risco | Probabilidade | Mitigação |
 |---|---|---|
-| Kappa final < 0,6 | média | Checkpoint intermediário (§11); reportar honestamente se não bater |
-| Avaliador desiste no meio | média | Recrutar 3 desde o início, usar 2 mais consistentes |
-| Discordância sistemática em 1 critério | média-alta | Sessão-piloto (13/10) explicitamente para calibrar rubrica antes da coleta em massa |
-| Viés de ordem (sessões finais avaliadas com mais rigor que iniciais) | baixa | Aleatorização da ordem entre avaliadores (avaliador 1 começa por session_001, avaliador 2 por session_016) |
-| Coordenador (Anderson) também sendo avaliador introduz viés | alta se aplicável | Anderson **não avalia** — apenas coordena e roda as sessões. Ambos os avaliadores são externos |
+| Kappa inter-modelo < 0,4 | média | Discussão honesta do por quê no relatório; checkpoint em 27/10 permite iterar rubrica com 3 semanas de folga |
+| API Claude fora do ar durante execução | baixa | Retry com backoff no script; execução em lotes pequenos |
+| Custo Claude passa de R$ 100 | baixa | Monitorar; cortar sessões se necessário (N ≥ 20 continua defensável) |
+| Viés retrospectivo do coordenador em C | média | Regra de 7 dias entre sessão e avaliação; discussão honesta se detectar |
+| Investidor perguntar "por que não humanos?" | alta | Resposta preparada no slide 12; próximo passo declarado no roadmap |
 
 ---
 
-*Documento vivo — última revisão: 15/09/2026. Ajustar §10 e §11 conforme calendário real das etapas anteriores do roadmap.*
+*Documento vivo — próxima revisão prevista após execução do componente A (27/10/2026).*

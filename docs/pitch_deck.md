@@ -122,17 +122,20 @@ Nenhum simulador comercial no mercado reporta essa métrica.
 
 | Métrica | Alvo | **Real** |
 |---|---|---|
-| Kappa juiz-humano (M1) | ≥ 0,6 | **[X]** (IC 95% [X, X]) |
+| Kappa inter-modelo (M1-A, Ollama × Claude) | ≥ 0,6 | **[X]** (IC 95% [X, X]) |
+| Supervisão humana amostral (M1-C, 10 sessões) | ≥ 8/10 | **[X]/10** concordância criterion-a-criterion |
 | Vazamento adversarial (M2) | < 5% | **[X]%** |
 | ASR contra juiz (JudgeDeceiver-pw) | reportar | **[X]%** |
 | Latência p95 por turno (M4) | < 5s | **[X]s** |
 | Contradições / 100 turnos (M3) | decrescente | **[X]** |
-| Cobertura de cenários (M5) | 3×3 | **[X]** cenários |
+| Cobertura de cenários (M5) | 3 perfis × ≥ 1 cenário | **3×[X]** cenários |
 
 **Metodologia inteira publicada** — não é opinião, é reprodutível.
 
-Bootstrap 95% CI no kappa. Dois avaliadores humanos independentes.
-Rubrica declarativa versionada. Suíte de testes verde em CI.
+Bootstrap 95% CI no kappa. Rubrica declarativa versionada e única
+(juiz LLM e avaliação manual pontuam contra a mesma vara). Suíte
+de testes verde em CI. Validação humana ampla (2+ avaliadores × 30
+sessões) declarada como próximo passo do piloto pago.
 
 ---
 
@@ -158,7 +161,7 @@ Vídeo pré-gravado da mesma sessão, gerado durante a Fase D. Não interromper 
 |---|---|---|
 | Roteiro | LLM decide | FSM auditável |
 | Correção | LLM opina | Rubrica declarativa + citação de turno |
-| Validação | "achamos que funciona" | **Kappa ≥ 0,6 com IC** |
+| Validação | "achamos que funciona" | **Kappa inter-modelo + supervisão manual** |
 | Segurança | não reportada | Bateria OWASP + JudgeDeceiver-pw |
 | Reprodutibilidade | prompts secretos | Seeds versionadas, código aberto |
 | LGPD | dados reais anonimizados | 100% sintético, prefixo `FIC-` |
@@ -205,9 +208,19 @@ com cartorial/setor público.
 ## Slide 12 — Perguntas prováveis (nota do apresentador, não do slide)
 
 **"E se o LLM erra?"**
-Por isso o kappa. A nota automática não é entregue como verdade —
-é uma opinião estatisticamente validada, e a arquitetura assume
-supervisão humana amostral em produção.
+Por isso a validação híbrida. Kappa inter-modelo (Ollama vs Claude
+sobre 30 sessões) mede se juízes independentes concordam entre si —
+prova de robustez arquitetural. Amostragem manual de 10 sessões
+verifica que o coordenador concorda criterion-a-criterion. A nota
+não é entregue como verdade, é opinião estatisticamente ancorada.
+
+**"E validação com humanos externos?"**
+Está no próximo passo declarado do roadmap. O piloto pago em cartório
+parceiro roda o estudo formal com 2 avaliadores independentes × 30
+sessões — kappa juiz-humano puro é a métrica que fecha o argumento
+científico, e não faz sentido rodar antes de ter o produto validado
+em ambiente real. O protocolo já está escrito
+(`docs/study_protocol.md`).
 
 **"E se alguém quebrar o juiz?"**
 Reportamos. O JudgeDeceiver-pw é um ataque real e nós medimos a

@@ -17,6 +17,11 @@ Responsibilities:
        returned TurnResult so the CLI can persist per-turn telemetry
        (input/output tokens, latency, provider name) for the M4
        metrics panel.
+    7. (Phase D++) Offer a streaming variant, run_agent_turn_streaming,
+       that yields persona tokens as they arrive and exposes the fully
+       reconstructed TurnResult via ``last_result`` once the stream
+       drains. The Streamlit chat page pipes the generator into
+       ``st.write_stream`` to render the answer token-by-token.
 
 Design notes:
     - The orchestrator does NOT own the LLM provider — it receives one
@@ -34,6 +39,7 @@ Design notes:
             contradiction detector compares observed values across turns.
 """
 
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 
 from pydantic import BaseModel
@@ -78,6 +84,11 @@ class SessionOrchestrator:
     to on every agent + persona turn. Downstream analysers (contradiction
     detector in B.4) walk this stream instead of re-parsing the on-disk
     transcript.
+
+    Phase D++: ``last_result`` holds the TurnResult of the most recent
+    streaming turn. It is populated only by ``run_agent_turn_streaming``
+    once the generator drains, so the Streamlit page can persist telemetry
+    after ``st.write_stream`` returns.
     """
 
     scenario: ScenarioFile
@@ -85,6 +96,7 @@ class SessionOrchestrator:
     transcript: SessionTranscript
     state: PersonaState
     turn_events: list[TurnEvent] = field(default_factory=list)
+    last_result: TurnResult | None = None
 
     def run_agent_turn(self, agent_message: str) -> TurnResult:
         """
@@ -152,6 +164,115 @@ class SessionOrchestrator:
             newly_revealed_fact_keys=newly_revealed,
             matched_fact_keys=matched_keys,
             llm_response=response,
+        )
+
+    def run_agent_turn_streaming(
+        self, agent_message: str
+    ) -> Iterator[str]:
+        """
+        Streaming variant of :meth:`run_agent_turn`.
+
+        Yields persona tokens as they arrive from ``persona_provider.stream``.
+        The final aggregated :class:`TurnResult` (persona turn, revealed
+        facts, matched keys, LLMResponse) is stored on ``self.last_result``
+        once the generator is fully drained — callers read that attribute
+        after ``st.write_stream`` returns, then persist transcript /
+        telemetry as usual.
+
+        Ordering matters:
+            - agent turn + agent TurnEvent are recorded BEFORE the LLM call
+              so the on-disk transcript still holds the trainee's input
+              even if the stream aborts mid-way.
+            - FSM is advanced BEFORE the prompt is built (same rule as the
+              non-streaming path).
+            - The persona turn is only appended to the transcript AFTER
+              the stream drains and the full text is known.
+        """
+        # Reset last_result up front so a stale value from a previous turn
+        # can't fool the caller if this stream aborts mid-way. It becomes
+        # meaningful again only when the sentinel below fires.
+        self.last_result = None
+
+        # 1. Record the agent turn (same as run_agent_turn).
+        agent_turn = self.transcript.append("agent", agent_message)
+        self._emit_turn_event(
+            turn_index=agent_turn.turn_index,
+            speaker="agent",
+            content=agent_message,
+            newly_revealed_fact_keys=[],
+            observed_fact_values={},
+        )
+
+        # 2. Advance FSM before building the prompt.
+        self.state = advance_turn(self.state)
+
+        # 3. Build the prompt from the transcript minus the freshest agent
+        #    turn (rendered separately inside <user_input> in the template).
+        history = _transcript_history(self.transcript, exclude_last=True)
+        system_prompt, user_prompt = build_persona_prompt(
+            state=self.state,
+            history=history,
+            last_agent_message=agent_message,
+        )
+
+        # 4. Consume the stream. Content pieces are yielded to the caller
+        #    as they arrive; the final chunk carries the aggregated
+        #    LLMResponse so we can rebuild TurnResult.
+        content_parts: list[str] = []
+        final_response: LLMResponse | None = None
+        for chunk in self.persona_provider.stream([
+            LLMMessage(role="system", content=system_prompt),
+            LLMMessage(role="user", content=user_prompt),
+        ]):
+            if chunk.content_delta:
+                content_parts.append(chunk.content_delta)
+                yield chunk.content_delta
+            if chunk.is_final:
+                final_response = chunk.final_response
+
+        # 5. Persist the persona turn only after the full text is known.
+        #    Fallback for providers whose default stream() didn't populate
+        #    final_response: synthesise a zero-telemetry LLMResponse from
+        #    the aggregated text so downstream code (which expects
+        #    llm_response to exist) still works. Real providers always
+        #    fill final_response.
+        full_text = "".join(content_parts)
+        if final_response is None:
+            final_response = LLMResponse(
+                content=full_text,
+                input_tokens=0,
+                output_tokens=0,
+                latency_ms=0,
+                provider_name=self.persona_provider.name,
+            )
+
+        persona_turn = self.transcript.append("persona", full_text)
+        newly_revealed = self._absorb_revealed_facts(
+            full_text,
+            last_agent_message=agent_message,
+        )
+        matched_keys = fact_keys_matched_by_agent_message(
+            facts=self.scenario.persona.facts,
+            last_agent_message=agent_message,
+        )
+        observed_fact_values = {key: full_text for key in matched_keys}
+        self._emit_turn_event(
+            turn_index=persona_turn.turn_index,
+            speaker="persona",
+            content=full_text,
+            newly_revealed_fact_keys=newly_revealed,
+            observed_fact_values=observed_fact_values,
+        )
+
+        # 6. Expose the reconstructed TurnResult so the caller can persist
+        #    telemetry after the generator drains.
+        self.last_result = TurnResult(
+            agent_turn=agent_turn,
+            persona_reply=persona_turn,
+            state_after=self.state,
+            newly_revealed_fact_keys=newly_revealed,
+            matched_fact_keys=matched_keys,
+            llm_response=final_response,
         )
 
     def _absorb_revealed_facts(

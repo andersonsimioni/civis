@@ -10,8 +10,10 @@ without any LLM. Two things the acceptance criterion of A.2 demands:
       newly_revealed_fact_keys on subsequent turns.
 """
 
+from collections.abc import Iterator
+
 from civis.fsm.states import EmotionalState, Phase
-from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse
+from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse, LLMStreamChunk
 from civis.personas.base import PersonaFact, PersonaKind, PersonaProfile, PersonaState
 from civis.session.orchestrator import SessionOrchestrator
 from civis.session.scenario import ScenarioFile
@@ -327,3 +329,184 @@ def test_planted_contradiction_is_detected_via_orchestrator_events():
     assert report.contradictions[0].fact_key == "birth_date"
     assert "12 de março" in report.contradictions[0].prior_value
     assert "15 de março" in report.contradictions[0].new_value
+
+
+# ---------------------------------------------------------------------------
+# Streaming (Fase D++)
+# ---------------------------------------------------------------------------
+#
+# The streaming variant of run_agent_turn must:
+#   - yield persona tokens in the order the provider emitted them,
+#   - populate self.last_result with a complete TurnResult once the
+#     generator drains,
+#   - preserve every side-effect of the non-streaming path (transcript
+#     append, TurnEvent emission, FSM advance, fact absorption).
+
+
+
+class _StreamingFakeProvider(LLMProvider):
+    """
+    Provider that natively yields a scripted list of token chunks. Lets
+    us assert on token ORDER and on how last_result reconstructs a
+    TurnResult from the final chunk. Also implements complete() so this
+    class still satisfies the ABC.
+    """
+
+    def __init__(self, token_stream: list[str]) -> None:
+        self._tokens = list(token_stream)
+
+    @property
+    def name(self) -> str:
+        return "streaming-fake:test"
+
+    def complete(self, messages: list[LLMMessage]) -> LLMResponse:
+        # complete() is not exercised in the streaming tests but the ABC
+        # still demands an implementation.
+        joined = "".join(self._tokens)
+        return LLMResponse(
+            content=joined,
+            input_tokens=len(joined) // 4,
+            output_tokens=len(joined) // 4,
+            latency_ms=1,
+            provider_name=self.name,
+        )
+
+    def stream(self, messages: list[LLMMessage]) -> Iterator[LLMStreamChunk]:
+        # Emit each scripted token as its own partial chunk so tests can
+        # assert on ordering; close with a sentinel carrying the full
+        # LLMResponse (same shape a real provider would build).
+        for tok in self._tokens:
+            yield LLMStreamChunk(content_delta=tok, is_final=False)
+        full = "".join(self._tokens)
+        yield LLMStreamChunk(
+            content_delta="",
+            is_final=True,
+            final_response=LLMResponse(
+                content=full,
+                input_tokens=7,
+                output_tokens=11,
+                latency_ms=250,
+                provider_name=self.name,
+            ),
+        )
+
+
+def _make_streaming_orchestrator(
+    token_stream: list[str],
+) -> SessionOrchestrator:
+    scenario, state = _make_scenario_and_state()
+    return SessionOrchestrator(
+        scenario=scenario,
+        persona_provider=_StreamingFakeProvider(token_stream),
+        transcript=SessionTranscript(session_id="s1"),
+        state=state,
+    )
+
+
+def test_run_agent_turn_streaming_yields_tokens_in_order():
+    """The generator emits each partial delta the provider produced."""
+    orch = _make_streaming_orchestrator(["Bom ", "dia", ", moço."])
+    tokens = list(orch.run_agent_turn_streaming("Bom dia, senhora."))
+    assert tokens == ["Bom ", "dia", ", moço."]
+
+
+def test_run_agent_turn_streaming_populates_last_result_with_full_response():
+    """
+    After the generator drains, self.last_result must expose a fully-
+    formed TurnResult: persona turn appended to the transcript, telemetry
+    from the final LLMStreamChunk, FSM state after the FSM advance.
+    """
+    orch = _make_streaming_orchestrator(["Olá", ", tudo bem."])
+    # last_result starts empty; the generator must set it.
+    assert orch.last_result is None
+
+    _ = list(orch.run_agent_turn_streaming("Bom dia."))
+
+    result = orch.last_result
+    assert result is not None
+    assert result.persona_reply.speaker == "persona"
+    assert result.persona_reply.content == "Olá, tudo bem."
+    assert result.llm_response is not None
+    assert result.llm_response.input_tokens == 7
+    assert result.llm_response.output_tokens == 11
+    assert result.llm_response.latency_ms == 250
+    # Transcript on disk has both turns in order.
+    assert len(orch.transcript.turns) == 2
+    assert orch.transcript.turns[0].speaker == "agent"
+    assert orch.transcript.turns[1].speaker == "persona"
+    # FSM advanced exactly once (one agent turn = one advance).
+    assert result.state_after.turn_count == 1
+
+
+def test_run_agent_turn_streaming_uses_default_impl_for_non_streaming_provider():
+    """
+    A provider that only implements complete() (no native stream) still
+    works: the ABC default impl wraps complete() into two chunks and the
+    orchestrator drains them, populating last_result the same way.
+    """
+    scenario, state = _make_scenario_and_state()
+    provider = FakePersonaProvider(["Legacy answer."])
+    orch = SessionOrchestrator(
+        scenario=scenario,
+        persona_provider=provider,
+        transcript=SessionTranscript(session_id="s1"),
+        state=state,
+    )
+
+    tokens = list(orch.run_agent_turn_streaming("Bom dia."))
+    # Default impl emits the full text as ONE partial chunk.
+    assert tokens == ["Legacy answer."]
+    assert orch.last_result is not None
+    assert orch.last_result.persona_reply.content == "Legacy answer."
+
+
+def test_run_agent_turn_streaming_records_agent_turn_before_llm_call():
+    """
+    Even if the stream aborts mid-way, the agent turn is already on disk.
+    We simulate a mid-stream exception via a provider whose stream() dies
+    after yielding one token and check the transcript state.
+    """
+    class _CrashingStreamProvider(LLMProvider):
+        @property
+        def name(self) -> str:
+            return "crash:test"
+
+        def complete(self, messages: list[LLMMessage]) -> LLMResponse:
+            return LLMResponse(
+                content="",
+                input_tokens=0,
+                output_tokens=0,
+                latency_ms=0,
+                provider_name=self.name,
+            )
+
+        def stream(
+            self, messages: list[LLMMessage]
+        ) -> Iterator[LLMStreamChunk]:
+            yield LLMStreamChunk(content_delta="partial", is_final=False)
+            raise ConnectionError("network died mid-stream")
+
+    scenario, state = _make_scenario_and_state()
+    orch = SessionOrchestrator(
+        scenario=scenario,
+        persona_provider=_CrashingStreamProvider(),
+        transcript=SessionTranscript(session_id="s1"),
+        state=state,
+    )
+
+    gen = orch.run_agent_turn_streaming("Bom dia, senhora.")
+    # First token comes through.
+    assert next(gen) == "partial"
+    # Second next() propagates the ConnectionError.
+    try:
+        next(gen)
+    except ConnectionError:
+        pass
+    else:  # pragma: no cover - defensive; test would fail below anyway
+        raise AssertionError("expected ConnectionError from stream()")
+
+    # Agent turn IS on disk; persona turn is NOT (stream never reached
+    # the append step). last_result stays None so the UI won't persist
+    # bogus telemetry.
+    assert [t.speaker for t in orch.transcript.turns] == ["agent"]
+    assert orch.last_result is None

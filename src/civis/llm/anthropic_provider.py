@@ -10,15 +10,28 @@ Anthropic's wire format differs from OpenAI's in three material ways:
 We stay on raw httpx (no SDK dependency) to mirror the Ollama provider's
 pattern and keep the dependency surface small. The httpx client is
 injectable so tests can plug a MockTransport in place of a real socket.
+
+Streaming (fase D++): stream() posts with stream=true and reads Server-Sent
+Events line-by-line. Each event has an ``event: <type>`` line and a
+``data: {...}`` line; we care about ``content_block_delta`` (partial text)
+and ``message_delta`` (final usage). The reference doc:
+https://docs.anthropic.com/en/api/messages-streaming
 """
 
+import json
 import os
 import time
+from collections.abc import Iterator
 
 import httpx
 
 from civis.config.models import ModelEntry, ProviderKind
-from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse
+from civis.llm.provider import (
+    LLMMessage,
+    LLMProvider,
+    LLMResponse,
+    LLMStreamChunk,
+)
 
 # Anthropic's Messages endpoint. Version header is required and pinned so a
 # breaking change in the API surface fails loudly rather than silently.
@@ -97,6 +110,109 @@ class AnthropicProvider(LLMProvider):
             output_tokens=data.get("usage", {}).get("output_tokens", 0),
             latency_ms=elapsed_ms,
             provider_name=self.name,
+        )
+
+    def stream(self, messages: list[LLMMessage]) -> Iterator[LLMStreamChunk]:
+        """
+        Native SSE streaming for Anthropic Messages.
+
+        Wire format is Server-Sent Events: pairs of ``event: <type>`` /
+        ``data: <json>`` lines separated by blank lines. We only need to
+        parse the ``data:`` payloads because each one carries its own
+        ``type`` field; the ``event:`` line is redundant with it.
+
+        Types we care about:
+            - content_block_delta: delta.text is a new text piece.
+            - message_delta: usage carries final input/output_tokens.
+            - message_stop: closes the stream (no payload we need).
+
+        Other event types (message_start, content_block_start,
+        content_block_stop, ping) are ignored — they carry structural
+        markers we don't need to reconstruct the response.
+        """
+        system_prompt, chat_messages = self._split_system_prompt(messages)
+        payload: dict = {
+            "model": self._entry.model_id,
+            "max_tokens": self._max_output_tokens,
+            "messages": [m.model_dump() for m in chat_messages],
+            "stream": True,
+        }
+        if system_prompt:
+            payload["system"] = system_prompt
+
+        content_parts: list[str] = []
+        input_tokens = 0
+        output_tokens = 0
+
+        start = time.perf_counter()
+        with self._client.stream(
+            "POST", MESSAGES_ENDPOINT, json=payload
+        ) as response:
+            response.raise_for_status()
+            for line in response.iter_lines():
+                # SSE separates events with blank lines and prefixes payload
+                # with ``data: ``. We only parse data lines; event/ping/etc.
+                # lines are ignored (the ``type`` inside the JSON tells us
+                # everything we need).
+                if not line or not line.startswith("data:"):
+                    continue
+                raw = line[len("data:"):].strip()
+                if not raw:
+                    continue
+                try:
+                    event = json.loads(raw)
+                except json.JSONDecodeError:
+                    # Defensive: some SSE proxies inject keep-alive comments.
+                    # Silently skip malformed data lines rather than aborting
+                    # the stream — the sentinel below still runs.
+                    continue
+
+                etype = event.get("type", "")
+                if etype == "content_block_delta":
+                    delta = event.get("delta", {})
+                    if delta.get("type") == "text_delta":
+                        piece = delta.get("text", "") or ""
+                        if piece:
+                            content_parts.append(piece)
+                            yield LLMStreamChunk(
+                                content_delta=piece,
+                                is_final=False,
+                            )
+                elif etype == "message_delta":
+                    usage = event.get("usage", {})
+                    # Anthropic streams usage in the message_delta event.
+                    # Non-streaming complete() also reads input/output_tokens
+                    # from a "usage" block, but the streaming envelope
+                    # sometimes only carries output_tokens here — keep both
+                    # optional so we don't KeyError on partial updates.
+                    if "input_tokens" in usage:
+                        input_tokens = usage["input_tokens"]
+                    if "output_tokens" in usage:
+                        output_tokens = usage["output_tokens"]
+                elif etype == "message_start":
+                    # Some deployments push initial usage.input_tokens here
+                    # (input is known before generation starts). Grab it if
+                    # present so we don't lose it when message_delta only
+                    # updates output_tokens.
+                    message = event.get("message", {})
+                    usage = message.get("usage", {})
+                    if "input_tokens" in usage:
+                        input_tokens = usage["input_tokens"]
+                # message_stop / others: no-op; loop exits when iter_lines
+                # drains.
+
+        elapsed_ms = int((time.perf_counter() - start) * 1000)
+        final_response = LLMResponse(
+            content="".join(content_parts),
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            latency_ms=elapsed_ms,
+            provider_name=self.name,
+        )
+        yield LLMStreamChunk(
+            content_delta="",
+            is_final=True,
+            final_response=final_response,
         )
 
     # ---- helpers ----------------------------------------------------------

@@ -551,3 +551,56 @@ def test_web_chat_persists_turn_telemetry_in_cli_compatible_shape(
     assert entry.output_tokens == 13
     assert entry.latency_ms == 250
     assert entry.provider_name == "fake-persona"
+
+
+# ---------------------------------------------------------------------------
+# D++.6 — streaming path persists transcript + telemetry identically
+# ---------------------------------------------------------------------------
+#
+# AppTest does not execute st.write_stream the same way the real runtime
+# does (it fully drains the generator but doesn't paint intermediate
+# frames). That's fine for our purposes: we only need to prove that
+# after one streaming turn, the transcript/telemetry SIDECARS on disk
+# match what the non-streaming path used to produce, so the metrics
+# page and "Sessões passadas" viewer stay compatible.
+
+
+def test_streaming_turn_persists_transcript_and_telemetry_like_the_non_streaming_path(
+    chat_env: Path,
+) -> None:
+    """
+    Submitting one message goes through run_agent_turn_streaming under the
+    hood. Once the stream drains, the on-disk transcript must hold both
+    turns and the telemetry sidecar must expose the same fields the
+    Métricas page (data_access.load_turn_telemetry) already consumes.
+    """
+    at = _start_scenario(
+        chat_env,
+        persona_replies=["Oi, obrigada, meu filho."],
+    )
+    session_id = at.session_state["civis.chat.session_id"]
+
+    _submit_one_turn(at, agent_message=_AGENT_FIXTURE_MESSAGE)
+
+    # Transcript on disk has agent + persona in order.
+    transcript_payload = json.loads(
+        (chat_env / session_id / "transcript.json").read_text(encoding="utf-8")
+    )
+    assert [t["speaker"] for t in transcript_payload["turns"]] == [
+        "agent",
+        "persona",
+    ]
+    assert transcript_payload["turns"][1]["content"] == "Oi, obrigada, meu filho."
+
+    # Telemetry sidecar keeps the same shape as the non-streaming path.
+    telemetry = load_turn_telemetry(session_id, sessions_dir=chat_env)
+    assert len(telemetry) == 1
+    entry = telemetry[0]
+    assert entry.turn_index == 1
+    # The default stream() implementation preserves the LLMResponse the
+    # provider returned from complete() — so we still see the fake
+    # provider's 42/13/250 telemetry.
+    assert entry.input_tokens == 42
+    assert entry.output_tokens == 13
+    assert entry.latency_ms == 250
+    assert entry.provider_name == "fake-persona"

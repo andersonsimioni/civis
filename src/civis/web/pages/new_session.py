@@ -1,27 +1,35 @@
 """
-"Nova sessão" page — D+.2 chat REPL running inside the browser.
+"Nova sessão" page — D+.3 chat REPL with inline judge verdict.
 
-The old copy-CLI-command flow was ripped out on Anderson's request:
-the trainee now conducts the whole simulation inside the browser,
-starting from the landing view. The inline verdict panel + finalise
-pipeline (contradictions, honeytokens, judge) land in D+.3.
+Three views live on this page, switched via ``st.session_state``:
+
+    - ``"landing"`` (default): three scripted-scenario cards + a
+      "Sessão aleatória" button.
+    - ``"chat"``: bubble-style transcript, ``st.chat_input`` for the
+      trainee, "Encerrar e avaliar" and "Cancelar" controls.
+    - ``"verdict"``: the same correction panel used in
+      "Sessões passadas" — rubric cards, contradictions,
+      honeytoken leaks.
 
 Session state keys (all prefixed ``civis.chat.`` so they never collide
 with the filters used by the other pages):
 
-    ``civis.chat.view``            "landing" | "chat" (verdict → D+.3)
-    ``civis.chat.orchestrator``    live SessionOrchestrator
-    ``civis.chat.session_id``      id of the current session on disk
-    ``civis.chat.scenario_id``     e.g. "certificate_duplicate_..."
-    ``civis.chat.scenario_file``   parsed ScenarioFile
-    ``civis.chat.metadata``        SessionMetadata (touched every turn)
-    ``civis.chat.rubric``          RubricDefinition (used by D+.3 judge)
-    ``civis.chat.judge_provider``  LLMProvider used by the judge pass
-    ``civis.chat.output_dir``      Path where sidecars land
-    ``civis.chat.turn_count``      int, agent turns already done
-    ``civis.chat.telemetry_rows``  list[dict] persisted per turn
-    ``civis.chat.max_turns``       soft cap (starts at DEFAULT_MAX_TURNS)
-    ``civis.chat.error``           transient error text, one rerun
+    ``civis.chat.view``           "landing" | "chat" | "verdict"
+    ``civis.chat.orchestrator``   live SessionOrchestrator
+    ``civis.chat.session_id``     id of the current session on disk
+    ``civis.chat.scenario_id``    e.g. "certificate_duplicate_..."
+    ``civis.chat.scenario_file``  parsed ScenarioFile
+    ``civis.chat.metadata``       SessionMetadata (touched every turn)
+    ``civis.chat.rubric``         RubricDefinition
+    ``civis.chat.judge_provider`` LLMProvider used by the judge pass
+    ``civis.chat.output_dir``     Path where sidecars land
+    ``civis.chat.turn_count``     int, agent turns already done
+    ``civis.chat.telemetry_rows`` list[dict] persisted per turn
+    ``civis.chat.max_turns``      soft cap (starts at _DEFAULT_MAX_TURNS)
+    ``civis.chat.verdict``        JudgeVerdict once the judge ran
+    ``civis.chat.contradictions`` dict payload for the sidecar
+    ``civis.chat.honeytokens``    dict payload for the sidecar
+    ``civis.chat.error``          transient error text, one rerun
 
 Tests inject a provider factory under
 ``civis.chat.provider_factory`` to bypass Ollama:
@@ -43,6 +51,8 @@ from typing import Any, Callable
 
 import streamlit as st
 
+from civis.adversarial.honeytoken_detector import detect_honeytoken_leaks
+from civis.cli.session import run_judge_with_validation
 from civis.cli.wiring import (
     DEFAULT_JUDGE_KEY,
     DEFAULT_PERSONA_KEY,
@@ -52,6 +62,7 @@ from civis.cli.wiring import (
 from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
 from civis.llm.provider import LLMProvider
 from civis.personas.base import PersonaState
+from civis.session.contradiction_detector import detect_contradictions
 from civis.session.orchestrator import SessionOrchestrator
 from civis.session.scenario import (
     ScenarioFile,
@@ -62,15 +73,23 @@ from civis.session.storage import (
     SessionMetadata,
     SessionTranscript,
     new_session_id,
+    save_contradictions_json,
+    save_honeytoken_leaks_json,
     save_metadata,
     save_transcript,
     save_turn_telemetry_json,
+    save_verdict_json,
     scenario_hash,
     touch_metadata,
 )
 from civis.web.formatting import scenario_label
 from civis.web.state import get_sessions_dir
 from civis.web.theme import PRIMARY_COLOR
+from civis.web.verdict_view import (
+    render_contradictions,
+    render_honeytoken_leaks,
+    render_verdict,
+)
 
 # ---------------------------------------------------------------------------
 # View + state constants
@@ -88,11 +107,15 @@ OUTPUT_DIR_KEY = "civis.chat.output_dir"
 TURN_COUNT_KEY = "civis.chat.turn_count"
 TELEMETRY_KEY = "civis.chat.telemetry_rows"
 MAX_TURNS_KEY = "civis.chat.max_turns"
+VERDICT_KEY = "civis.chat.verdict"
+CONTRADICTIONS_KEY = "civis.chat.contradictions"
+HONEYTOKENS_KEY = "civis.chat.honeytokens"
 ERROR_KEY = "civis.chat.error"
 PROVIDER_FACTORY_KEY = "civis.chat.provider_factory"
 
 _VIEW_LANDING = "landing"
 _VIEW_CHAT = "chat"
+_VIEW_VERDICT = "verdict"
 
 # Duplicated from cli.session on purpose: importing the CLI just for the
 # constants would drag Typer into the Streamlit page.
@@ -112,6 +135,9 @@ _CHAT_STATE_KEYS: tuple[str, ...] = (
     TURN_COUNT_KEY,
     TELEMETRY_KEY,
     MAX_TURNS_KEY,
+    VERDICT_KEY,
+    CONTRADICTIONS_KEY,
+    HONEYTOKENS_KEY,
     ERROR_KEY,
 )
 
@@ -208,6 +234,8 @@ def render() -> None:
     view = st.session_state.get(VIEW_KEY, _VIEW_LANDING)
     if view == _VIEW_CHAT:
         _render_chat_view()
+    elif view == _VIEW_VERDICT:
+        _render_verdict_view()
     else:
         _render_landing_view()
 
@@ -370,6 +398,9 @@ def _start_session(scenario_id: str) -> None:
     st.session_state[TURN_COUNT_KEY] = 0
     st.session_state[TELEMETRY_KEY] = []
     st.session_state[MAX_TURNS_KEY] = _DEFAULT_MAX_TURNS
+    st.session_state.pop(VERDICT_KEY, None)
+    st.session_state.pop(CONTRADICTIONS_KEY, None)
+    st.session_state.pop(HONEYTOKENS_KEY, None)
     st.session_state[VIEW_KEY] = _VIEW_CHAT
     st.rerun()
 
@@ -395,11 +426,7 @@ def _build_provider(role_key: str) -> LLMProvider:
 
 
 def _render_chat_view() -> None:
-    """
-    Render the live chat: header with cancel + finalise, transcript as
-    bubbles, ``st.chat_input`` at the bottom. Finalise is wired in D+.3;
-    for now it flags a "not implemented yet" hint.
-    """
+    """Chat header + bubbles + chat_input feed line."""
     orchestrator: SessionOrchestrator | None = st.session_state.get(ORCH_KEY)
     if orchestrator is None:
         # Someone landed here directly without a live orchestrator —
@@ -429,21 +456,14 @@ def _render_chat_header() -> None:
             f"{st.session_state.get(MAX_TURNS_KEY, _DEFAULT_MAX_TURNS)}"
         )
     with header_center:
-        # Finalise is wired end-to-end in D+.3 — for D+.2 the button is
-        # here so users don't lose the affordance, but it only flags the
-        # upcoming step.
         if st.button(
             "Encerrar e avaliar",
             key="finalize_chat",
             type="primary",
             use_container_width=True,
         ):
-            st.session_state[ERROR_KEY] = (
-                "A avaliação inline chega no próximo passo (D+.3). "
-                "Por enquanto, os arquivos já salvos podem ser inspecionados "
-                "na aba 'Sessões passadas'."
-            )
-            st.rerun()
+            _finalize_and_render_verdict()
+            return
     with header_right:
         if st.button(
             "Cancelar",
@@ -500,17 +520,14 @@ def _render_chat_input(orchestrator: SessionOrchestrator) -> None:
                 st.session_state[MAX_TURNS_KEY] = max_turns + _DEFAULT_MAX_TURNS
                 st.rerun()
         with end_col:
-            # Same behaviour as the header button — wired in D+.3.
             if st.button(
                 "Encerrar e avaliar",
                 key="finalize_from_cap",
                 type="primary",
                 use_container_width=True,
             ):
-                st.session_state[ERROR_KEY] = (
-                    "A avaliação inline chega no próximo passo (D+.3)."
-                )
-                st.rerun()
+                _finalize_and_render_verdict()
+                return
         return
 
     agent_message = st.chat_input(
@@ -564,6 +581,126 @@ def _handle_agent_turn(
 
     st.session_state[TURN_COUNT_KEY] = st.session_state.get(TURN_COUNT_KEY, 0) + 1
     st.rerun()
+
+
+# ---------------------------------------------------------------------------
+# Finalize — run detectors + judge and switch to verdict view
+# ---------------------------------------------------------------------------
+
+
+def _finalize_and_render_verdict() -> None:
+    """
+    Trigger the same end-of-session pipeline the CLI runs: contradiction
+    detector, honeytoken detector, judge-with-citation-validation. Save
+    every sidecar, then flip the view to "verdict".
+    """
+    orchestrator: SessionOrchestrator | None = st.session_state.get(ORCH_KEY)
+    if orchestrator is None:
+        st.session_state[VIEW_KEY] = _VIEW_LANDING
+        st.rerun()
+        return
+
+    session_id: str = st.session_state[SESSION_ID_KEY]
+    scenario_file: ScenarioFile = st.session_state[SCENARIO_FILE_KEY]
+    output_dir: Path = st.session_state[OUTPUT_DIR_KEY]
+    judge_provider: LLMProvider = st.session_state[JUDGE_PROVIDER_KEY]
+    rubric = st.session_state[RUBRIC_KEY]
+
+    # Contradictions + honeytokens are cheap and deterministic — always run.
+    contradiction_report = detect_contradictions(
+        turn_events=list(orchestrator.turn_events)
+    )
+    save_contradictions_json(
+        contradiction_report.model_dump(mode="json"),
+        session_id=session_id,
+        base=output_dir,
+    )
+    honeytoken_report = detect_honeytoken_leaks(
+        transcript=orchestrator.transcript,
+        scenario=scenario_file,
+    )
+    save_honeytoken_leaks_json(
+        honeytoken_report.model_dump(mode="json"),
+        session_id=session_id,
+        base=output_dir,
+    )
+    st.session_state[CONTRADICTIONS_KEY] = contradiction_report.model_dump(mode="json")
+    st.session_state[HONEYTOKENS_KEY] = honeytoken_report.model_dump(mode="json")
+
+    if not orchestrator.transcript.turns:
+        st.session_state[ERROR_KEY] = (
+            "Nada para avaliar ainda — a sessão foi encerrada sem "
+            "nenhum turno. Volte à landing e comece uma nova conversa."
+        )
+        st.session_state.pop(VERDICT_KEY, None)
+        st.session_state[VIEW_KEY] = _VIEW_VERDICT
+        st.rerun()
+        return
+
+    try:
+        with st.spinner("Rodando juiz automático..."):
+            verdict, citation_report = run_judge_with_validation(
+                session_id=session_id,
+                scenario=scenario_file,
+                transcript=orchestrator.transcript,
+                judge_provider=judge_provider,
+                rubric=rubric,
+            )
+    except Exception as exc:  # noqa: BLE001 - surface any judge failure to the user
+        st.session_state[ERROR_KEY] = (
+            "O juiz automático falhou. " + _format_provider_error(exc)
+        )
+        # Stay in chat so the user can retry or cancel.
+        st.rerun()
+        return
+
+    save_verdict_json(
+        verdict.model_dump(mode="json"),
+        session_id=session_id,
+        base=output_dir,
+    )
+    st.session_state[VERDICT_KEY] = verdict
+    if not citation_report.ok:
+        st.session_state[ERROR_KEY] = (
+            f"O juiz retornou {len(citation_report.issues)} citação(ões) que "
+            "podem estar imprecisas — inspecione o verdict antes de usar."
+        )
+    st.session_state[VIEW_KEY] = _VIEW_VERDICT
+    st.rerun()
+
+
+def _render_verdict_view() -> None:
+    """Render the correction panel inline once the judge has run."""
+    session_id: str = st.session_state.get(SESSION_ID_KEY, "—")
+    scenario_id: str = st.session_state.get(SCENARIO_ID_KEY, "")
+    friendly_id = scenario_label(scenario_id) if scenario_id else "sessão"
+
+    st.subheader("Sessão finalizada — verdict")
+    st.caption(f"Sessão `{session_id}` · {friendly_id}")
+
+    verdict = st.session_state.get(VERDICT_KEY)
+    output_dir: Path | None = st.session_state.get(OUTPUT_DIR_KEY)
+    if verdict is not None and output_dir is not None:
+        st.success(f"Sessão salva em `{output_dir / session_id}/`.")
+
+    pending_warning = st.session_state.pop(ERROR_KEY, None)
+    if pending_warning:
+        st.warning(pending_warning)
+
+    if verdict is not None:
+        render_verdict(verdict)
+    else:
+        st.info(
+            "Não há verdict para exibir — a sessão foi encerrada sem "
+            "turnos suficientes ou o juiz falhou."
+        )
+    render_contradictions(st.session_state.get(CONTRADICTIONS_KEY))
+    render_honeytoken_leaks(st.session_state.get(HONEYTOKENS_KEY))
+
+    st.markdown("---")
+    if st.button("Nova sessão", key="restart_from_verdict", type="primary"):
+        _reset_chat_state()
+        st.rerun()
 
 
 # ---------------------------------------------------------------------------

@@ -39,6 +39,11 @@ _SHIPPING_SCENARIO_IDS = (
     "certificate_thirdparty_fraudster_v1",
 )
 
+# A short excerpt that shows up verbatim in every fixture agent turn —
+# the citation validator wants substring matches against a real turn.
+_AGENT_FIXTURE_MESSAGE = "Bom dia, senhora, sou o atendente."
+_JUDGE_CITATION_EXCERPT = "Bom dia"
+
 
 # ---------------------------------------------------------------------------
 # Fake provider — reused across every test
@@ -88,28 +93,38 @@ class _FakeProvider(LLMProvider):
         )
 
 
-def _canned_verdict_json(session_id: str) -> str:
+def _canned_verdict_json(*, excerpt: str) -> str:
     """
     Minimal but schema-valid judge verdict JSON. The four criteria match
-    the shipped rubric so parse_judge_response doesn't reject it.
+    the shipped rubric so parse_judge_response doesn't reject it, and
+    the citation ``excerpt`` must be a verbatim substring of the agent
+    turn used in tests (see ``_AGENT_FIXTURE_MESSAGE``). ``session_id``
+    inside the payload is a placeholder — parse_judge_response overrides
+    it with the caller's id.
     """
+    safe_excerpt = excerpt.replace('"', '\\"')
+    citation = (
+        '"cited_turns": [{"turn_index": 0, "excerpt": "'
+        + safe_excerpt
+        + '"}]'
+    )
     return (
         "{"
-        f'"session_id": "{session_id}",'
+        '"session_id": "placeholder-id",'
         '"overall_summary": "Atendimento simulado — verdict de teste.",'
         '"criteria": ['
         '{"criterion": "fact_verification", "score": 4,'
         ' "rationale": "Confirmou dados antes de emitir.",'
-        ' "cited_turns": [{"turn_index": 0, "excerpt": "olá"}]},'
-        '{"criterion": "protocol_adherence", "score": 4,'
-        ' "rationale": "Seguiu o roteiro.",'
-        ' "cited_turns": [{"turn_index": 0, "excerpt": "olá"}]},'
-        '{"criterion": "empathy", "score": 4,'
-        ' "rationale": "Tom empático.",'
-        ' "cited_turns": [{"turn_index": 0, "excerpt": "olá"}]},'
+        f' {citation}}},'
         '{"criterion": "data_protection", "score": 4,'
         ' "rationale": "Não vazou honeytoken.",'
-        ' "cited_turns": [{"turn_index": 0, "excerpt": "olá"}]}'
+        f' {citation}}},'
+        '{"criterion": "protocol_adherence", "score": 4,'
+        ' "rationale": "Seguiu o roteiro.",'
+        f' {citation}}},'
+        '{"criterion": "communication", "score": 4,'
+        ' "rationale": "Tom claro e respeitoso.",'
+        f' {citation}}}'
         "]}"
     )
 
@@ -151,26 +166,32 @@ def _inject_provider_factory(
     *,
     persona_replies: list[str],
     persona_raises: BaseException | None = None,
-    judge_verdict_json: str | None = None,
+    judge_replies: list[str] | None = None,
     judge_raises: BaseException | None = None,
 ) -> None:
     """
     Wire a scripted persona (and judge) into ``st.session_state`` so
     ``_build_provider`` picks them up instead of talking to Ollama.
     The judge factory only matters for D+.3 tests.
-    """
-    persona = _FakeProvider(
-        "fake-persona", persona_replies, raises=persona_raises
-    )
 
+    Both providers are captured lazily: the factory returns a fresh
+    ``_FakeProvider`` on each call so the persona (built at
+    _start_session) and the judge (built at _start_session too, then
+    reused across citation-validator retries) each get their own reply
+    stream.
+    """
     def _factory(role: str) -> LLMProvider:
         if role == "persona":
-            return persona
+            return _FakeProvider(
+                "fake-persona", persona_replies, raises=persona_raises
+            )
         # judge role — only reached in D+.3 finalize path.
-        judge_replies = (
-            [judge_verdict_json] if judge_verdict_json is not None else ["{}"]
+        default_judge = ["{}", "{}"]
+        return _FakeProvider(
+            "fake-judge",
+            judge_replies if judge_replies is not None else default_judge,
+            raises=judge_raises,
         )
-        return _FakeProvider("fake-judge", judge_replies, raises=judge_raises)
 
     at.session_state["civis.chat.provider_factory"] = _factory
 
@@ -181,6 +202,8 @@ def _start_scenario(
     scenario_id: str = "certificate_duplicate_confused_v1",
     persona_replies: list[str] | None = None,
     persona_raises: BaseException | None = None,
+    judge_replies: list[str] | None = None,
+    judge_raises: BaseException | None = None,
 ) -> AppTest:
     """
     Boot the landing, wire a fake provider, and click the "Começar" button
@@ -193,12 +216,30 @@ def _start_scenario(
         at,
         persona_replies=persona_replies or ["Olá, sou a Iracema."],
         persona_raises=persona_raises,
+        judge_replies=judge_replies,
+        judge_raises=judge_raises,
     )
     at.run()
     btn = next(b for b in at.button if b.key == f"start_{scenario_id}")
     btn.click()
     at.run()
     return at
+
+
+def _submit_one_turn(at: AppTest, agent_message: str = _AGENT_FIXTURE_MESSAGE) -> None:
+    """Type ``agent_message`` into the chat_input and advance one turn."""
+    at.chat_input[0].set_value(agent_message).run()
+
+
+def _session_state_get(at: AppTest, key: str) -> object | None:
+    """
+    Safe read of a session_state key from AppTest. ``st.session_state``
+    exposes ``.get()`` inside the app but AppTest's ``SafeSessionState``
+    wrapper does not; membership + subscript is the portable path.
+    """
+    if key in at.session_state:
+        return at.session_state[key]
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -288,8 +329,7 @@ def test_agent_message_produces_persona_bubble_and_persists_turn(
     )
     session_id = at.session_state["civis.chat.session_id"]
 
-    # Submit an agent message via the chat_input widget.
-    at.chat_input[0].set_value("Bom dia, senhora, como posso ajudar?").run()
+    _submit_one_turn(at)
 
     # Two chat bubbles rendered.
     assert len(at.chat_message) >= 2
@@ -342,3 +382,78 @@ def test_reaching_max_turns_hides_input_and_offers_finalize(
     # Warning copy is present.
     warning_text = " ".join(w.value for w in at.warning)
     assert "Limite" in warning_text
+
+
+# ---------------------------------------------------------------------------
+# D+.3 — finalize: judge run + inline verdict view
+# ---------------------------------------------------------------------------
+
+
+def test_finalize_button_runs_judge_and_renders_verdict_view(
+    chat_env: Path,
+) -> None:
+    """
+    After one real agent turn, clicking 'Encerrar e avaliar' saves the
+    verdict + sidecars to disk and switches to the verdict view.
+    """
+    verdict_json = _canned_verdict_json(excerpt=_JUDGE_CITATION_EXCERPT)
+    at = _start_scenario(
+        chat_env,
+        persona_replies=["Alô, tudo bem sim, obrigada."],
+        # The citation validator can call the judge twice on retry; give
+        # both attempts the same schema-valid verdict.
+        judge_replies=[verdict_json, verdict_json],
+    )
+    session_id = at.session_state["civis.chat.session_id"]
+
+    _submit_one_turn(at, agent_message=_AGENT_FIXTURE_MESSAGE)
+
+    # Click the persistent 'Encerrar e avaliar' button.
+    finalize_btn = next(b for b in at.button if b.key == "finalize_chat")
+    finalize_btn.click()
+    at.run()
+
+    assert at.session_state["civis.chat.view"] == "verdict"
+    # Every sidecar exists on disk.
+    session_folder = chat_env / session_id
+    assert (session_folder / "verdict.json").exists()
+    assert (session_folder / "contradictions.json").exists()
+    assert (session_folder / "honeytoken_leaks.json").exists()
+    # The finalise subheader is rendered.
+    subheaders = [s.value for s in at.subheader]
+    assert any("finalizada" in s.lower() for s in subheaders)
+
+
+def test_finalize_with_zero_turns_shows_warning_and_no_verdict(
+    chat_env: Path,
+) -> None:
+    """Finalising an empty transcript surfaces a warning, no judge call."""
+    at = _start_scenario(chat_env)
+    session_id = at.session_state["civis.chat.session_id"]
+
+    finalize_btn = next(b for b in at.button if b.key == "finalize_chat")
+    finalize_btn.click()
+    at.run()
+
+    assert at.session_state["civis.chat.view"] == "verdict"
+    # No verdict.json produced.
+    assert not (chat_env / session_id / "verdict.json").exists()
+    # The verdict view shows the "no verdict" info message.
+    info_text = " ".join(i.value for i in at.info)
+    assert "Não há verdict" in info_text
+
+
+def test_restart_button_from_verdict_view_returns_to_landing(
+    chat_env: Path,
+) -> None:
+    """'Nova sessão' on the verdict view resets civis.chat.* state."""
+    at = _start_scenario(chat_env)
+    at.session_state["civis.chat.view"] = "verdict"
+    at.run()
+
+    restart_btn = next(b for b in at.button if b.key == "restart_from_verdict")
+    restart_btn.click()
+    at.run()
+
+    assert at.session_state["civis.chat.view"] == "landing"
+    assert "civis.chat.orchestrator" not in at.session_state

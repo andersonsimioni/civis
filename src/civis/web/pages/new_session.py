@@ -45,6 +45,7 @@ If absent, the page falls back to ``load_or_default_config`` +
 from __future__ import annotations
 
 import json
+import os
 import random
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -63,6 +64,7 @@ from civis.cli.wiring import (
     build_provider_from_config,
     load_or_default_config,
 )
+from civis.coach.coach import Coach
 from civis.documents.templates import RenderedDocument, render_document
 from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
 from civis.llm.provider import LLMProvider
@@ -89,8 +91,15 @@ from civis.session.storage import (
     scenario_hash,
     touch_metadata,
 )
+from civis.web.coach_view import (
+    clear_suggestion,
+    compute_suggestion,
+    render_sidebar_toggle,
+    render_suggestion_block,
+    store_suggestion,
+)
 from civis.web.formatting import scenario_label
-from civis.web.state import get_sessions_dir
+from civis.web.state import COACH_ENABLED_KEY, get_sessions_dir
 from civis.web.theme import PRIMARY_COLOR
 from civis.web.verdict_view import (
     render_audit_reveal,
@@ -396,6 +405,7 @@ def _start_session(scenario_id: str) -> None:
         judge_provider_name=judge_provider.name,
         created_at=now_iso,
         last_updated_at=now_iso,
+        agent_name=os.environ.get("CIVIS_AGENT_NAME") or None,
     )
     save_metadata(metadata, base=output_dir)
     save_transcript(transcript, base=output_dir)
@@ -475,7 +485,9 @@ def _render_chat_view() -> None:
     _maybe_inject_queue_turn(orchestrator)
 
     _render_chat_header()
+    render_sidebar_toggle()
     _render_chat_body(orchestrator)
+    render_suggestion_block()
     _render_chat_input(orchestrator)
     # Phase D+++: clickable action buttons live under the chat input so
     # the trainee (and the investor watching) sees the counter's toolkit
@@ -630,6 +642,10 @@ def _handle_agent_turn(
     # so first-turn latency is 30-60s BEFORE the first token; we surface
     # that to the user so they don't think the page hung. The hint block
     # collapses automatically the moment the stream starts producing.
+    # ONDA 3 (C3.2): clear any stale coach hint so it does not
+    # linger on-screen while the persona streams the new reply.
+    clear_suggestion()
+
     is_first_turn = len(orchestrator.transcript.turns) == 0
     cold_start_msg = (
         "Carregando modelo... o primeiro token pode levar até 60s "
@@ -701,7 +717,32 @@ def _handle_agent_turn(
         st.session_state[TELEMETRY_KEY] = telemetry_rows
 
     st.session_state[TURN_COUNT_KEY] = st.session_state.get(TURN_COUNT_KEY, 0) + 1
+
+    # ONDA 3 (C3.2): consult the coach once the persona has spoken.
+    # We do this AFTER telemetry saves so a slow coach can never delay
+    # the disk write of what the trainee just accomplished.
+    _maybe_run_coach(orchestrator)
+
     st.rerun()
+
+
+def _maybe_run_coach(orchestrator: SessionOrchestrator) -> None:
+    """
+    Ask the coach for a next-move suggestion when the sidebar toggle
+    is on. Falls back silently on timeout / provider error so the
+    chat flow never hangs on a slow model.
+    """
+    if not st.session_state.get(COACH_ENABLED_KEY, False):
+        clear_suggestion()
+        return
+    scenario_file: ScenarioFile = st.session_state[SCENARIO_FILE_KEY]
+    # Reuse the judge provider — same Ollama config the demo already
+    # boots, no extra model download.
+    coach_provider = _build_provider(DEFAULT_JUDGE_KEY)
+    coach = Coach(provider=coach_provider, scenario=scenario_file)
+    with st.spinner("Coach analisando...", show_time=False):
+        suggestion = compute_suggestion(coach, orchestrator.transcript)
+    store_suggestion(suggestion)
 
 
 # ---------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-"""
+﻿"""
 `civis session` — run one training session end to end.
 
 Usage examples:
@@ -31,6 +31,7 @@ Behaviour:
       not the judge is enabled.
 """
 
+import os
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -193,6 +194,7 @@ def session_command(
             judge_provider_name=judge_provider.name if judge_provider else None,
             created_at=now_iso,
             last_updated_at=now_iso,
+            agent_name=os.environ.get("CIVIS_AGENT_NAME") or None,
         )
         typer.echo(f"[civis] new session: {session_id}")
 

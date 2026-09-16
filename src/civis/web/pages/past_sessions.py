@@ -11,6 +11,10 @@ Flow:
     3. When a session is selected, the layout switches to a 60/40 split:
        chat transcript on the left, verdict cards + contradictions +
        honeytoken leaks on the right.
+    4. ONDA 3 (R1.3): a 'Ver replay' button on the detail header opens
+       the replay timeline above the transcript. Clicking an event dot
+       on that bar highlights the corresponding turn — same mechanism
+       the verdict citations use.
 
 The click-to-highlight interaction (verdict citation → transcript scroll
 and flash) is implemented in verdict_view + chat_view: the citation
@@ -36,7 +40,13 @@ from civis.web.formatting import (
     format_session_datetime,
     scenario_label,
 )
-from civis.web.state import SELECTED_SESSION_KEY, get_sessions_dir
+from civis.web.replay import build_replay_timeline
+from civis.web.replay_view import render_replay_timeline
+from civis.web.state import (
+    SELECTED_SESSION_KEY,
+    SHOW_REPLAY_KEY,
+    get_sessions_dir,
+)
 from civis.web.verdict_view import (
     render_contradictions,
     render_honeytoken_leaks,
@@ -258,7 +268,7 @@ def _render_detail_panel(session_id: str) -> None:
             st.rerun()
         return
 
-    header_col_left, header_col_right = st.columns([4, 1])
+    header_col_left, header_col_mid, header_col_right = st.columns([3, 1.2, 1])
     with header_col_left:
         st.markdown(
             f"### {session_id} · {scenario_label(detail.metadata.scenario_id)}"
@@ -268,10 +278,31 @@ def _render_detail_panel(session_id: str) -> None:
             f"persona: `{detail.metadata.persona_provider_name}` · "
             f"juiz: `{detail.metadata.judge_provider_name or '—'}`"
         )
+    with header_col_mid:
+        _render_replay_toggle_button()
     with header_col_right:
         if st.button("← Voltar", use_container_width=True):
             st.session_state[SELECTED_SESSION_KEY] = None
+            st.session_state[SHOW_REPLAY_KEY] = False
             st.rerun()
+
+    # ONDA 3 (R1.3): timeline sits ABOVE the two columns so it spans
+    # the whole width — a dashboard-y feel that fits the 'replay
+    # tipo YouTube' framing better than a cramped bar inside the
+    # transcript column.
+    if st.session_state.get(SHOW_REPLAY_KEY, False):
+        events = build_replay_timeline(
+            transcript=detail.transcript,
+            verdict=detail.verdict,
+            contradictions=detail.contradictions,
+            honeytokens=detail.honeytoken_leaks,
+        )
+        render_replay_timeline(
+            events=events,
+            total_turns=len(detail.transcript.turns),
+            key_prefix=f"replay_{session_id}",
+        )
+        st.markdown("<hr style='margin:0.6rem 0;' />", unsafe_allow_html=True)
 
     left, right = st.columns([3, 2])
     with left:
@@ -290,6 +321,33 @@ def _render_detail_panel(session_id: str) -> None:
             )
         render_contradictions(detail.contradictions)
         render_honeytoken_leaks(detail.honeytoken_leaks)
+
+
+def _render_replay_toggle_button() -> None:
+    """
+    Header button that toggles the replay timeline visibility.
+
+    We keep it as an ordinary button (not ``st.toggle``) because the
+    label needs to communicate the current state: 'Ver replay' opens
+    the bar, 'Fechar replay' hides it. Streamlit's ``st.toggle``
+    reads well only when the label describes a state noun, not a
+    verb.
+    """
+    is_open = bool(st.session_state.get(SHOW_REPLAY_KEY, False))
+    label = "Fechar replay" if is_open else "Ver replay"
+    icon = "▲" if is_open else "▶"
+    if st.button(
+        f"{icon} {label}",
+        key="toggle_replay",
+        use_container_width=True,
+        help=(
+            "Abre a linha do tempo do atendimento com marcadores por evento"
+            if not is_open
+            else "Esconde a linha do tempo"
+        ),
+    ):
+        st.session_state[SHOW_REPLAY_KEY] = not is_open
+        st.rerun()
 
 
 # ---------------------------------------------------------------------------

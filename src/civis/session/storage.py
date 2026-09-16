@@ -41,6 +41,13 @@ warning / critical thresholds declared in the scenario's
 ``service_sla``. Queue turns are also filtered out of the persona and
 judge prompts (same logic as action turns), so they never contaminate
 the LLM context.
+
+ONDA 3 (D2.1): ``SessionMetadata`` gained an optional ``agent_name``
+field so the supervisor dashboard can aggregate sessions per
+attendant. The field defaults to ``None`` — legacy sessions on disk
+that predate the field load cleanly, and the CLI / web layers fill it
+in from the ``CIVIS_AGENT_NAME`` environment variable (or a supplied
+value) when a new session starts.
 """
 
 import hashlib
@@ -132,6 +139,11 @@ class SessionMetadata(BaseModel):
     # Optional numeric seed for anything downstream that needs
     # deterministic sampling (e.g. adversarial provider selection).
     seed: int | None = None
+    # ONDA 3 (D2.1): free-form name of the human trainee ("attendant")
+    # who ran the session. Optional and backwards-compatible: legacy
+    # metadata files that predate this field parse to ``None``, and the
+    # supervisor dashboard treats ``None`` as "anonymous".
+    agent_name: str | None = None
 
 
 # ---- read / write helpers -------------------------------------------------

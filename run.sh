@@ -58,6 +58,7 @@ show_menu() {
 
   Pitch
    13. Preencher deck com números reais (F-final)
+   14. Emitir certificado do atendente
 
     0. Sair
 
@@ -66,7 +67,7 @@ MENU
 
 while true; do
     show_menu
-    read -r -p "Escolha [0-13]: " choice
+    read -r -p "Escolha [0-14]: " choice
     echo
 
     # Preflight helper — call before any Ollama-dependent command. Aborts
@@ -95,6 +96,16 @@ while true; do
         12) python -m civis adversarial judge-deceiver \
                 --output reports/judge_deceiver_run.json ;;
         13) python scripts/fill_pitch_deck.py ;;
+        # Onda-1 F2.4: ask for the attendant's name and delegate to
+        # `civis certify`. Empty input short-circuits before invoking the
+        # CLI (which would also exit 2, but we save the round-trip).
+        14) read -r -p "Nome completo do atendente: " _cert_name
+            if [ -n "${_cert_name// }" ]; then
+                python -m civis certify --agent-name "$_cert_name"
+            else
+                echo "[civis] nome vazio — abortando."
+            fi
+            ;;
         0)  exit 0 ;;
         *)  echo "[civis] opção inválida: $choice" ;;
     esac

@@ -119,6 +119,15 @@ CONTRADICTIONS_KEY = "civis.chat.contradictions"
 HONEYTOKENS_KEY = "civis.chat.honeytokens"
 ERROR_KEY = "civis.chat.error"
 PROVIDER_FACTORY_KEY = "civis.chat.provider_factory"
+# Onda 2 T1.2 — UTC ISO string set when the chat view boots, drives
+# the header timer. Kept as an ISO string (not a datetime object) so
+# it round-trips through Streamlit's session_state serializer.
+STARTED_AT_KEY = "civis.chat.started_at"
+# Onda 2 T1.3 — bookkeeping for the queue-message injector: whether
+# the warning-level and critical-level lines were already dropped
+# into the transcript, so each level fires at most once per session.
+QUEUE_WARNING_FIRED_KEY = "civis.chat.queue_warning_fired"
+QUEUE_CRITICAL_FIRED_KEY = "civis.chat.queue_critical_fired"
 
 _VIEW_LANDING = "landing"
 _VIEW_CHAT = "chat"
@@ -146,6 +155,9 @@ _CHAT_STATE_KEYS: tuple[str, ...] = (
     CONTRADICTIONS_KEY,
     HONEYTOKENS_KEY,
     ERROR_KEY,
+    STARTED_AT_KEY,
+    QUEUE_WARNING_FIRED_KEY,
+    QUEUE_CRITICAL_FIRED_KEY,
 )
 
 
@@ -409,6 +421,15 @@ def _start_session(scenario_id: str) -> None:
     st.session_state[TURN_COUNT_KEY] = 0
     st.session_state[TELEMETRY_KEY] = []
     st.session_state[MAX_TURNS_KEY] = _DEFAULT_MAX_TURNS
+    # Onda 2 T1.2: seed the "session start" clock so the chat header
+    # timer can render an elapsed value from the very first rerun.
+    # Persisting the ISO string (not a datetime) keeps this value
+    # AppTest-friendly (Streamlit's session_state pickler is happy
+    # with primitives). Stored in UTC, formatted at render time.
+    st.session_state[STARTED_AT_KEY] = now_iso
+    # Onda 2 T1.3: fresh session → neither queue line has fired yet.
+    st.session_state[QUEUE_WARNING_FIRED_KEY] = False
+    st.session_state[QUEUE_CRITICAL_FIRED_KEY] = False
     st.session_state.pop(VERDICT_KEY, None)
     st.session_state.pop(CONTRADICTIONS_KEY, None)
     st.session_state.pop(HONEYTOKENS_KEY, None)
@@ -446,6 +467,12 @@ def _render_chat_view() -> None:
         st.rerun()
         return
 
+    # Onda 2 T1.3: check the SLA thresholds BEFORE rendering the body,
+    # so a freshly injected queue turn shows up on the same rerun that
+    # crossed the boundary. The header (which contains the timer) is
+    # rendered separately after so it always shows the current phase.
+    _maybe_inject_queue_turn(orchestrator)
+
     _render_chat_header()
     _render_chat_body(orchestrator)
     _render_chat_input(orchestrator)
@@ -456,13 +483,18 @@ def _render_chat_view() -> None:
 
 
 def _render_chat_header() -> None:
-    """Title bar with scenario label + persona chip + finalise/cancel."""
+    """Title bar with scenario label + persona chip + timer + finalise/cancel."""
     scenario_id: str = st.session_state[SCENARIO_ID_KEY]
     scenario_file: ScenarioFile = st.session_state[SCENARIO_FILE_KEY]
     friendly_id = scenario_label(scenario_id)
     persona_kind_label = _persona_kind_label(scenario_file.persona.kind.value)
 
-    header_left, header_center, header_right = st.columns([3, 1.3, 1.3])
+    # Onda 2 T1.2: the timer widget lives in its own column so the
+    # colour badge stays visually anchored between the title block and
+    # the two action buttons.
+    header_left, header_timer, header_center, header_right = st.columns(
+        [3, 1.2, 1.3, 1.3]
+    )
     with header_left:
         st.markdown(f"### 💬 {friendly_id}")
         st.caption(
@@ -470,6 +502,8 @@ def _render_chat_header() -> None:
             f"Turnos: {st.session_state.get(TURN_COUNT_KEY, 0)} / "
             f"{st.session_state.get(MAX_TURNS_KEY, _DEFAULT_MAX_TURNS)}"
         )
+    with header_timer:
+        _render_session_timer(scenario_file)
     with header_center:
         if st.button(
             "Encerrar e avaliar",
@@ -514,6 +548,11 @@ def _render_chat_body(orchestrator: SessionOrchestrator) -> None:
                 st.markdown(turn.content)
         elif turn.speaker == "action":
             _render_action_turn_in_chat(turn.content)
+        elif turn.speaker == "queue":
+            # Onda 2 T1.3: queue turns render as a bordered notice
+            # instead of an assistant bubble — visually clear this is
+            # NOT the persona speaking, just pressure from the queue.
+            _render_queue_turn_in_chat(turn.content)
         else:
             with st.chat_message("assistant", avatar="🧑‍💼"):
                 st.markdown(turn.content)
@@ -857,6 +896,217 @@ def _format_provider_error(exc: BaseException) -> str:
         )
     return f"{type(exc).__name__}: {exc}"
 
+
+
+
+
+# ---------------------------------------------------------------------------
+# Onda 2 T1.2 / T1.3 — session timer + queue-complaint injector
+# ---------------------------------------------------------------------------
+#
+# The timer widget lives in the chat header (see _render_chat_header).
+# Every natural Streamlit rerun (chat_input submit, action click, cancel
+# click, etc.) triggers a fresh render, so the timer effectively
+# updates once per turn — no time.sleep, no JS component. This is a
+# deliberate simplification called out in the Onda 2 task text: it
+# creates enough pressure for the pitch demo without dragging in a
+# custom Streamlit component.
+#
+# The queue-complaint injector piggybacks on the same rerun cycle:
+# every time the chat view renders, we check the elapsed time; when it
+# has just crossed the warning or critical threshold we drop a
+# ``speaker="queue"`` turn into the transcript BEFORE the chat body
+# renders, and each threshold fires at most once per session. The
+# queue turn is filtered out of the persona prompt and the judge
+# prompt (see session.orchestrator._transcript_history and
+# cli.session.run_judge_with_validation) so it never contaminates the
+# model context — it is a UI-only stress event.
+
+
+def _elapsed_seconds_from_iso(started_at_iso: str, now: datetime | None = None) -> float:
+    """Compute elapsed wall-clock time in seconds since ``started_at_iso``.
+
+    Never returns negative — a mid-flight clock adjustment would break
+    the phase mapping, so we clamp to zero. Accepts an optional ``now``
+    for deterministic tests; production callers omit it and get the
+    real UTC clock.
+    """
+    started_at = datetime.fromisoformat(started_at_iso)
+    reference = now or datetime.now(UTC)
+    delta = (reference - started_at).total_seconds()
+    return delta if delta > 0 else 0.0
+
+
+def _format_elapsed_mmss(elapsed_seconds: float) -> str:
+    """Format an elapsed second count as ``MM:SS``.
+
+    Uses integer minutes past the hour rather than an hh:mm:ss layout:
+    the SLA is measured in minutes, and the badge stays short even for
+    a very long session (a two-hour chat renders as "120:34", not
+    "02:00:34"). Negative or NaN-ish inputs never reach here — the
+    caller clamps them.
+    """
+    total = int(elapsed_seconds)
+    minutes, seconds = divmod(total, 60)
+    return f"{minutes:02d}:{seconds:02d}"
+
+
+def _render_session_timer(scenario_file: ScenarioFile) -> None:
+    """Render the chat-header timer as a coloured badge.
+
+    Reads the session start time from ``STARTED_AT_KEY`` — set by
+    :func:`_start_session` — and the SLA thresholds from
+    ``scenario_file.service_sla``. Missing start time (should not
+    happen in practice) renders a neutral ``--:--`` badge so the layout
+    stays stable instead of throwing.
+    """
+    started_at_iso: str | None = st.session_state.get(STARTED_AT_KEY)
+    sla = scenario_file.service_sla
+
+    if not started_at_iso:
+        # Defensive: render a neutral placeholder rather than crashing
+        # the chat view. Should never fire once a session is live.
+        st.markdown(
+            "<div class='civis-timer' data-phase='green'>"
+            "<span class='civis-timer-label'>tempo</span>--:--</div>",
+            unsafe_allow_html=True,
+        )
+        return
+
+    elapsed = _elapsed_seconds_from_iso(started_at_iso)
+    phase = sla.phase_for_elapsed(elapsed)
+    mmss = _format_elapsed_mmss(elapsed)
+    st.markdown(
+        f"<div class='civis-timer' data-phase='{phase}'>"
+        f"<span class='civis-timer-label'>tempo</span>{mmss}</div>",
+        unsafe_allow_html=True,
+    )
+
+
+# Onda 2 T1.3 — canonical copy for the two queue-complaint levels.
+# Kept as module constants so tests can import and assert on the
+# exact strings (and so the pt-BR copy lives in one obvious place).
+_QUEUE_WARNING_LABEL = "Fila"
+_QUEUE_WARNING_MESSAGE = "Poxa, tô esperando faz um tempão..."
+_QUEUE_CRITICAL_LABEL = "Fila"
+_QUEUE_CRITICAL_MESSAGE = "Vou reclamar na ouvidoria!"
+
+
+def _queue_turn_content(severity: str, minutes_waited: int, message: str) -> str:
+    """Serialise a queue turn payload as a compact JSON string.
+
+    Storing the payload as JSON in the transcript keeps the
+    ``Turn.content`` field as a single string (same shape as
+    action turns) while still letting the renderer show a structured
+    card. Fields:
+        severity        "warning" | "critical"
+        minutes_waited  integer minutes that had elapsed on injection
+        message         the pt-BR line the queued customer says
+    """
+    payload = {
+        "severity": severity,
+        "minutes_waited": minutes_waited,
+        "message": message,
+    }
+    return json.dumps(payload, ensure_ascii=False)
+
+
+def _maybe_inject_queue_turn(orchestrator: SessionOrchestrator) -> bool:
+    """Inject a queue turn if the elapsed time has crossed a new threshold.
+
+    Called at the top of ``_render_chat_view`` so the injected turn is
+    rendered on the SAME rerun that noticed the threshold crossing.
+    Each severity fires at most once per session (tracked via
+    ``QUEUE_WARNING_FIRED_KEY`` / ``QUEUE_CRITICAL_FIRED_KEY``).
+
+    Returns True when a turn was appended, so the caller can also
+    persist the transcript once instead of doing it on every render.
+    """
+    started_at_iso: str | None = st.session_state.get(STARTED_AT_KEY)
+    if not started_at_iso:
+        return False
+
+    scenario_file: ScenarioFile = st.session_state[SCENARIO_FILE_KEY]
+    sla = scenario_file.service_sla
+    elapsed = _elapsed_seconds_from_iso(started_at_iso)
+
+    warning_fired = bool(st.session_state.get(QUEUE_WARNING_FIRED_KEY, False))
+    critical_fired = bool(st.session_state.get(QUEUE_CRITICAL_FIRED_KEY, False))
+
+    fired = False
+
+    # Critical wins over warning: on a very slow session that reaches
+    # critical before we ever rendered warning, we still want the more
+    # urgent line to be the one that shows. Order: critical check first,
+    # and if it fires we also mark warning as fired so we do not double
+    # up on the same rerun.
+    if elapsed >= sla.critical_seconds and not critical_fired:
+        minutes = int(elapsed // 60)
+        content = _queue_turn_content(
+            severity="critical",
+            minutes_waited=minutes,
+            message=_QUEUE_CRITICAL_MESSAGE,
+        )
+        orchestrator.transcript.append("queue", content)
+        st.session_state[QUEUE_CRITICAL_FIRED_KEY] = True
+        st.session_state[QUEUE_WARNING_FIRED_KEY] = True
+        fired = True
+    elif elapsed >= sla.warning_seconds and not warning_fired:
+        minutes = int(elapsed // 60)
+        content = _queue_turn_content(
+            severity="warning",
+            minutes_waited=minutes,
+            message=_QUEUE_WARNING_MESSAGE,
+        )
+        orchestrator.transcript.append("queue", content)
+        st.session_state[QUEUE_WARNING_FIRED_KEY] = True
+        fired = True
+
+    if fired:
+        # Persist the transcript so a mid-session refresh keeps the
+        # injected line. Metadata timestamp is touched too so the
+        # "last activity" column reflects the injection.
+        output_dir: Path = st.session_state[OUTPUT_DIR_KEY]
+        save_transcript(orchestrator.transcript, base=output_dir)
+        metadata: SessionMetadata = touch_metadata(
+            st.session_state[METADATA_KEY]
+        )
+        st.session_state[METADATA_KEY] = metadata
+        save_metadata(metadata, base=output_dir)
+
+    return fired
+
+
+def _render_queue_turn_in_chat(content: str) -> None:
+    """Render one queue turn as a bordered notice inside the chat body.
+
+    Mirrors the shape of :func:`_render_action_turn_in_chat` — parses
+    a JSON payload out of the turn content and draws an inline card
+    with the queued customer's line. Colour is driven by the
+    ``data-severity`` attribute so the CSS keeps the theme in one
+    place.
+    """
+    try:
+        payload = json.loads(content)
+    except (ValueError, TypeError):
+        # Corrupt payload → still show something legible.
+        payload = {"severity": "warning", "message": str(content), "minutes_waited": 0}
+
+    severity = str(payload.get("severity", "warning"))
+    minutes = int(payload.get("minutes_waited", 0) or 0)
+    message = escape(str(payload.get("message", "")))
+
+    st.markdown(
+        f"<div class='civis-turn-queue' data-severity='{escape(severity)}'>"
+        f"  <div class='civis-queue-label'>"
+        f"    👥 [Fila]: &quot;{message}&quot;"
+        f"  </div>"
+        f"  <div style='font-size:0.82rem;color:#5b6473;'>"
+        f"    cliente na fila, {minutes}min"
+        f"  </div>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
 
 
 # ---------------------------------------------------------------------------

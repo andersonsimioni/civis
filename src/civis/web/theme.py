@@ -251,6 +251,73 @@ BASE_CSS = f"""
         color: {NEUTRAL_SUBTLE};
         margin: 0.6rem 0 0.3rem 0;
     }}
+    /* Onda 2 T1.2 — chat header timer badge. Colour comes from the
+       phase attribute set inline on the container. Monospace so the
+       digits do not jump between reruns. */
+    .civis-timer {{
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: "SFMono-Regular", "Menlo", "Consolas",
+                     "Liberation Mono", monospace;
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 0.35rem 0.75rem;
+        border-radius: 8px;
+        letter-spacing: 0.05em;
+        border: 2px solid transparent;
+    }}
+    .civis-timer[data-phase="green"] {{
+        background: #eaf7ec;
+        color: #1f7a34;
+        border-color: #3f8f4a;
+    }}
+    .civis-timer[data-phase="amber"] {{
+        background: #fff8d6;
+        color: #8a6d1a;
+        border-color: #c9a521;
+    }}
+    .civis-timer[data-phase="warning"] {{
+        background: #fdecd6;
+        color: #a04a10;
+        border-color: #d68f1f;
+    }}
+    .civis-timer[data-phase="red"] {{
+        background: #fbe0dd;
+        color: #8a1a12;
+        border-color: #b3261e;
+    }}
+    .civis-timer-label {{
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.75;
+    }}
+    /* Onda 2 T1.3 — a "queue" turn (customer waiting complaining).
+       Shown as an assistant bubble but with a coloured border so the
+       trainee sees it is not the persona speaking. Orange for warning
+       phase, red for critical. */
+    .civis-turn-queue {{
+        border-left: 4px solid #d68f1f;
+        background: #fdf3e2;
+        padding: 0.6rem 0.85rem;
+        border-radius: 4px;
+        color: {NEUTRAL_TEXT};
+        margin: 0.3rem 0;
+    }}
+    .civis-turn-queue[data-severity="critical"] {{
+        border-left-color: #b3261e;
+        background: #fbe2df;
+    }}
+    .civis-queue-label {{
+        font-weight: 700;
+        color: #8a4a10;
+        margin-bottom: 0.25rem;
+    }}
+    .civis-turn-queue[data-severity="critical"] .civis-queue-label {{
+        color: #7a1a12;
+    }}
 </style>
 """
 

@@ -1,4 +1,4 @@
-"""
+﻿"""
 "Nova sessão" page — D+.3 chat REPL with inline judge verdict.
 Fase D++: persona replies stream token-by-token via ``st.write_stream``.
 
@@ -45,6 +45,7 @@ If absent, the page falls back to ``load_or_default_config`` +
 from __future__ import annotations
 
 import json
+import os
 import random
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -396,6 +397,7 @@ def _start_session(scenario_id: str) -> None:
         judge_provider_name=judge_provider.name,
         created_at=now_iso,
         last_updated_at=now_iso,
+        agent_name=os.environ.get("CIVIS_AGENT_NAME") or None,
     )
     save_metadata(metadata, base=output_dir)
     save_transcript(transcript, base=output_dir)

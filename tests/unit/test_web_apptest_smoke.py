@@ -74,22 +74,24 @@ def test_default_page_is_new_session() -> None:
     assert any("Nova sessão" in t for t in titles)
 
 
-def test_new_session_page_shows_scenario_landing() -> None:
+def test_new_session_landing_exposes_three_scenario_start_buttons() -> None:
     """
-    D.5 polish: the page renders three scripted-scenario cards plus the
-    "Como executar agora" runner section. Pinning the subheader and a
-    known scenario id catches accidental regressions during polish.
+    D+.1: the landing now starts a live chat REPL. It must expose one
+    "Começar atendimento" button per scripted scenario, plus a
+    "Sessão aleatória" button. The old copy-CLI-command flow is gone.
     """
     at = AppTest.from_file(str(_APP_PATH))
     _switch_to(at, "new_session.py")
-    subheaders = [s.value for s in at.subheader]
-    assert "Como executar agora" in subheaders
-    # Each card contains a copy-friendly CLI command in a code block —
-    # AppTest exposes code blocks via at.code with the raw command text.
+    button_keys = {b.key for b in at.button if b.key}
+    # One primary CTA per scripted scenario.
+    assert "start_certificate_duplicate_confused_v1" in button_keys
+    assert "start_rg_urgent_aggressive_v1" in button_keys
+    assert "start_certificate_thirdparty_fraudster_v1" in button_keys
+    # Plus the dice-roll shortcut.
+    assert "start_random" in button_keys
+    # The old CLI-command code block should NOT be shown anymore.
     code_texts = " ".join(c.value for c in at.code)
-    assert "certificate_thirdparty_fraudster_v1" in code_texts
-    assert "certificate_duplicate_confused_v1" in code_texts
-    assert "rg_urgent_aggressive_v1" in code_texts
+    assert "python -m civis session --scenario" not in code_texts
 
 
 def test_past_sessions_lists_demo_fixture(demo_sessions_env: Path) -> None:

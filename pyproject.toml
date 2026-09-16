@@ -22,6 +22,12 @@ dependencies = [
     # docs/ROADMAP_PITCH.md §5 (Fase D.1); React was moved to the post-pitch
     # backlog. Native widgets are enough for the demo — no Altair/Plotly.
     "streamlit>=1.30,<2.0",
+    # Onda-1 F2.2: pure-Python A4 renderer for the attendant certificate.
+    # ReportLab is the de-facto standard for programmatic PDF in Python,
+    # BSD-licensed, no headless-browser dependency (weasyprint pulls
+    # cairo/pango; the chrome-headless path we use in fill_pitch_deck is
+    # heavier than we need for a one-page certificate).
+    "reportlab>=4.0,<5.0",
 ]
 
 [project.optional-dependencies]

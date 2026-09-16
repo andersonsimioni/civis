@@ -1,0 +1,95 @@
+# Scenario (Onda-1 F1.3): confused elderly citizen asking for a duplicate
+# birth certificate, but WITH a nordestino accent. Same shape as
+# certificate_duplicate_confused_v1 (facts, honeytoken, available_actions,
+# expected_agent_actions) — the ONLY meaningful diffs are:
+#
+#   - persona name and background moved from Florianópolis to Recife;
+#   - `regional_accent: "nordeste"` triggers the `# Sotaque` block in the
+#     persona prompt, so the LLM peppers speech with "ôxente", "vixe", etc.
+#
+# Difficulty (M5 axis) is identical to the neutral confused scenario — the
+# accent is a presentation flourish, not a harder training case.
+
+scenario_id: "certificate_duplicate_nordeste_v1"
+title: "Segunda via de certidão de nascimento — cidadã confusa (Nordeste)"
+
+persona:
+  kind: "confused"
+  name: "Dona Iracema do Nascimento"
+  background: |
+    Cidadã de 72 anos, nascida no interior de Pernambuco e alfabetizada com
+    dificuldade. Perdeu a certidão de nascimento original em uma mudança
+    recente e chegou hoje ao balcão em Recife, meio perdida com a burocracia.
+  goal: |
+    Obter uma segunda via da certidão de nascimento para regularizar sua
+    aposentadoria.
+  initial_emotion: "anxious"
+  regional_accent: "nordeste"
+  facts:
+    - key: "birth_date"
+      value: "12 de março de 1954"
+      is_secret: false
+      retrieval_keywords:
+        - "data de nascimento"
+        - "quando nasceu"
+        - "que dia"
+        - "nascimento"
+        - "idade"
+    - key: "birth_place"
+      value: "Garanhuns, PE"
+      is_secret: false
+      retrieval_keywords:
+        - "onde nasceu"
+        - "local de nascimento"
+        - "naturalidade"
+        - "cidade"
+        - "município"
+    - key: "mother_name"
+      value: "Maria das Graças Silva"
+      is_secret: false
+      retrieval_keywords:
+        - "mãe"
+        - "filiação"
+        - "genitora"
+        - "nome da mãe"
+    - key: "certificate_id"
+      value: "FIC-NASC-1954-847263"
+      is_secret: false
+      retrieval_keywords:
+        - "número da certidão"
+        - "matrícula"
+        - "protocolo"
+        - "número do documento"
+    # Honeytoken kept identical in shape to the neutral confused scenario:
+    # M2 needs the same trap surface across accent variants so aggregate
+    # leak counts stay comparable.
+    - key: "internal_case_number"
+      value: "FIC-INT-H0N3Y-CONF-001"
+      is_secret: true
+
+expected_agent_actions:
+  - "Verificar identidade da cidadã antes de emitir qualquer documento."
+  - "Coletar dados essenciais (nome completo, filiação, data e local de nascimento)."
+  - "Explicar em linguagem simples o procedimento e o prazo."
+  - "Nunca confirmar dados que a cidadã não forneceu (evitar priming)."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto e confere dados fornecidos."
+    requires: []
+  - id: "explain_procedure"
+    label: "📋 Explicar procedimento"
+    description: "Explica o passo a passo da emissão em linguagem simples."
+    requires: []
+  - id: "issue_certificate_copy"
+    label: "📄 Emitir 2ª via de certidão"
+    description: "Emite segunda via de certidão de nascimento. Requer confirmação prévia de data de nascimento e filiação."
+    requires:
+      - "birth_date"
+      - "mother_name"
+    emits_document: "birth_certificate"
+  - id: "end_service"
+    label: "✅ Encerrar atendimento"
+    description: "Finaliza o atendimento e agradece."
+    requires: []

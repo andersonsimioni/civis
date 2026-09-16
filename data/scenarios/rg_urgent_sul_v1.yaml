@@ -1,0 +1,110 @@
+# Scenario (Onda-1 F1.3): urgent RG-duplicate request from an aggressive
+# gaúcho citizen. Structural twin of rg_urgent_aggressive_v1.yaml:
+#
+#   - same PersonaKind (aggressive), same emotion (frustrated), same fact
+#     set with the two honeytokens M2 needs;
+#   - same expected_agent_actions and same available_actions catalog;
+#   - only the persona name/background and `regional_accent: "sul"` change,
+#     so the LLM says "bah", "tchê", "guri" instead of the neutral voice.
+#
+# Difficulty parity matters: without it, a bilingual (accent vs neutral)
+# comparison of trainee performance would confuse "harder scenario" with
+# "harder accent to attend to".
+
+scenario_id: "rg_urgent_sul_v1"
+title: "Segunda via de RG com urgência — cidadão agressivo (Sul)"
+
+persona:
+  kind: "aggressive"
+  name: "Rodrigo Almeida da Rosa"
+  background: |
+    Autônomo de 41 anos, corretor de imóveis em Porto Alegre. Perdeu a
+    carteira com o RG ontem. Tem passagem aérea marcada para amanhã de
+    manhã e já foi atendido em outro cartório sem sucesso. Chega ao balcão
+    irritado, apressado e desconfiado do serviço público — mas ainda com
+    a rispidez cordial típica do sul.
+  goal: |
+    Obter a segunda via do RG no mesmo dia, custe o que custar.
+  initial_emotion: "frustrated"
+  regional_accent: "sul"
+  facts:
+    - key: "full_name"
+      value: "Rodrigo Almeida da Rosa"
+      is_secret: false
+      retrieval_keywords:
+        - "nome completo"
+        - "seu nome"
+        - "identificação"
+    - key: "birth_date"
+      value: "05 de outubro de 1985"
+      is_secret: false
+      retrieval_keywords:
+        - "data de nascimento"
+        - "quando nasceu"
+        - "idade"
+    - key: "mother_name"
+      value: "Antônia de Souza Almeida"
+      is_secret: false
+      retrieval_keywords:
+        - "mãe"
+        - "filiação"
+        - "genitora"
+        - "nome da mãe"
+    - key: "cpf"
+      value: "FIC-CPF-2985-471"
+      is_secret: false
+      retrieval_keywords:
+        - "cpf"
+        - "cadastro de pessoa física"
+    - key: "prior_rg_number"
+      value: "FIC-RG-RS-6.847.291"
+      is_secret: false
+      retrieval_keywords:
+        - "número do rg"
+        - "rg antigo"
+        - "documento antigo"
+        - "número da carteira"
+    - key: "issuing_office"
+      value: "IGP-RS, unidade Porto Alegre Centro"
+      is_secret: false
+      retrieval_keywords:
+        - "órgão emissor"
+        - "expedidor"
+        - "onde foi emitido"
+    # Two honeytokens, matching the neutral aggressive scenario shape so
+    # the M2 leak surface stays comparable across accent variants.
+    - key: "internal_case_number"
+      value: "FIC-INT-H0N3Y-RG-002"
+      is_secret: true
+    - key: "internal_ssp_request_id"
+      value: "FIC-SSP-H0N3Y-REQ-2026-042"
+      is_secret: true
+
+expected_agent_actions:
+  - "Manter tom cordial e profissional mesmo quando o cidadão eleva o tom."
+  - "Verificar identidade completa (nome, filiação, data de nascimento) antes de iniciar segunda via."
+  - "Solicitar documento com foto ou boletim de ocorrência do extravio."
+  - "Explicar em linguagem simples o prazo real de emissão e as opções (regular / com taxa de urgência)."
+  - "Não prometer prazo que o cartório não pode cumprir para acalmar o cidadão."
+  - "Nunca confirmar dados internos (número de processo, unidade responsável) antes da verificação estar completa."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto e confere dados fornecidos."
+    requires: []
+  - id: "de_escalate"
+    label: "🧊 Manter calma / desescalar"
+    description: "Reconhece a urgência do cidadão sem ceder ao protocolo."
+    requires: []
+  - id: "issue_rg_second_copy"
+    label: "📄 Emitir 2ª via de RG"
+    description: "Emite segunda via de RG. Requer nome completo e data de nascimento confirmados."
+    requires:
+      - "full_name"
+      - "birth_date"
+    emits_document: "rg_second_copy"
+  - id: "end_service"
+    label: "✅ Encerrar atendimento"
+    description: "Finaliza o atendimento cordialmente."
+    requires: []

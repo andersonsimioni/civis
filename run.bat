@@ -1,7 +1,7 @@
 @echo off
 REM CIVIS launcher (Windows). Runs the most common tasks from a single menu.
 REM Usage: double-click, or `run.bat` from a Command Prompt at the repo root.
-setlocal
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 cd /d "%~dp0"
 
@@ -42,11 +42,12 @@ echo    12. Rodar JudgeDeceiver-pointwise (mock)
 echo.
 echo   Pitch
 echo    13. Preencher deck com numeros reais (F-final)
+echo    14. Emitir certificado do atendente
 echo.
 echo    0. Sair
 echo.
 
-set /p choice="Escolha [0-13]: "
+set /p choice="Escolha [0-14]: "
 echo.
 
 REM Options that hit Ollama (1-4 and 7) run a preflight first — it verifies
@@ -65,6 +66,18 @@ if "%choice%"=="10" python scripts\run_study_v2.py analyze
 if "%choice%"=="11" python -m civis adversarial run --target both --output reports\adversarial_run.json
 if "%choice%"=="12" python -m civis adversarial judge-deceiver --output reports\judge_deceiver_run.json
 if "%choice%"=="13" python scripts\fill_pitch_deck.py
+REM Onda-1 F2.4: prompt for the attendant's name, then call `civis certify`.
+REM setlocal enabledelayedexpansion (top of file) makes !var! work inside
+REM the block below — %var% would expand at parse time and be empty.
+if "%choice%"=="14" (
+    set _cert_name=
+    set /p _cert_name="Nome completo do atendente: "
+    if defined _cert_name (
+        python -m civis certify --agent-name "!_cert_name!"
+    ) else (
+        echo [civis] nome vazio — abortando.
+    )
+)
 if "%choice%"=="0"  goto end
 
 echo.

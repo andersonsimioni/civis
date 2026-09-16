@@ -457,3 +457,63 @@ def test_restart_button_from_verdict_view_returns_to_landing(
 
     assert at.session_state["civis.chat.view"] == "landing"
     assert "civis.chat.orchestrator" not in at.session_state
+
+
+
+# ---------------------------------------------------------------------------
+# D+.4 — loading spinners and provider error states
+# ---------------------------------------------------------------------------
+
+
+def test_persona_provider_failure_shows_actionable_error_in_ptbr(
+    chat_env: Path,
+) -> None:
+    """
+    A ConnectionError from the persona provider must NOT crash the app:
+    the chat view stays live, and a pt-BR error banner tells the user
+    what to try (Ollama offline, API key, etc.).
+    """
+    at = _start_scenario(
+        chat_env,
+        persona_raises=ConnectionError("connection refused by localhost:11434"),
+    )
+    # An agent turn now raises inside the orchestrator.
+    _submit_one_turn(at)
+
+    assert at.session_state["civis.chat.view"] == "chat"
+    error_text = " ".join(e.value for e in at.error)
+    assert "Ollama" in error_text or "API key" in error_text
+    # The transcript on disk still has the agent turn (recorded before
+    # the LLM call) but no persona reply.
+    session_id = at.session_state["civis.chat.session_id"]
+    transcript_payload = json.loads(
+        (chat_env / session_id / "transcript.json").read_text(encoding="utf-8")
+    )
+    # The initial (empty) transcript was saved at start_session; the
+    # failing turn did not re-persist a persona turn, so we should still
+    # have zero persona turns on disk.
+    persona_turns = [t for t in transcript_payload["turns"] if t["speaker"] == "persona"]
+    assert persona_turns == []
+
+
+def test_start_session_with_missing_scenario_stays_on_landing(
+    chat_env: Path, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """
+    If the scenario yaml can't be resolved, the start-session flow flags
+    an st.error on the landing without flipping the view.
+    """
+    # Point scenarios lookup at an empty folder so resolve_scenario_path fails.
+    empty_scenarios = tmp_path / "scenarios"
+    empty_scenarios.mkdir()
+    monkeypatch.chdir(tmp_path)  # so 'data/scenarios' resolves under tmp
+
+    at = _boot_landing(chat_env)
+    btn = next(b for b in at.button if b.key == "start_certificate_duplicate_confused_v1")
+    btn.click()
+    at.run()
+
+    view = _session_state_get(at, "civis.chat.view") or "landing"
+    assert view == "landing"
+    error_text = " ".join(e.value for e in at.error)
+    assert "Não foi possível iniciar a sessão" in error_text

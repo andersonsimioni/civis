@@ -356,6 +356,10 @@ def _start_session(scenario_id: str) -> None:
             "Não foi possível iniciar a sessão. "
             f"{_format_provider_error(exc)}"
         )
+        # Force a rerun so the landing renders again and picks up the
+        # error banner from ERROR_KEY. Without this, the current render
+        # already consumed ERROR_KEY (with pop) before the click set it.
+        st.rerun()
         return
 
     # New session on disk. output_dir respects the CIVIS_SESSIONS_DIR env

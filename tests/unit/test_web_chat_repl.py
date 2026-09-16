@@ -18,6 +18,7 @@ Layout of the file follows the entregável split D+.1..D+.5:
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -174,6 +175,32 @@ def _inject_provider_factory(
     at.session_state["civis.chat.provider_factory"] = _factory
 
 
+def _start_scenario(
+    chat_env: Path,
+    *,
+    scenario_id: str = "certificate_duplicate_confused_v1",
+    persona_replies: list[str] | None = None,
+    persona_raises: BaseException | None = None,
+) -> AppTest:
+    """
+    Boot the landing, wire a fake provider, and click the "Começar" button
+    for a specific scenario. Returns the AppTest already advanced into
+    the chat view.
+    """
+    at = AppTest.from_file(str(_APP_PATH))
+    at.switch_page(str(_PAGES_DIR / "new_session.py"))
+    _inject_provider_factory(
+        at,
+        persona_replies=persona_replies or ["Olá, sou a Iracema."],
+        persona_raises=persona_raises,
+    )
+    at.run()
+    btn = next(b for b in at.button if b.key == f"start_{scenario_id}")
+    btn.click()
+    at.run()
+    return at
+
+
 # ---------------------------------------------------------------------------
 # D+.1 — landing view
 # ---------------------------------------------------------------------------
@@ -203,7 +230,7 @@ def test_random_button_starts_a_session_from_a_shipping_scenario(
 ) -> None:
     """
     Clicking 'Sessão aleatória' picks one of the three scripted scenarios
-    and flips the view state to "chat" (or the D+.1 placeholder).
+    and flips the view state to "chat".
     """
     at = _boot_landing(chat_env)
     random_btn = next(b for b in at.button if b.key == "start_random")
@@ -229,3 +256,89 @@ def test_choosing_scenario_opens_chat_view_with_expected_id(
     session_folder = chat_env / session_id
     assert (session_folder / "metadata.json").exists()
     assert (session_folder / "transcript.json").exists()
+
+
+# ---------------------------------------------------------------------------
+# D+.2 — chat view: header, bubbles, input, per-turn persistence, cancel
+# ---------------------------------------------------------------------------
+
+
+def test_chat_view_renders_header_with_scenario_label(chat_env: Path) -> None:
+    """After starting a session, the chat view shows the scenario title."""
+    at = _start_scenario(chat_env, scenario_id="rg_urgent_aggressive_v1")
+    # The friendly scenario label is used as an H3 markdown.
+    markdown_text = " ".join(m.value for m in at.markdown)
+    assert "Segunda via de RG" in markdown_text
+    # Header carries Encerrar and Cancelar buttons.
+    button_keys = {b.key for b in at.button if b.key}
+    assert "finalize_chat" in button_keys
+    assert "cancel_chat" in button_keys
+
+
+def test_agent_message_produces_persona_bubble_and_persists_turn(
+    chat_env: Path,
+) -> None:
+    """
+    Typing into ``st.chat_input`` runs one persona turn: two chat_message
+    bubbles appear (agent + persona) and transcript.json now has 2 turns.
+    """
+    at = _start_scenario(
+        chat_env,
+        persona_replies=["Ah, obrigada, meu filho, estou muito confusa hoje."],
+    )
+    session_id = at.session_state["civis.chat.session_id"]
+
+    # Submit an agent message via the chat_input widget.
+    at.chat_input[0].set_value("Bom dia, senhora, como posso ajudar?").run()
+
+    # Two chat bubbles rendered.
+    assert len(at.chat_message) >= 2
+    # Transcript on disk has both turns.
+    transcript_payload = json.loads(
+        (chat_env / session_id / "transcript.json").read_text(encoding="utf-8")
+    )
+    assert len(transcript_payload["turns"]) == 2
+    assert transcript_payload["turns"][0]["speaker"] == "agent"
+    assert transcript_payload["turns"][1]["speaker"] == "persona"
+    # Turn count in state matches (one agent turn was recorded).
+    assert at.session_state["civis.chat.turn_count"] == 1
+
+
+def test_cancel_button_clears_chat_state_and_returns_to_landing(
+    chat_env: Path,
+) -> None:
+    """Clicking 'Cancelar' drops every civis.chat.* key and goes back."""
+    at = _start_scenario(chat_env)
+    assert at.session_state["civis.chat.view"] == "chat"
+
+    cancel_btn = next(b for b in at.button if b.key == "cancel_chat")
+    cancel_btn.click()
+    at.run()
+
+    assert at.session_state["civis.chat.view"] == "landing"
+    # Orchestrator and session id were dropped.
+    assert "civis.chat.orchestrator" not in at.session_state
+    assert "civis.chat.session_id" not in at.session_state
+
+
+def test_reaching_max_turns_hides_input_and_offers_finalize(
+    chat_env: Path,
+) -> None:
+    """
+    After the soft cap, the plain chat_input goes away and we surface
+    'Continuar mesmo assim' + 'Encerrar e avaliar' buttons.
+    """
+    at = _start_scenario(chat_env)
+    # Force the state right into the "cap reached" arm.
+    at.session_state["civis.chat.turn_count"] = 12
+    at.session_state["civis.chat.max_turns"] = 12
+    at.run()
+
+    button_keys = {b.key for b in at.button if b.key}
+    assert "extend_max_turns" in button_keys
+    assert "finalize_from_cap" in button_keys
+    # No free-typing input in this arm.
+    assert len(at.chat_input) == 0
+    # Warning copy is present.
+    warning_text = " ".join(w.value for w in at.warning)
+    assert "Limite" in warning_text

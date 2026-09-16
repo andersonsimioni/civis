@@ -1,17 +1,27 @@
 """
-"Nova sessão" page — D+.1 landing: clickable scenario cards + random start.
+"Nova sessão" page — D+.2 chat REPL running inside the browser.
 
 The old copy-CLI-command flow was ripped out on Anderson's request:
 the trainee now conducts the whole simulation inside the browser,
-starting from this landing. The full chat REPL, the "Encerrar e
-avaliar" flow and the inline verdict view land in D+.2..D+.5.
+starting from the landing view. The inline verdict panel + finalise
+pipeline (contradictions, honeytokens, judge) land in D+.3.
 
 Session state keys (all prefixed ``civis.chat.`` so they never collide
 with the filters used by the other pages):
 
-    ``civis.chat.view``           "landing" | "chat" | "verdict"
-    ``civis.chat.error``          transient error text, cleared after one
-                                  rerun
+    ``civis.chat.view``            "landing" | "chat" (verdict → D+.3)
+    ``civis.chat.orchestrator``    live SessionOrchestrator
+    ``civis.chat.session_id``      id of the current session on disk
+    ``civis.chat.scenario_id``     e.g. "certificate_duplicate_..."
+    ``civis.chat.scenario_file``   parsed ScenarioFile
+    ``civis.chat.metadata``        SessionMetadata (touched every turn)
+    ``civis.chat.rubric``          RubricDefinition (used by D+.3 judge)
+    ``civis.chat.judge_provider``  LLMProvider used by the judge pass
+    ``civis.chat.output_dir``      Path where sidecars land
+    ``civis.chat.turn_count``      int, agent turns already done
+    ``civis.chat.telemetry_rows``  list[dict] persisted per turn
+    ``civis.chat.max_turns``       soft cap (starts at DEFAULT_MAX_TURNS)
+    ``civis.chat.error``           transient error text, one rerun
 
 Tests inject a provider factory under
 ``civis.chat.provider_factory`` to bypass Ollama:
@@ -29,7 +39,7 @@ import random
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 import streamlit as st
 
@@ -44,6 +54,7 @@ from civis.llm.provider import LLMProvider
 from civis.personas.base import PersonaState
 from civis.session.orchestrator import SessionOrchestrator
 from civis.session.scenario import (
+    ScenarioFile,
     load_scenario_from_path,
     resolve_scenario_path,
 )
@@ -53,7 +64,9 @@ from civis.session.storage import (
     new_session_id,
     save_metadata,
     save_transcript,
+    save_turn_telemetry_json,
     scenario_hash,
+    touch_metadata,
 )
 from civis.web.formatting import scenario_label
 from civis.web.state import get_sessions_dir
@@ -85,6 +98,22 @@ _VIEW_CHAT = "chat"
 # constants would drag Typer into the Streamlit page.
 _DEFAULT_MAX_TURNS = 12
 _DEFAULT_SCENARIOS_DIR = Path("data/scenarios")
+
+# All chat-scoped state keys, so cancel/reset paths clean up in one place.
+_CHAT_STATE_KEYS: tuple[str, ...] = (
+    ORCH_KEY,
+    SESSION_ID_KEY,
+    SCENARIO_ID_KEY,
+    SCENARIO_FILE_KEY,
+    METADATA_KEY,
+    RUBRIC_KEY,
+    JUDGE_PROVIDER_KEY,
+    OUTPUT_DIR_KEY,
+    TURN_COUNT_KEY,
+    TELEMETRY_KEY,
+    MAX_TURNS_KEY,
+    ERROR_KEY,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -175,15 +204,10 @@ _SCENARIOS: list[_ScenarioCard] = [
 
 
 def render() -> None:
-    """Render whichever view the state machine is in.
-
-    Chat + verdict views land in D+.2 and D+.3; for now, anything other
-    than landing falls back to the landing so we never leave the user
-    stuck on a half-implemented view.
-    """
+    """Render whichever view the state machine is in."""
     view = st.session_state.get(VIEW_KEY, _VIEW_LANDING)
     if view == _VIEW_CHAT:
-        _render_chat_placeholder()
+        _render_chat_view()
     else:
         _render_landing_view()
 
@@ -280,22 +304,6 @@ def _render_random_launch() -> None:
             _start_session(picked.scenario_id)
 
 
-def _render_chat_placeholder() -> None:
-    """
-    Temporary placeholder shown until the D+.2 chat view lands. Keeps the
-    landing accessible via a "Voltar" so users are never trapped.
-    """
-    scenario_id = st.session_state.get(SCENARIO_ID_KEY, "—")
-    st.title("Sessão iniciada")
-    st.info(
-        f"Cenário `{scenario_id}` iniciado. A conversa em tempo real "
-        f"aparece aqui na próxima etapa (D+.2)."
-    )
-    if st.button("← Voltar à landing", key="back_to_landing_from_placeholder"):
-        st.session_state[VIEW_KEY] = _VIEW_LANDING
-        st.rerun()
-
-
 # ---------------------------------------------------------------------------
 # Session bootstrap
 # ---------------------------------------------------------------------------
@@ -382,6 +390,205 @@ def _build_provider(role_key: str) -> LLMProvider:
 
 
 # ---------------------------------------------------------------------------
+# Chat view — bubbles + input + finalize / cancel controls
+# ---------------------------------------------------------------------------
+
+
+def _render_chat_view() -> None:
+    """
+    Render the live chat: header with cancel + finalise, transcript as
+    bubbles, ``st.chat_input`` at the bottom. Finalise is wired in D+.3;
+    for now it flags a "not implemented yet" hint.
+    """
+    orchestrator: SessionOrchestrator | None = st.session_state.get(ORCH_KEY)
+    if orchestrator is None:
+        # Someone landed here directly without a live orchestrator —
+        # rebuild the landing and move on.
+        st.session_state[VIEW_KEY] = _VIEW_LANDING
+        st.rerun()
+        return
+
+    _render_chat_header()
+    _render_chat_body(orchestrator)
+    _render_chat_input(orchestrator)
+
+
+def _render_chat_header() -> None:
+    """Title bar with scenario label + persona chip + finalise/cancel."""
+    scenario_id: str = st.session_state[SCENARIO_ID_KEY]
+    scenario_file: ScenarioFile = st.session_state[SCENARIO_FILE_KEY]
+    friendly_id = scenario_label(scenario_id)
+    persona_kind_label = _persona_kind_label(scenario_file.persona.kind.value)
+
+    header_left, header_center, header_right = st.columns([3, 1.3, 1.3])
+    with header_left:
+        st.markdown(f"### 💬 {friendly_id}")
+        st.caption(
+            f"Perfil: **{persona_kind_label}** · "
+            f"Turnos: {st.session_state.get(TURN_COUNT_KEY, 0)} / "
+            f"{st.session_state.get(MAX_TURNS_KEY, _DEFAULT_MAX_TURNS)}"
+        )
+    with header_center:
+        # Finalise is wired end-to-end in D+.3 — for D+.2 the button is
+        # here so users don't lose the affordance, but it only flags the
+        # upcoming step.
+        if st.button(
+            "Encerrar e avaliar",
+            key="finalize_chat",
+            type="primary",
+            use_container_width=True,
+        ):
+            st.session_state[ERROR_KEY] = (
+                "A avaliação inline chega no próximo passo (D+.3). "
+                "Por enquanto, os arquivos já salvos podem ser inspecionados "
+                "na aba 'Sessões passadas'."
+            )
+            st.rerun()
+    with header_right:
+        if st.button(
+            "Cancelar",
+            key="cancel_chat",
+            use_container_width=True,
+        ):
+            _cancel_session()
+            return
+
+    # One-shot error banner (e.g. provider failure on the previous turn).
+    pending_error = st.session_state.pop(ERROR_KEY, None)
+    if pending_error:
+        st.error(pending_error)
+
+
+def _render_chat_body(orchestrator: SessionOrchestrator) -> None:
+    """Render every turn as a chat bubble (agent → user, persona → assistant)."""
+    if not orchestrator.transcript.turns:
+        st.info(
+            "A pessoa está aguardando o seu primeiro contato. Digite abaixo "
+            "como você abriria o atendimento."
+        )
+        return
+    for turn in orchestrator.transcript.turns:
+        if turn.speaker == "agent":
+            with st.chat_message("user", avatar="👤"):
+                st.markdown(turn.content)
+        else:
+            with st.chat_message("assistant", avatar="🧑‍💼"):
+                st.markdown(turn.content)
+
+
+def _render_chat_input(orchestrator: SessionOrchestrator) -> None:
+    """
+    Feed line: ``st.chat_input`` unless the soft cap of turns is reached,
+    in which case we prompt the user to finalise or extend.
+    """
+    turn_count: int = st.session_state.get(TURN_COUNT_KEY, 0)
+    max_turns: int = st.session_state.get(MAX_TURNS_KEY, _DEFAULT_MAX_TURNS)
+
+    if turn_count >= max_turns:
+        st.warning(
+            f"Limite de {max_turns} turnos atingido. Encerre para gerar "
+            f"o verdict do juiz automático, ou aumente o limite para "
+            f"continuar mais alguns turnos."
+        )
+        cont_col, end_col = st.columns(2)
+        with cont_col:
+            if st.button(
+                f"Continuar mesmo assim (+{_DEFAULT_MAX_TURNS})",
+                key="extend_max_turns",
+                use_container_width=True,
+            ):
+                st.session_state[MAX_TURNS_KEY] = max_turns + _DEFAULT_MAX_TURNS
+                st.rerun()
+        with end_col:
+            # Same behaviour as the header button — wired in D+.3.
+            if st.button(
+                "Encerrar e avaliar",
+                key="finalize_from_cap",
+                type="primary",
+                use_container_width=True,
+            ):
+                st.session_state[ERROR_KEY] = (
+                    "A avaliação inline chega no próximo passo (D+.3)."
+                )
+                st.rerun()
+        return
+
+    agent_message = st.chat_input(
+        "Digite sua resposta como atendente...",
+        key="chat_input",
+    )
+    if agent_message:
+        _handle_agent_turn(orchestrator, agent_message)
+
+
+def _handle_agent_turn(
+    orchestrator: SessionOrchestrator, agent_message: str
+) -> None:
+    """
+    Run one agent turn: call the persona LLM under a spinner, persist
+    transcript + metadata + telemetry, catch provider errors gracefully.
+    """
+    try:
+        with st.spinner("Analisando resposta da pessoa..."):
+            result = orchestrator.run_agent_turn(agent_message)
+    except Exception as exc:  # noqa: BLE001 - surface any provider failure to the user
+        st.session_state[ERROR_KEY] = _format_provider_error(exc)
+        st.rerun()
+        return
+
+    output_dir: Path = st.session_state[OUTPUT_DIR_KEY]
+    session_id: str = st.session_state[SESSION_ID_KEY]
+
+    save_transcript(orchestrator.transcript, base=output_dir)
+    metadata: SessionMetadata = touch_metadata(st.session_state[METADATA_KEY])
+    st.session_state[METADATA_KEY] = metadata
+    save_metadata(metadata, base=output_dir)
+
+    if result.llm_response is not None:
+        telemetry_rows: list[dict[str, Any]] = st.session_state[TELEMETRY_KEY]
+        telemetry_rows.append(
+            {
+                "turn_index": result.persona_reply.turn_index,
+                "input_tokens": result.llm_response.input_tokens,
+                "output_tokens": result.llm_response.output_tokens,
+                "latency_ms": result.llm_response.latency_ms,
+                "provider_name": result.llm_response.provider_name,
+            }
+        )
+        save_turn_telemetry_json(
+            {"session_id": session_id, "turns": telemetry_rows},
+            session_id=session_id,
+            base=output_dir,
+        )
+        st.session_state[TELEMETRY_KEY] = telemetry_rows
+
+    st.session_state[TURN_COUNT_KEY] = st.session_state.get(TURN_COUNT_KEY, 0) + 1
+    st.rerun()
+
+
+# ---------------------------------------------------------------------------
+# Cancel + reset helpers
+# ---------------------------------------------------------------------------
+
+
+def _cancel_session() -> None:
+    """
+    Abandon the chat without running the judge. The transcript + metadata
+    already saved on disk stay — the user can still reopen the session in
+    "Sessões passadas" and re-run the judge from the CLI if they want.
+    """
+    _reset_chat_state()
+    st.rerun()
+
+
+def _reset_chat_state() -> None:
+    """Drop every ``civis.chat.*`` key and go back to the landing view."""
+    for key in _CHAT_STATE_KEYS:
+        st.session_state.pop(key, None)
+    st.session_state[VIEW_KEY] = _VIEW_LANDING
+
+
+# ---------------------------------------------------------------------------
 # Small helpers
 # ---------------------------------------------------------------------------
 
@@ -393,6 +600,16 @@ def _difficulty_color(label: str) -> str:
     if label == "Média":
         return "#c25a1a"
     return "#b3261e"  # Difícil
+
+
+def _persona_kind_label(kind_value: str) -> str:
+    """Map internal ``PersonaKind`` values to pt-BR labels for the header."""
+    mapping = {
+        "confused": "Cidadã confusa",
+        "aggressive": "Cidadão apressado",
+        "fraudster": "Fraudador social",
+    }
+    return mapping.get(kind_value, kind_value)
 
 
 def _format_provider_error(exc: BaseException) -> str:

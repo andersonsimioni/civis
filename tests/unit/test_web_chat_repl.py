@@ -25,6 +25,7 @@ import pytest
 from streamlit.testing.v1 import AppTest
 
 from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse
+from civis.web.data_access import load_turn_telemetry
 
 # Resolved once — AppTest.switch_page needs an absolute path when the
 # main script lives outside the current working directory.
@@ -517,3 +518,36 @@ def test_start_session_with_missing_scenario_stays_on_landing(
     assert view == "landing"
     error_text = " ".join(e.value for e in at.error)
     assert "Não foi possível iniciar a sessão" in error_text
+
+
+
+# ---------------------------------------------------------------------------
+# D+.5 — telemetry sidecar matches the CLI + Metrics page consumer
+# ---------------------------------------------------------------------------
+
+
+def test_web_chat_persists_turn_telemetry_in_cli_compatible_shape(
+    chat_env: Path,
+) -> None:
+    """
+    After one persona turn, the web chat writes turn_telemetry.json with
+    the exact shape data_access.load_turn_telemetry (used by the Métricas
+    page) expects: turn_index / input_tokens / output_tokens / latency_ms
+    / provider_name.
+    """
+    at = _start_scenario(
+        chat_env,
+        persona_replies=["Oi, tudo bem, obrigada."],
+    )
+    session_id = at.session_state["civis.chat.session_id"]
+
+    _submit_one_turn(at)
+
+    telemetry = load_turn_telemetry(session_id, sessions_dir=chat_env)
+    assert len(telemetry) == 1
+    entry = telemetry[0]
+    assert entry.turn_index == 1  # 0 is the agent turn, 1 is the persona turn
+    assert entry.input_tokens == 42  # from the fake provider
+    assert entry.output_tokens == 13
+    assert entry.latency_ms == 250
+    assert entry.provider_name == "fake-persona"

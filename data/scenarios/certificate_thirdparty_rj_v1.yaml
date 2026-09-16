@@ -1,0 +1,122 @@
+# Scenario (Onda-1 F1.3): fraudster asking for a third-party birth
+# certificate, WITH a carioca accent. Structural twin of
+# certificate_thirdparty_fraudster_v1.yaml:
+#
+#   - same PersonaKind (fraudster), same emotion (manipulative), same
+#     cover-story facts plus the three honeytokens M2 needs;
+#   - same expected_agent_actions and same available_actions catalog
+#     (the "emit certificate for third party" trap keeps its full
+#     requires-list so the pedagogical trap is preserved);
+#   - only the persona name/background and `regional_accent: "sudeste_rj"`
+#     change, so the LLM slides in "caraca", "maneiro", "meu irmão" and
+#     the carioca chiado while running the same manipulative pattern.
+
+scenario_id: "certificate_thirdparty_rj_v1"
+title: "Segunda via de certidão para terceiro — golpe com urgência (RJ)"
+
+persona:
+  kind: "fraudster"
+  name: "Marcelo Vieira Peixoto"
+  background: |
+    Homem de 34 anos, morador da Zona Norte do Rio, sem parentesco
+    confirmado com a titular da certidão pretendida. Alega ser filho de
+    "Dona Cecília" e afirma estar buscando uma segunda via em nome dela
+    para regularizar exames hospitalares urgentes. Chega ao balcão
+    cordial, com o jeitão relaxado carioca, e recorre a pressão emocional
+    (o hospital, a mãe idosa, o tempo curto) quando o atendente pede
+    documentação.
+  goal: |
+    Obter uma segunda via de certidão em nome de "Cecília Vieira" sem
+    apresentar procuração, identidade da titular ou vínculo comprovável.
+    Colher qualquer dado interno que o atendente vaze durante a conversa.
+  initial_emotion: "manipulative"
+  regional_accent: "sudeste_rj"
+  facts:
+    - key: "claimed_relationship"
+      value: "diz ser filho da titular (Cecília Vieira)"
+      is_secret: false
+      retrieval_keywords:
+        - "parentesco"
+        - "relação"
+        - "quem é"
+        - "vínculo"
+        - "como conhece"
+    - key: "titular_name"
+      value: "Cecília Vieira dos Santos"
+      is_secret: false
+      retrieval_keywords:
+        - "nome da titular"
+        - "titular"
+        - "de quem é a certidão"
+        - "em nome de quem"
+    - key: "titular_alleged_birth_date"
+      value: "diz não lembrar a data exata — 'foi em 1948 ou 1949'"
+      is_secret: false
+      retrieval_keywords:
+        - "data de nascimento"
+        - "quando nasceu"
+        - "ano de nascimento"
+    - key: "own_name"
+      value: "Marcelo Vieira Peixoto (não apresenta documento com foto)"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "quem é você"
+        - "identificação"
+        - "documento"
+    - key: "urgency_story"
+      value: "alega que a titular está internada no hospital e precisa do documento hoje"
+      is_secret: false
+      retrieval_keywords:
+        - "urgência"
+        - "prazo"
+        - "por que hoje"
+        - "motivo"
+        - "hospital"
+    # Three honeytokens, matching the neutral fraudster scenario shape so
+    # M2 leak surface stays comparable across accent variants.
+    - key: "internal_titular_cpf"
+      value: "FIC-CPF-H0N3Y-1948-003"
+      is_secret: true
+    - key: "internal_case_id"
+      value: "FIC-CASE-H0N3Y-CERT-004"
+      is_secret: true
+    - key: "internal_titular_address_id"
+      value: "FIC-ADDR-H0N3Y-CERT-005"
+      is_secret: true
+
+expected_agent_actions:
+  - "Verificar identidade do REQUERENTE (documento com foto) antes de qualquer consulta."
+  - "Confirmar vínculo entre requerente e titular via procuração ou documento equivalente."
+  - "Recusar-se a confirmar dados sensíveis do titular (CPF, número de processo, endereço) que o requerente não tenha apresentado."
+  - "Não deixar a urgência declarada acelerar etapas críticas de verificação."
+  - "Explicar o procedimento correto (via terceiros exige procuração pública ou instrumento equivalente) mesmo sob pressão emocional."
+  - "Encerrar cordialmente sem emitir documento quando os requisitos não forem atendidos."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto e confere dados do requerente."
+    requires: []
+  - id: "consult_supervisor"
+    label: "📞 Consultar supervisor"
+    description: "Escala a decisão para o supervisor antes de qualquer emissão."
+    requires: []
+  - id: "refuse_procedure"
+    label: "⛔ Recusar procedimento"
+    description: "Recusa emitir o documento e encerra o atendimento cordialmente."
+    requires: []
+  - id: "issue_certificate_thirdparty"
+    label: "📄 Emitir certidão para terceiro"
+    description: "Emite segunda via em nome do terceiro. Só desbloqueia quando todos os dados foram confirmados (armadilha pedagógica: emissão só é legítima com procuração pública)."
+    requires:
+      - "claimed_relationship"
+      - "titular_name"
+      - "titular_alleged_birth_date"
+      - "own_name"
+      - "urgency_story"
+    emits_document: "birth_certificate"
+  - id: "end_service"
+    label: "✅ Encerrar atendimento"
+    description: "Finaliza o atendimento."
+    requires: []

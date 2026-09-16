@@ -1,5 +1,6 @@
 """
 "Nova sessão" page — D+.3 chat REPL with inline judge verdict.
+Fase D++: persona replies stream token-by-token via ``st.write_stream``.
 
 Three views live on this page, switched via ``st.session_state``:
 
@@ -64,7 +65,7 @@ from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
 from civis.llm.provider import LLMProvider
 from civis.personas.base import PersonaState
 from civis.session.contradiction_detector import detect_contradictions
-from civis.session.orchestrator import SessionOrchestrator
+from civis.session.orchestrator import SessionOrchestrator, TurnResult
 from civis.session.scenario import (
     ScenarioFile,
     load_scenario_from_path,
@@ -547,24 +548,72 @@ def _handle_agent_turn(
     orchestrator: SessionOrchestrator, agent_message: str
 ) -> None:
     """
-    Run one agent turn: call the persona LLM under a spinner, persist
-    transcript + metadata + telemetry, catch provider errors gracefully.
+    Run one agent turn with token streaming.
+
+    Sequence, chosen so the trainee sees their own message before the
+    persona starts talking back:
+
+        1. Render the trainee's message as a user chat bubble (the
+           transcript body above only renders turns that were on disk
+           BEFORE this render pass — the new one shows here inline).
+        2. Open an assistant chat bubble and pipe
+           ``orchestrator.run_agent_turn_streaming(...)`` into
+           ``st.write_stream`` so tokens paint as they arrive. On the
+           first turn, warn about the cold-start delay via a ``st.status``
+           block that auto-collapses once the stream drains.
+        3. After ``st.write_stream`` returns, read ``last_result`` from
+           the orchestrator, persist transcript / metadata / telemetry
+           (same downstream as the non-streaming path), and rerun so the
+           next input widget is ready.
+
+    Any provider exception surfaces as a pt-BR error banner and preserves
+    the chat view so the user can retry.
     """
-    # Cold-start warning on the first turn only. Ollama takes 30-60s to load
-    # a 7B model into memory the first time; without this hint the user
-    # thinks the app hung and gives up.
-    is_first_turn = len(orchestrator.transcript.turns) <= 1
-    spinner_msg = (
-        "Carregando modelo e gerando primeira resposta... "
-        "(pode levar até 60s no primeiro turno)"
-        if is_first_turn
-        else "Analisando resposta da pessoa..."
+    # Cold-start hint. Ollama loads a 7B model into RAM the first time,
+    # so first-turn latency is 30-60s BEFORE the first token; we surface
+    # that to the user so they don't think the page hung. The hint block
+    # collapses automatically the moment the stream starts producing.
+    is_first_turn = len(orchestrator.transcript.turns) == 0
+    cold_start_msg = (
+        "Carregando modelo... o primeiro token pode levar até 60s "
+        "porque o Ollama está subindo o modelo pra memória."
     )
+
     try:
-        with st.spinner(spinner_msg):
-            result = orchestrator.run_agent_turn(agent_message)
+        # Render the trainee's message immediately so the UI feels
+        # responsive even before the persona starts speaking.
+        with st.chat_message("user", avatar="👤"):
+            st.markdown(agent_message)
+
+        # Stream the persona reply. st.write_stream returns the full
+        # aggregated text once the generator drains — we don't need the
+        # return value here because we read the reconstructed TurnResult
+        # off the orchestrator itself, but the widget still renders every
+        # yielded chunk in place.
+        with st.chat_message("assistant", avatar="🧑‍💼"):
+            if is_first_turn:
+                with st.status(cold_start_msg, expanded=False):
+                    st.write_stream(
+                        orchestrator.run_agent_turn_streaming(agent_message)
+                    )
+            else:
+                st.write_stream(
+                    orchestrator.run_agent_turn_streaming(agent_message)
+                )
     except Exception as exc:  # noqa: BLE001 - surface any provider failure to the user
         st.session_state[ERROR_KEY] = _format_provider_error(exc)
+        st.rerun()
+        return
+
+    result: TurnResult | None = orchestrator.last_result
+    if result is None:
+        # Guard: this should never happen — the streaming generator only
+        # exits without setting last_result on a mid-stream exception,
+        # which we already caught above. If we still land here, treat it
+        # as a soft failure so the UI recovers rather than crashing.
+        st.session_state[ERROR_KEY] = (
+            "A resposta da pessoa chegou vazia. Tente enviar de novo."
+        )
         st.rerun()
         return
 

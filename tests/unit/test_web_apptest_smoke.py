@@ -190,6 +190,27 @@ def test_each_page_has_expected_title(
     )
 
 
+def test_metrics_page_shows_m1_hybrid_validation_placeholders() -> None:
+    """
+    D.3 requires the Métricas page to expose the M1 hybrid design
+    (M1-A inter-model kappa + M1-C manual sample) with a placeholder
+    for the study window 20/10-01/12/2026. Pinning the labels here
+    catches accidental copy drift during polish.
+    """
+    at = AppTest.from_file(str(_APP_PATH))
+    _switch_to(at, "metrics.py")
+    metric_labels = [m.label for m in at.metric]
+    assert "Kappa inter-modelo" in metric_labels
+    assert "Concordância criterion-a-criterion" in metric_labels
+    # The subheader anchoring the whole block.
+    subheaders = [s.value for s in at.subheader]
+    assert "Validação (M1 híbrida)" in subheaders
+    # Study window quoted in the info box, so a reader knows when data lands.
+    info_text = " ".join(i.value for i in at.info)
+    assert "20/10" in info_text and "01/12" in info_text
+
+
+
 def test_env_override_takes_effect_on_past_sessions(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

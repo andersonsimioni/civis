@@ -40,10 +40,13 @@ echo   Adversarial
 echo    11. Rodar bateria OWASP (mock providers)
 echo    12. Rodar JudgeDeceiver-pointwise (mock)
 echo.
+echo   Pitch
+echo    13. Preencher deck com numeros reais (F-final)
+echo.
 echo    0. Sair
 echo.
 
-set /p choice="Escolha [0-12]: "
+set /p choice="Escolha [0-13]: "
 echo.
 
 REM Options that hit Ollama (1-4 and 7) run a preflight first — it verifies
@@ -61,6 +64,7 @@ if "%choice%"=="9"  python scripts\run_study_v2.py export-csvs
 if "%choice%"=="10" python scripts\run_study_v2.py analyze
 if "%choice%"=="11" python -m civis adversarial run --target both --output reports\adversarial_run.json
 if "%choice%"=="12" python -m civis adversarial judge-deceiver --output reports\judge_deceiver_run.json
+if "%choice%"=="13" python scripts\fill_pitch_deck.py
 if "%choice%"=="0"  goto end
 
 echo.

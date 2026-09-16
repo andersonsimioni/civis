@@ -56,6 +56,9 @@ show_menu() {
    11. Rodar bateria OWASP (mock providers)
    12. Rodar JudgeDeceiver-pointwise (mock)
 
+  Pitch
+   13. Preencher deck com números reais (F-final)
+
     0. Sair
 
 MENU
@@ -63,7 +66,7 @@ MENU
 
 while true; do
     show_menu
-    read -r -p "Escolha [0-12]: " choice
+    read -r -p "Escolha [0-13]: " choice
     echo
 
     # Preflight helper — call before any Ollama-dependent command. Aborts
@@ -91,6 +94,7 @@ while true; do
                 --output reports/adversarial_run.json ;;
         12) python -m civis adversarial judge-deceiver \
                 --output reports/judge_deceiver_run.json ;;
+        13) python scripts/fill_pitch_deck.py ;;
         0)  exit 0 ;;
         *)  echo "[civis] opção inválida: $choice" ;;
     esac

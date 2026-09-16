@@ -66,14 +66,24 @@ while true; do
     read -r -p "Escolha [0-12]: " choice
     echo
 
+    # Preflight helper — call before any Ollama-dependent command. Aborts
+    # the chosen action with a clear message if Ollama is down or the models
+    # are not pulled.
+    preflight() {
+        python scripts/preflight_ollama.py --interactive
+    }
+
     case "$choice" in
-        1)  streamlit run src/civis/web/app.py ;;
-        2)  python -m civis session --scenario certificate_duplicate_confused_v1 ;;
-        3)  python -m civis session --scenario rg_urgent_aggressive_v1 ;;
-        4)  python -m civis session --scenario certificate_thirdparty_fraudster_v1 ;;
+        1)  preflight && streamlit run src/civis/web/app.py ;;
+        2)  preflight && python -m civis session \
+                --scenario certificate_duplicate_confused_v1 ;;
+        3)  preflight && python -m civis session \
+                --scenario rg_urgent_aggressive_v1 ;;
+        4)  preflight && python -m civis session \
+                --scenario certificate_thirdparty_fraudster_v1 ;;
         5)  python -m pytest -q ;;
         6)  python -m ruff check src tests ;;
-        7)  python scripts/run_study_v2.py generate --n-sessions 30 ;;
+        7)  preflight && python scripts/run_study_v2.py generate --n-sessions 30 ;;
         8)  python scripts/run_study_v2.py rejudge --judge-config claude_judge.toml ;;
         9)  python scripts/run_study_v2.py export-csvs ;;
         10) python scripts/run_study_v2.py analyze ;;

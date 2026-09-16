@@ -46,13 +46,16 @@ echo.
 set /p choice="Escolha [0-12]: "
 echo.
 
-if "%choice%"=="1"  streamlit run src\civis\web\app.py
-if "%choice%"=="2"  python -m civis session --scenario certificate_duplicate_confused_v1
-if "%choice%"=="3"  python -m civis session --scenario rg_urgent_aggressive_v1
-if "%choice%"=="4"  python -m civis session --scenario certificate_thirdparty_fraudster_v1
+REM Options that hit Ollama (1-4 and 7) run a preflight first — it verifies
+REM the server is up AND the required models are pulled, offering to pull
+REM them if missing. Exit != 0 short-circuits the actual command.
+if "%choice%"=="1"  python scripts\preflight_ollama.py --interactive && streamlit run src\civis\web\app.py
+if "%choice%"=="2"  python scripts\preflight_ollama.py --interactive && python -m civis session --scenario certificate_duplicate_confused_v1
+if "%choice%"=="3"  python scripts\preflight_ollama.py --interactive && python -m civis session --scenario rg_urgent_aggressive_v1
+if "%choice%"=="4"  python scripts\preflight_ollama.py --interactive && python -m civis session --scenario certificate_thirdparty_fraudster_v1
 if "%choice%"=="5"  python -m pytest -q
 if "%choice%"=="6"  python -m ruff check src tests
-if "%choice%"=="7"  python scripts\run_study_v2.py generate --n-sessions 30
+if "%choice%"=="7"  python scripts\preflight_ollama.py --interactive && python scripts\run_study_v2.py generate --n-sessions 30
 if "%choice%"=="8"  python scripts\run_study_v2.py rejudge --judge-config claude_judge.toml
 if "%choice%"=="9"  python scripts\run_study_v2.py export-csvs
 if "%choice%"=="10" python scripts\run_study_v2.py analyze

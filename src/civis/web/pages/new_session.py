@@ -550,8 +550,18 @@ def _handle_agent_turn(
     Run one agent turn: call the persona LLM under a spinner, persist
     transcript + metadata + telemetry, catch provider errors gracefully.
     """
+    # Cold-start warning on the first turn only. Ollama takes 30-60s to load
+    # a 7B model into memory the first time; without this hint the user
+    # thinks the app hung and gives up.
+    is_first_turn = len(orchestrator.transcript.turns) <= 1
+    spinner_msg = (
+        "Carregando modelo e gerando primeira resposta... "
+        "(pode levar até 60s no primeiro turno)"
+        if is_first_turn
+        else "Analisando resposta da pessoa..."
+    )
     try:
-        with st.spinner("Analisando resposta da pessoa..."):
+        with st.spinner(spinner_msg):
             result = orchestrator.run_agent_turn(agent_message)
     except Exception as exc:  # noqa: BLE001 - surface any provider failure to the user
         st.session_state[ERROR_KEY] = _format_provider_error(exc)
@@ -643,7 +653,10 @@ def _finalize_and_render_verdict() -> None:
         return
 
     try:
-        with st.spinner("Rodando juiz automático..."):
+        with st.spinner(
+            "Rodando juiz automático... (pode levar 30-90s, juiz avalia toda a "
+            "transcrição contra a rubrica)"
+        ):
             verdict, citation_report = run_judge_with_validation(
                 session_id=session_id,
                 scenario=scenario_file,

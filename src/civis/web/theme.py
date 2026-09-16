@@ -72,21 +72,28 @@ BASE_CSS = f"""
         background-color: {PRIMARY_COLOR_DEEP} !important;
         border-color: {PRIMARY_COLOR_DEEP} !important;
     }}
-    /* Chat bubble container */
+    /* Chat bubble container — explicit text color prevents dark-mode
+       inheritance from painting invisible white text on the white bg. */
     .civis-turn {{
         border-radius: 10px;
         padding: 0.65rem 0.85rem;
         margin-bottom: 0.5rem;
         border: 1px solid {BORDER_COLOR};
         background: white;
+        color: {NEUTRAL_TEXT};
         transition: background-color 1.2s ease-out;
     }}
     .civis-turn-agent {{
         background: {PRIMARY_COLOR_SOFT};
         border-color: {PRIMARY_COLOR}33;
+        color: {NEUTRAL_TEXT};
     }}
     .civis-turn-persona {{
         background: white;
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-turn-body {{
+        color: {NEUTRAL_TEXT};
     }}
     .civis-turn-meta {{
         font-size: 0.78rem;
@@ -105,6 +112,10 @@ BASE_CSS = f"""
         padding: 0.75rem 0.9rem;
         margin-bottom: 0.6rem;
         background: white;
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-card p, .civis-card div, .civis-card span {{
+        color: inherit;
     }}
     .civis-score-badge {{
         display: inline-block;
@@ -139,6 +150,7 @@ BASE_CSS = f"""
         border-radius: 12px;
         padding: 1.1rem 1rem 0.9rem 1rem;
         background: white;
+        color: {NEUTRAL_TEXT};
         margin-bottom: 0.6rem;
         min-height: 320px;
         box-shadow: 0 1px 2px rgba(28, 37, 48, 0.04);

@@ -1,0 +1,45 @@
+# CIVIS configuration — DeepSeek for BOTH persona and judge.
+#
+# DeepSeek talks OpenAI's /v1/chat/completions dialect, so it slots into
+# our openai_compat provider with only a base_url swap.
+#
+# When to use this setup:
+#   - You want a quality tier between local Ollama and Claude at a
+#     lower per-token cost than Claude.
+#   - You already have DeepSeek credits and want to burn them on the
+#     study or on a dev iteration cycle.
+#
+# Model choices (respect goal O3 — persona and judge on DIFFERENT
+# catalog entries; distinct model_ids satisfy the invariant):
+#   - persona:  deepseek-chat      (V3, general-purpose, ~R$ 0.06/session)
+#   - judge:    deepseek-reasoner  (R1, chain-of-thought, ~R$ 0.15/session)
+#
+# Requirements:
+#   - `DEEPSEEK_API_KEY` exported. Get one at https://platform.deepseek.com
+#
+# How to install (Windows):
+#   copy data\configs\config.deepseek.example.toml %APPDATA%\civis\config.toml
+#   setx DEEPSEEK_API_KEY sk-...          (opens new shell to take effect)
+#
+# How to install (Linux/Mac):
+#   cp data/configs/config.deepseek.example.toml \
+#      "${XDG_CONFIG_HOME:-$HOME/.config}/civis/config.toml"
+#   export DEEPSEEK_API_KEY=sk-...
+
+[models.persona_deepseek_v3]
+provider = "openai_compat"
+model_id = "deepseek-chat"
+base_url = "https://api.deepseek.com/v1"
+api_key_env = "DEEPSEEK_API_KEY"
+request_timeout_s = 60.0
+
+[models.judge_deepseek_r1]
+provider = "openai_compat"
+model_id = "deepseek-reasoner"
+base_url = "https://api.deepseek.com/v1"
+api_key_env = "DEEPSEEK_API_KEY"
+request_timeout_s = 90.0
+
+[roles]
+persona = "persona_deepseek_v3"
+judge = "judge_deepseek_r1"

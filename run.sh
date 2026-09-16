@@ -61,7 +61,8 @@ show_menu() {
    14. Emitir certificado do atendente
 
   Setup
-   15. Trocar para Claude (persona + juiz)
+   15. Trocar para Claude (atalho, persona + juiz)
+   16. Configurar LLM (wizard interativo — Ollama/Claude/DeepSeek/…)
 
     0. Sair
 
@@ -70,7 +71,7 @@ MENU
 
 while true; do
     show_menu
-    read -r -p "Escolha [0-15]: " choice
+    read -r -p "Escolha [0-16]: " choice
     echo
 
     # Preflight helper — call before any Ollama-dependent command. Aborts
@@ -129,6 +130,10 @@ while true; do
                 echo "Escolha a opção 1 para abrir o Streamlit rodando com Claude."
             fi
             ;;
+        # Option 16: interactive wizard that walks through provider choice
+        # (Ollama, Claude, or any OpenAI-compat like DeepSeek/Groq/Together)
+        # per role, model id, env var, and writes config.toml.
+        16) python scripts/setup_llm.py ;;
         0)  exit 0 ;;
         *)  echo "[civis] opção inválida: $choice" ;;
     esac

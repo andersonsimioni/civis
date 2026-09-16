@@ -1,27 +1,95 @@
 """
-"Nova sessão" page — investor-facing landing that showcases the three
-scripted scenarios and points at the CLI as the runner for now.
+"Nova sessão" page — D+.1 landing: clickable scenario cards + random start.
 
-The live REPL is Task T6 of the Phase D plan (not shipped yet). For
-the pitch demo the flow is:
+The old copy-CLI-command flow was ripped out on Anderson's request:
+the trainee now conducts the whole simulation inside the browser,
+starting from this landing. The full chat REPL, the "Encerrar e
+avaliar" flow and the inline verdict view land in D+.2..D+.5.
 
-    1. Investor reads the scenario cards on this page.
-    2. Presenter opens a terminal side by side.
-    3. Presenter runs the exact command copied from the card.
+Session state keys (all prefixed ``civis.chat.`` so they never collide
+with the filters used by the other pages):
 
-Once T6 lands the same page renders the chat REPL under the cards.
-Until then, the cards + copy-friendly command block already look like a
-real product page — no placeholder, no 'skeleton stage' info banner.
+    ``civis.chat.view``           "landing" | "chat" | "verdict"
+    ``civis.chat.error``          transient error text, cleared after one
+                                  rerun
+
+Tests inject a provider factory under
+``civis.chat.provider_factory`` to bypass Ollama:
+
+    st.session_state["civis.chat.provider_factory"] = my_factory
+    # signature: (role: str) -> LLMProvider
+
+If absent, the page falls back to ``load_or_default_config`` +
+``build_provider_from_config`` — the same wiring the CLI uses.
 """
 
 from __future__ import annotations
 
+import random
 from dataclasses import dataclass
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Callable
 
 import streamlit as st
 
+from civis.cli.wiring import (
+    DEFAULT_JUDGE_KEY,
+    DEFAULT_PERSONA_KEY,
+    build_provider_from_config,
+    load_or_default_config,
+)
+from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
+from civis.llm.provider import LLMProvider
+from civis.personas.base import PersonaState
+from civis.session.orchestrator import SessionOrchestrator
+from civis.session.scenario import (
+    load_scenario_from_path,
+    resolve_scenario_path,
+)
+from civis.session.storage import (
+    SessionMetadata,
+    SessionTranscript,
+    new_session_id,
+    save_metadata,
+    save_transcript,
+    scenario_hash,
+)
 from civis.web.formatting import scenario_label
+from civis.web.state import get_sessions_dir
 from civis.web.theme import PRIMARY_COLOR
+
+# ---------------------------------------------------------------------------
+# View + state constants
+# ---------------------------------------------------------------------------
+
+VIEW_KEY = "civis.chat.view"
+ORCH_KEY = "civis.chat.orchestrator"
+SESSION_ID_KEY = "civis.chat.session_id"
+SCENARIO_ID_KEY = "civis.chat.scenario_id"
+SCENARIO_FILE_KEY = "civis.chat.scenario_file"
+METADATA_KEY = "civis.chat.metadata"
+RUBRIC_KEY = "civis.chat.rubric"
+JUDGE_PROVIDER_KEY = "civis.chat.judge_provider"
+OUTPUT_DIR_KEY = "civis.chat.output_dir"
+TURN_COUNT_KEY = "civis.chat.turn_count"
+TELEMETRY_KEY = "civis.chat.telemetry_rows"
+MAX_TURNS_KEY = "civis.chat.max_turns"
+ERROR_KEY = "civis.chat.error"
+PROVIDER_FACTORY_KEY = "civis.chat.provider_factory"
+
+_VIEW_LANDING = "landing"
+_VIEW_CHAT = "chat"
+
+# Duplicated from cli.session on purpose: importing the CLI just for the
+# constants would drag Typer into the Streamlit page.
+_DEFAULT_MAX_TURNS = 12
+_DEFAULT_SCENARIOS_DIR = Path("data/scenarios")
+
+
+# ---------------------------------------------------------------------------
+# Scenario catalogue
+# ---------------------------------------------------------------------------
 
 
 @dataclass(frozen=True)
@@ -29,8 +97,8 @@ class _ScenarioCard:
     """One scenario the demo tour can play against."""
 
     scenario_id: str
-    persona_kind: str          # "confused" | "aggressive" | "fraudster"
-    difficulty: str            # human-facing pt-BR ("Fácil", "Média", "Difícil")
+    persona_kind: str          # pt-BR label
+    difficulty: str            # pt-BR ("Fácil", "Média", "Difícil")
     icon: str                  # single emoji, anchors the card visually
     pitch: str                 # one-sentence hook
     what_happens: str          # 2-3 lines of narrative
@@ -101,26 +169,48 @@ _SCENARIOS: list[_ScenarioCard] = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
+
 def render() -> None:
-    """Render the Nova sessão landing (three scenario cards + CLI hint)."""
+    """Render whichever view the state machine is in.
+
+    Chat + verdict views land in D+.2 and D+.3; for now, anything other
+    than landing falls back to the landing so we never leave the user
+    stuck on a half-implemented view.
+    """
+    view = st.session_state.get(VIEW_KEY, _VIEW_LANDING)
+    if view == _VIEW_CHAT:
+        _render_chat_placeholder()
+    else:
+        _render_landing_view()
+
+
+# ---------------------------------------------------------------------------
+# Landing view — three clickable scenario cards + random button
+# ---------------------------------------------------------------------------
+
+
+def _render_landing_view() -> None:
+    """The default view: pick a scripted scenario or roll the dice."""
     st.title("Nova sessão")
     st.markdown(
-        "Escolha um dos três cenários abaixo e execute o comando de "
-        "atendimento simulado no terminal. Cada rodada gera um "
-        "transcript, um verdict do juiz automático e os sidecars de "
-        "contradição e honeytoken — visíveis logo em seguida na aba "
-        "**Sessões passadas**."
+        "Escolha um dos três cenários abaixo para iniciar o atendimento "
+        "direto na tela. Cada rodada é gravada como transcript + verdict "
+        "do juiz automático + sidecars de contradição e honeytoken — "
+        "tudo revisitável depois na aba **Sessões passadas**."
     )
+
+    # If a previous start-up failed, surface the message once and clear.
+    pending_error = st.session_state.pop(ERROR_KEY, None)
+    if pending_error:
+        st.error(pending_error)
 
     _render_scenario_cards()
     st.markdown("---")
-    _render_runner_hint()
-    _render_repl_status()
-
-
-# ---------------------------------------------------------------------------
-# Scenario cards
-# ---------------------------------------------------------------------------
+    _render_random_launch()
 
 
 def _render_scenario_cards() -> None:
@@ -132,10 +222,7 @@ def _render_scenario_cards() -> None:
 
 
 def _render_scenario_card(card: _ScenarioCard) -> None:
-    """
-    Render one scenario as a bordered card with icon, title, pitch,
-    two subsections and a copy-friendly CLI command inside a code block.
-    """
+    """One scenario as a bordered card with a primary-CTA start button."""
     diff_color = _difficulty_color(card.difficulty)
     friendly_id = scenario_label(card.scenario_id)
 
@@ -158,65 +245,144 @@ def _render_scenario_card(card: _ScenarioCard) -> None:
         """,
         unsafe_allow_html=True,
     )
-    st.code(
-        f"python -m civis session --scenario {card.scenario_id}",
-        language="bash",
-    )
+    if st.button(
+        "Começar atendimento",
+        key=f"start_{card.scenario_id}",
+        type="primary",
+        use_container_width=True,
+    ):
+        _start_session(card.scenario_id)
 
 
-# ---------------------------------------------------------------------------
-# Runner hint + REPL status
-# ---------------------------------------------------------------------------
-
-
-def _render_runner_hint() -> None:
-    """Explain the pre-REPL flow: run the CLI, then refresh the sidebar."""
-    st.subheader("Como executar agora")
-    st.markdown(
-        """
-        1. **Escolha um cenário** entre os três acima e copie o comando.
-        2. **Abra um terminal** na raiz do repositório e cole o comando.
-        3. **Converse** com a persona pelo prompt — o CLI aceita entrada
-           linha a linha. Encerre com `Ctrl+Z` (Windows) ou `Ctrl+D` (Unix).
-        4. **Abra a aba Sessões passadas** desta interface — a nova
-           sessão aparece no topo da lista, com verdict e citações.
-        """
-    )
-    st.markdown(
-        f"""
-        <div class="civis-callout">
-            <b style="color:{PRIMARY_COLOR}">Dica de demo:</b>
-            durante o pitch, rode <code>certificate_thirdparty_fraudster_v1</code>.
-            É o cenário onde o painel de segurança brilha — honeytokens,
-            proteção de dados e o diferencial competitivo que separa
-            este projeto de um simulador comum.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def _render_repl_status() -> None:
+def _render_random_launch() -> None:
     """
-    Honest status of the in-page REPL. Kept explicit so the investor
-    reading the app cold does not think this is the finished product.
+    "Sessão aleatória" affordance: rolls a die across the three scripted
+    scenarios and starts the session with no further click.
     """
-    with st.expander("Por que ainda não tem chat em tela cheia aqui?", expanded=False):
+    left, right = st.columns([3, 1])
+    with left:
         st.markdown(
-            """
-            O chat REPL dentro da página é o **Task T6** do plano da
-            Fase D e depende de integração com streaming de tokens.
-            Para o pitch de 15/12/2026, a demo ao vivo roda pelo CLI —
-            o mesmo caminho que o CI e os testes usam, o que garante
-            que o que aparece na demo é exatamente o que roda em
-            produção. O chat na página web entra no fast-follow logo
-            depois do pitch.
-            """
+            f"<div class='civis-callout'>"
+            f"<b style='color:{PRIMARY_COLOR}'>Não quer escolher?</b> "
+            f"Clique em <b>Sessão aleatória</b> e a plataforma sorteia um "
+            f"dos três cenários — bom pra treinar sem saber o que vem pela "
+            f"frente, como no atendimento real."
+            f"</div>",
+            unsafe_allow_html=True,
         )
+    with right:
+        if st.button(
+            "🎲 Sessão aleatória",
+            key="start_random",
+            use_container_width=True,
+        ):
+            picked = random.choice(_SCENARIOS)
+            _start_session(picked.scenario_id)
+
+
+def _render_chat_placeholder() -> None:
+    """
+    Temporary placeholder shown until the D+.2 chat view lands. Keeps the
+    landing accessible via a "Voltar" so users are never trapped.
+    """
+    scenario_id = st.session_state.get(SCENARIO_ID_KEY, "—")
+    st.title("Sessão iniciada")
+    st.info(
+        f"Cenário `{scenario_id}` iniciado. A conversa em tempo real "
+        f"aparece aqui na próxima etapa (D+.2)."
+    )
+    if st.button("← Voltar à landing", key="back_to_landing_from_placeholder"):
+        st.session_state[VIEW_KEY] = _VIEW_LANDING
+        st.rerun()
 
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Session bootstrap
+# ---------------------------------------------------------------------------
+
+
+def _start_session(scenario_id: str) -> None:
+    """
+    Resolve scenario + rubric, build providers, create the on-disk
+    session and stash the live orchestrator in session_state. Any failure
+    is caught here so the landing survives.
+    """
+    try:
+        scenario_path = resolve_scenario_path(
+            scenario_id, scenarios_dir=_DEFAULT_SCENARIOS_DIR
+        )
+        scenario_file, scenario_raw = load_scenario_from_path(scenario_path)
+        rubric = load_rubric_from_path(DEFAULT_RUBRIC_PATH)
+        persona_provider = _build_provider(DEFAULT_PERSONA_KEY)
+        judge_provider = _build_provider(DEFAULT_JUDGE_KEY)
+    except Exception as exc:  # noqa: BLE001 - narrow-catch not useful; surface any startup failure
+        st.session_state[ERROR_KEY] = (
+            "Não foi possível iniciar a sessão. "
+            f"{_format_provider_error(exc)}"
+        )
+        return
+
+    # New session on disk. output_dir respects the CIVIS_SESSIONS_DIR env
+    # var so AppTest fixtures redirect writes into tmp_path.
+    output_dir = get_sessions_dir()
+    session_id = new_session_id()
+    transcript = SessionTranscript(session_id=session_id)
+    now_iso = datetime.now(UTC).replace(microsecond=0).isoformat()
+    metadata = SessionMetadata(
+        session_id=session_id,
+        scenario_id=scenario_file.scenario_id,
+        scenario_hash=scenario_hash(scenario_raw),
+        persona_provider_name=persona_provider.name,
+        judge_provider_name=judge_provider.name,
+        created_at=now_iso,
+        last_updated_at=now_iso,
+    )
+    save_metadata(metadata, base=output_dir)
+    save_transcript(transcript, base=output_dir)
+
+    initial_state = PersonaState(
+        profile=scenario_file.persona,
+        emotion=scenario_file.persona.initial_emotion,
+    )
+    orchestrator = SessionOrchestrator(
+        scenario=scenario_file,
+        persona_provider=persona_provider,
+        transcript=transcript,
+        state=initial_state,
+    )
+
+    st.session_state[ORCH_KEY] = orchestrator
+    st.session_state[SESSION_ID_KEY] = session_id
+    st.session_state[SCENARIO_ID_KEY] = scenario_file.scenario_id
+    st.session_state[SCENARIO_FILE_KEY] = scenario_file
+    st.session_state[METADATA_KEY] = metadata
+    st.session_state[RUBRIC_KEY] = rubric
+    st.session_state[JUDGE_PROVIDER_KEY] = judge_provider
+    st.session_state[OUTPUT_DIR_KEY] = output_dir
+    st.session_state[TURN_COUNT_KEY] = 0
+    st.session_state[TELEMETRY_KEY] = []
+    st.session_state[MAX_TURNS_KEY] = _DEFAULT_MAX_TURNS
+    st.session_state[VIEW_KEY] = _VIEW_CHAT
+    st.rerun()
+
+
+def _build_provider(role_key: str) -> LLMProvider:
+    """
+    Resolve a role-name to a concrete provider. Tests inject a factory
+    under ``civis.chat.provider_factory`` so AppTest never touches Ollama;
+    production falls back to the same wiring the CLI uses.
+    """
+    factory: Callable[[str], LLMProvider] | None = st.session_state.get(
+        PROVIDER_FACTORY_KEY
+    )
+    if factory is not None:
+        return factory(role_key)
+    config, _source = load_or_default_config()
+    return build_provider_from_config(config, role_key)
+
+
+# ---------------------------------------------------------------------------
+# Small helpers
 # ---------------------------------------------------------------------------
 
 
@@ -227,6 +393,31 @@ def _difficulty_color(label: str) -> str:
     if label == "Média":
         return "#c25a1a"
     return "#b3261e"  # Difícil
+
+
+def _format_provider_error(exc: BaseException) -> str:
+    """
+    Translate a raw provider/judge exception into an actionable pt-BR
+    hint. Falls back to ``type: message`` when we don't recognise it.
+    """
+    message = str(exc).lower()
+    if "connection" in message or "refused" in message or "econnrefused" in message:
+        return (
+            "Não consegui falar com o modelo. Verifique se o Ollama está "
+            "rodando (`ollama serve`) ou se a API key do provider está "
+            "configurada."
+        )
+    if "api key" in message or "unauthorized" in message or "401" in message:
+        return (
+            "API key inválida ou ausente. Rode `civis config` para "
+            "configurar o provider."
+        )
+    if "timeout" in message or "timed out" in message:
+        return (
+            "O modelo demorou demais para responder. Tente de novo, "
+            "diminua o max_tokens, ou troque para um modelo mais leve."
+        )
+    return f"{type(exc).__name__}: {exc}"
 
 
 render()

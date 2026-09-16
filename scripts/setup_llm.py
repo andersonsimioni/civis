@@ -207,8 +207,18 @@ def build_openai_compat_entry(role: str) -> BuiltEntry:
         base_url = ask("Base URL (ex.: https://exemplo.com/v1)")
         model_id = ask(f"Model id ({role})")
         api_key_env = ask("Nome da env var da API key", default="CUSTOM_API_KEY")
-    # Reasoning models (deepseek-reasoner, o1-*) sometimes need more time.
-    default_timeout = 90.0 if "reason" in model_id.lower() or "o1" in model_id.lower() else 60.0
+    # Reasoning models (deepseek-reasoner, o1-*) emit chain-of-thought
+    # before their final answer — a rubric judgement can easily take 2-4
+    # minutes. Regular chat models (deepseek-chat, gpt-4o-mini) finish in
+    # 15-45s. Judge role gets more headroom either way because the prompt
+    # carries the full transcript + rubric.
+    is_reasoning = "reason" in model_id.lower() or "o1" in model_id.lower()
+    if is_reasoning:
+        default_timeout = 240.0
+    elif role == "judge":
+        default_timeout = 120.0
+    else:
+        default_timeout = 60.0
     return BuiltEntry(
         catalog_key=f"{role}_{_short_provider_name(base_url)}",
         provider="openai_compat",

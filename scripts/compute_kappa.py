@@ -37,7 +37,6 @@ from __future__ import annotations
 import argparse
 import csv
 import random
-import statistics
 import sys
 from collections.abc import Sequence
 from dataclasses import dataclass

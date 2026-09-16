@@ -38,7 +38,10 @@ provider = "openai_compat"
 model_id = "deepseek-reasoner"
 base_url = "https://api.deepseek.com/v1"
 api_key_env = "DEEPSEEK_API_KEY"
-request_timeout_s = 90.0
+# R1 (deepseek-reasoner) emits chain-of-thought tokens before the final
+# rubric — that eats a lot of latency on a 12-turn transcript. 240s is a
+# safe upper bound; drop to 120s if you switch judge to `deepseek-chat`.
+request_timeout_s = 240.0
 
 [roles]
 persona = "persona_deepseek_v3"

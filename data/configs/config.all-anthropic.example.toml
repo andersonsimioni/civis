@@ -53,7 +53,9 @@ request_timeout_s = 60.0
 provider = "anthropic"
 model_id = "claude-sonnet-4-6"
 api_key_env = "ANTHROPIC_API_KEY"
-request_timeout_s = 60.0
+# 120s covers Sonnet on a 12-turn transcript with rubric + citations.
+# Raise to 180s if you ever swap for claude-opus-4-7.
+request_timeout_s = 120.0
 
 [roles]
 persona = "persona_claude"

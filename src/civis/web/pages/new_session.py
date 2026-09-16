@@ -799,21 +799,43 @@ def _finalize_and_render_verdict() -> None:
         st.rerun()
         return
 
-    try:
-        with st.spinner(
-            "Rodando juiz automático... (pode levar 30-90s, juiz avalia toda a "
-            "transcrição contra a rubrica)"
-        ):
-            verdict, citation_report = run_judge_with_validation(
-                session_id=session_id,
-                scenario=scenario_file,
-                transcript=orchestrator.transcript,
-                judge_provider=judge_provider,
-                rubric=rubric,
-            )
-    except Exception as exc:  # noqa: BLE001 - surface any judge failure to the user
+    # The judge pass is a single blocking call — even Claude Sonnet on a
+    # ~10-turn transcript can take 60-90s, and reasoning models
+    # (deepseek-reasoner, o1) often push past 120s. We retry ONCE on the
+    # first attempt so a transient timeout doesn't discard the whole
+    # session; the second attempt uses the same provider (no timeout knob
+    # to raise from here — that's in the config) but with a fresh HTTP
+    # connection, which is enough to recover from a lot of flake modes.
+    max_attempts = 2
+    last_exc: BaseException | None = None
+    for attempt in range(1, max_attempts + 1):
+        spinner_msg = (
+            "Rodando juiz automático... (pode levar 30-90s no primeiro turno)"
+            if attempt == 1
+            else "Tentando de novo — juiz demorou; segunda e última tentativa..."
+        )
+        try:
+            with st.spinner(spinner_msg):
+                verdict, citation_report = run_judge_with_validation(
+                    session_id=session_id,
+                    scenario=scenario_file,
+                    transcript=orchestrator.transcript,
+                    judge_provider=judge_provider,
+                    rubric=rubric,
+                )
+            last_exc = None
+            break
+        except Exception as exc:  # noqa: BLE001 - retry loop below decides what to do
+            last_exc = exc
+            if not _is_timeout(exc) or attempt == max_attempts:
+                # Not a timeout (auth, network, parse) or we've already
+                # burned our retry. Fall through to the error handler.
+                break
+
+    if last_exc is not None:
         st.session_state[ERROR_KEY] = (
-            "O juiz automático falhou. " + _format_provider_error(exc)
+            "O juiz automático falhou. "
+            + _format_judge_error(last_exc, judge_provider)
         )
         # Stay in chat so the user can retry or cancel.
         st.rerun()
@@ -944,6 +966,12 @@ def _persona_kind_label(kind_value: str) -> str:
     return mapping.get(kind_value, kind_value)
 
 
+def _is_timeout(exc: BaseException) -> bool:
+    """True when the exception looks like an HTTP/read timeout."""
+    message = str(exc).lower()
+    return "timeout" in message or "timed out" in message
+
+
 def _format_provider_error(exc: BaseException) -> str:
     """
     Translate a raw provider/judge exception into an actionable pt-BR
@@ -958,15 +986,43 @@ def _format_provider_error(exc: BaseException) -> str:
         )
     if "api key" in message or "unauthorized" in message or "401" in message:
         return (
-            "API key inválida ou ausente. Rode `civis config` para "
+            "API key inválida ou ausente. Rode o wizard (menu → 16) para "
             "configurar o provider."
         )
-    if "timeout" in message or "timed out" in message:
+    if _is_timeout(exc):
         return (
             "O modelo demorou demais para responder. Tente de novo, "
             "diminua o max_tokens, ou troque para um modelo mais leve."
         )
     return f"{type(exc).__name__}: {exc}"
+
+
+def _format_judge_error(exc: BaseException, judge_provider: LLMProvider) -> str:
+    """
+    Judge-specific error formatter. Same as _format_provider_error but
+    the timeout branch names the current judge and suggests a concrete
+    swap based on which family it belongs to.
+    """
+    if not _is_timeout(exc):
+        return _format_provider_error(exc)
+    current = judge_provider.name
+    lower = current.lower()
+    if "reasoner" in lower or "o1" in lower or "opus" in lower:
+        alt = "Claude Sonnet (`claude-sonnet-4-6`)"
+    elif "sonnet" in lower or "gpt-4o" in lower:
+        alt = "Claude Haiku (`claude-haiku-4-5`) ou DeepSeek Chat (`deepseek-chat`)"
+    elif "haiku" in lower or "chat" in lower or "mini" in lower:
+        alt = "aumentar `request_timeout_s` no config.toml para 180-300"
+    else:
+        alt = "Claude Sonnet (`claude-sonnet-4-6`) ou DeepSeek Chat (`deepseek-chat`)"
+    return (
+        f"O juiz `{current}` estourou o tempo mesmo após 1 retry. "
+        f"Modelos de raciocínio (R1, o1, Opus) costumam gastar 2-5min por "
+        f"veredito. Ajustes possíveis: (a) troque o juiz para {alt} via "
+        f"menu → 16; (b) suba `request_timeout_s` no config.toml. Escolha "
+        f"(a) se for demo ao vivo — Sonnet devolve verdict de qualidade "
+        f"em 15-30s."
+    )
 
 
 

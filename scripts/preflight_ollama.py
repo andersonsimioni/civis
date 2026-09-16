@@ -25,7 +25,7 @@ import argparse
 import shutil
 import subprocess
 import sys
-from typing import Iterable
+from collections.abc import Iterable
 
 import httpx
 

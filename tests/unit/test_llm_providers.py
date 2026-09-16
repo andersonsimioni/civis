@@ -18,7 +18,7 @@ from civis.llm.anthropic_provider import AnthropicProvider
 from civis.llm.factory import build_provider
 from civis.llm.ollama_provider import OllamaProvider
 from civis.llm.openai_compat_provider import OpenAICompatProvider
-from civis.llm.provider import LLMMessage
+from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse, LLMStreamChunk
 
 # ---- fixtures --------------------------------------------------------------
 
@@ -394,3 +394,259 @@ def test_factory_dispatches_openai_compat(monkeypatch):
 def test_factory_dispatches_anthropic(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
     assert isinstance(build_provider(_anthropic_entry()), AnthropicProvider)
+
+
+# ---------------------------------------------------------------------------
+# Streaming (Fase D++)
+# ---------------------------------------------------------------------------
+#
+# Every native streaming path is exercised by feeding the MockTransport
+# a canned wire-format body (Ollama JSON-lines, Anthropic SSE, OpenAI-
+# compat SSE) and asserting that stream() yields the expected token
+# sequence plus a final LLMStreamChunk with populated telemetry. The
+# default ABC implementation is covered via a tiny stub provider so we
+# prove that mock/adversarial subclasses which never override stream()
+# still emit chunks the orchestrator can consume.
+
+
+def _ollama_stream_body() -> bytes:
+    """Three partial chunks + one done=true sentinel with telemetry."""
+    lines = [
+        '{"model":"m","message":{"role":"assistant","content":"Ol"},"done":false}',
+        '{"model":"m","message":{"role":"assistant","content":"á"},"done":false}',
+        '{"model":"m","message":{"role":"assistant","content":", moço"},"done":false}',
+        (
+            '{"model":"m","message":{"role":"assistant","content":""},'
+            '"done":true,"prompt_eval_count":17,"eval_count":4}'
+        ),
+    ]
+    return ("\n".join(lines) + "\n").encode("utf-8")
+
+
+def test_ollama_stream_yields_partial_tokens_then_final_chunk():
+    """
+    stream() must emit one LLMStreamChunk per non-empty content delta and
+    exactly one final chunk carrying the aggregated LLMResponse. The
+    partial chunks arrive in the order the server sent them — the UI
+    concatenates them left-to-right to render token-by-token.
+    """
+    def handler(request: httpx.Request) -> httpx.Response:
+        payload = json.loads(request.content)
+        # The provider must ask for streaming; otherwise Ollama returns a
+        # single blob and our SSE-style consumer would parse a whole
+        # response as one JSON line.
+        assert payload["stream"] is True
+        return httpx.Response(200, content=_ollama_stream_body())
+
+    client = httpx.Client(
+        transport=httpx.MockTransport(handler),
+        base_url="http://localhost:11434",
+    )
+    provider = OllamaProvider(_ollama_entry(), client=client)
+
+    chunks = list(provider.stream([LLMMessage(role="user", content="oi")]))
+    partials = [c for c in chunks if not c.is_final]
+    finals = [c for c in chunks if c.is_final]
+
+    assert [c.content_delta for c in partials] == ["Ol", "á", ", moço"]
+    assert len(finals) == 1
+
+
+def test_ollama_stream_final_chunk_has_full_response_and_telemetry():
+    """
+    The final LLMStreamChunk exposes the aggregated content and the
+    telemetry captured from the done=true sentinel (prompt_eval_count and
+    eval_count map directly to input/output_tokens).
+    """
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, content=_ollama_stream_body())
+
+    client = httpx.Client(
+        transport=httpx.MockTransport(handler),
+        base_url="http://localhost:11434",
+    )
+    provider = OllamaProvider(_ollama_entry(), client=client)
+
+    chunks = list(provider.stream([LLMMessage(role="user", content="oi")]))
+    final = chunks[-1]
+
+    assert final.is_final is True
+    assert final.final_response is not None
+    assert final.final_response.content == "Olá, moço"
+    assert final.final_response.input_tokens == 17
+    assert final.final_response.output_tokens == 4
+    assert final.final_response.provider_name == provider.name
+    assert final.final_response.latency_ms >= 0
+
+
+def _anthropic_stream_body() -> bytes:
+    """A realistic SSE body with content_block_delta + message_delta.usage."""
+    events = [
+        'event: message_start',
+        'data: {"type":"message_start","message":{"id":"m1","usage":{"input_tokens":12}}}',
+        '',
+        'event: content_block_start',
+        'data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}',
+        '',
+        'event: content_block_delta',
+        (
+            'data: {"type":"content_block_delta","index":0,'
+            '"delta":{"type":"text_delta","text":"Bom "}}'
+        ),
+        '',
+        'event: content_block_delta',
+        'data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"dia"}}',
+        '',
+        'event: content_block_delta',
+        'data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"!"}}',
+        '',
+        'event: message_delta',
+        (
+            'data: {"type":"message_delta",'
+            '"delta":{"stop_reason":"end_turn"},'
+            '"usage":{"output_tokens":3}}'
+        ),
+        '',
+        'event: message_stop',
+        'data: {"type":"message_stop"}',
+        '',
+    ]
+    return ("\n".join(events) + "\n").encode("utf-8")
+
+
+def test_anthropic_stream_parses_sse_content_block_deltas():
+    """Every text_delta becomes one partial LLMStreamChunk, in wire order."""
+    def handler(request: httpx.Request) -> httpx.Response:
+        payload = json.loads(request.content)
+        assert payload["stream"] is True
+        # System messages must still be lifted out of the message list.
+        assert payload.get("system") is None or isinstance(payload["system"], str)
+        return httpx.Response(200, content=_anthropic_stream_body())
+
+    client = httpx.Client(
+        transport=httpx.MockTransport(handler),
+        base_url="https://api.anthropic.com",
+    )
+    provider = AnthropicProvider(_anthropic_entry(), client=client)
+
+    chunks = list(provider.stream([LLMMessage(role="user", content="oi")]))
+    partials = [c.content_delta for c in chunks if not c.is_final]
+    assert partials == ["Bom ", "dia", "!"]
+
+
+def test_anthropic_stream_extracts_usage_from_message_delta():
+    """
+    Anthropic streams usage across two events: message_start carries
+    input_tokens (the prompt is known before the model generates) and
+    message_delta closes with output_tokens. The final LLMStreamChunk
+    must merge both.
+    """
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, content=_anthropic_stream_body())
+
+    client = httpx.Client(
+        transport=httpx.MockTransport(handler),
+        base_url="https://api.anthropic.com",
+    )
+    provider = AnthropicProvider(_anthropic_entry(), client=client)
+
+    chunks = list(provider.stream([LLMMessage(role="user", content="oi")]))
+    final = chunks[-1]
+
+    assert final.is_final is True
+    assert final.final_response is not None
+    assert final.final_response.content == "Bom dia!"
+    assert final.final_response.input_tokens == 12
+    assert final.final_response.output_tokens == 3
+    assert final.final_response.provider_name == provider.name
+
+
+def _openai_compat_stream_body() -> bytes:
+    """OpenAI-compat SSE with content deltas, final usage, and [DONE]."""
+    events = [
+        'data: {"choices":[{"index":0,"delta":{"role":"assistant"}}]}',
+        '',
+        'data: {"choices":[{"index":0,"delta":{"content":"Hello"}}]}',
+        '',
+        'data: {"choices":[{"index":0,"delta":{"content":" world"}}]}',
+        '',
+        'data: {"choices":[{"index":0,"delta":{"content":"!"}}]}',
+        '',
+        (
+            'data: {"choices":[{"index":0,"delta":{},"finish_reason":"stop"}],'
+            '"usage":{"prompt_tokens":7,"completion_tokens":3}}'
+        ),
+        '',
+        'data: [DONE]',
+        '',
+    ]
+    return ("\n".join(events) + "\n").encode("utf-8")
+
+
+def test_openai_compat_stream_parses_data_lines_and_usage():
+    """
+    stream() must extract choices[0].delta.content for each non-empty
+    piece and read the final usage block (prompt_tokens /
+    completion_tokens) into the LLMResponse. The literal [DONE] sentinel
+    ends the loop without parse errors.
+    """
+    def handler(request: httpx.Request) -> httpx.Response:
+        payload = json.loads(request.content)
+        assert payload["stream"] is True
+        # include_usage is what asks compliant servers to emit the usage
+        # block on the terminal chunk — required to keep telemetry alive.
+        assert payload["stream_options"]["include_usage"] is True
+        return httpx.Response(200, content=_openai_compat_stream_body())
+
+    client = httpx.Client(
+        transport=httpx.MockTransport(handler),
+        base_url="https://api.openai.com/v1",
+    )
+    provider = OpenAICompatProvider(_openai_compat_entry(), client=client)
+
+    chunks = list(provider.stream([LLMMessage(role="user", content="oi")]))
+    partials = [c.content_delta for c in chunks if not c.is_final]
+    final = chunks[-1]
+
+    assert partials == ["Hello", " world", "!"]
+    assert final.is_final is True
+    assert final.final_response is not None
+    assert final.final_response.content == "Hello world!"
+    assert final.final_response.input_tokens == 7
+    assert final.final_response.output_tokens == 3
+
+
+def test_default_stream_impl_wraps_complete_in_single_partial_chunk():
+    """
+    Subclasses that don't override stream() (mocks, adversarial recorders,
+    scripted judges) must still emit at least one partial chunk plus one
+    final chunk carrying the full LLMResponse. This is what lets the
+    orchestrator's streaming path work uniformly across every provider.
+    """
+    class _StubProvider(LLMProvider):
+        @property
+        def name(self) -> str:
+            return "stub:test"
+
+        def complete(self, messages: list[LLMMessage]) -> LLMResponse:
+            return LLMResponse(
+                content="fixed reply",
+                input_tokens=3,
+                output_tokens=5,
+                latency_ms=42,
+                provider_name=self.name,
+            )
+
+    provider = _StubProvider()
+    chunks: list[LLMStreamChunk] = list(
+        provider.stream([LLMMessage(role="user", content="oi")])
+    )
+
+    # Exactly one partial (the whole content) + one final sentinel.
+    assert [c.content_delta for c in chunks if not c.is_final] == ["fixed reply"]
+    finals = [c for c in chunks if c.is_final]
+    assert len(finals) == 1
+    assert finals[0].final_response is not None
+    assert finals[0].final_response.content == "fixed reply"
+    assert finals[0].final_response.input_tokens == 3
+    assert finals[0].final_response.output_tokens == 5

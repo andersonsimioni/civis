@@ -1,0 +1,60 @@
+# CIVIS configuration — Anthropic Claude for BOTH persona and judge.
+#
+# When to use this setup:
+#   - Local Ollama models drift into off-language output (Qwen 2.5 code-
+#     switches to Chinese, some Llama variants slip into English mid-turn)
+#     or leak the prompt scaffolding into the reply.
+#   - You need pitch-grade reliability — investor demo cannot risk a
+#     surprise 8B failure mode mid-conversation.
+#   - You want each turn produced by the same model family the judge
+#     scores against — closer to production behavior of a paid CIVIS
+#     deployment where a single provider serves everything.
+#
+# Model choices (respect goal O3 — persona and judge on DIFFERENT
+# catalog entries; distinct model_ids satisfy the invariant):
+#   - persona:  claude-haiku-4-5   → fast (<2s per turn), cheap
+#                                    (~R$ 0.20 per session), coherent
+#                                    Portuguese, holds role well.
+#   - judge:    claude-sonnet-4-6  → stronger rubric reasoning (~R$ 0.15
+#                                    per session, one call per session).
+#
+# Combined cost estimate: ~R$ 0.35 per full session. A day of dev/demo
+# (~20 sessions) lands around R$ 7. A live investor pitch demo costs
+# less than a coffee.
+#
+# Requirements:
+#   - `ANTHROPIC_API_KEY` exported in the shell (never store the key in
+#     this file). Both catalog entries reference the same env var.
+#   - No local Ollama needed for CIVIS itself. If you keep Ollama around
+#     for the M1-A study inter-model comparison, that's independent.
+#
+# How to install (Windows):
+#   copy data\configs\config.all-anthropic.example.toml %APPDATA%\civis\config.toml
+#   setx ANTHROPIC_API_KEY sk-ant-...   (opens new shell to take effect)
+#
+# How to install (Linux/Mac):
+#   cp data/configs/config.all-anthropic.example.toml \
+#      "${XDG_CONFIG_HOME:-$HOME/.config}/civis/config.toml"
+#   export ANTHROPIC_API_KEY=sk-ant-...
+#
+# Verify the swap took effect:
+#   python -m civis session --scenario certificate_duplicate_confused_v1
+# The CLI banner should print:
+#   [civis] persona provider: anthropic:claude-haiku-4-5
+#   [civis] judge provider:   anthropic:claude-sonnet-4-6
+
+[models.persona_claude]
+provider = "anthropic"
+model_id = "claude-haiku-4-5"
+api_key_env = "ANTHROPIC_API_KEY"
+request_timeout_s = 60.0
+
+[models.judge_claude]
+provider = "anthropic"
+model_id = "claude-sonnet-4-6"
+api_key_env = "ANTHROPIC_API_KEY"
+request_timeout_s = 60.0
+
+[roles]
+persona = "persona_claude"
+judge = "judge_claude"

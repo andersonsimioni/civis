@@ -44,10 +44,13 @@ echo   Pitch
 echo    13. Preencher deck com numeros reais (F-final)
 echo    14. Emitir certificado do atendente
 echo.
+echo   Setup
+echo    15. Trocar para Claude (persona + juiz)
+echo.
 echo    0. Sair
 echo.
 
-set /p choice="Escolha [0-14]: "
+set /p choice="Escolha [0-15]: "
 echo.
 
 REM Options that hit Ollama (1-4 and 7) run a preflight first — it verifies
@@ -76,6 +79,24 @@ if "%choice%"=="14" (
         python -m civis certify --agent-name "!_cert_name!"
     ) else (
         echo [civis] nome vazio — abortando.
+    )
+)
+REM Option 15: install the all-Anthropic config so both persona and judge
+REM run on Claude. Recommended when the local Ollama model drifts into
+REM off-language output or leaks the prompt scaffolding into the reply.
+if "%choice%"=="15" (
+    echo Instalando config Claude persona + Claude juiz...
+    if not exist "%APPDATA%\civis" mkdir "%APPDATA%\civis"
+    copy /Y data\configs\config.all-anthropic.example.toml "%APPDATA%\civis\config.toml" >nul
+    echo Config instalada em %APPDATA%\civis\config.toml
+    echo.
+    if "%ANTHROPIC_API_KEY%"=="" (
+        echo AVISO: ANTHROPIC_API_KEY nao esta setada no ambiente.
+        echo Rode:  setx ANTHROPIC_API_KEY sk-ant-...
+        echo E abra um NOVO cmd depois disso para o setx tomar efeito.
+    ) else (
+        echo OK: ANTHROPIC_API_KEY detectada.
+        echo Agora escolha a opcao 1 para abrir o Streamlit rodando com Claude.
     )
 )
 if "%choice%"=="0"  goto end

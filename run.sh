@@ -60,6 +60,9 @@ show_menu() {
    13. Preencher deck com números reais (F-final)
    14. Emitir certificado do atendente
 
+  Setup
+   15. Trocar para Claude (persona + juiz)
+
     0. Sair
 
 MENU
@@ -67,7 +70,7 @@ MENU
 
 while true; do
     show_menu
-    read -r -p "Escolha [0-14]: " choice
+    read -r -p "Escolha [0-15]: " choice
     echo
 
     # Preflight helper — call before any Ollama-dependent command. Aborts
@@ -104,6 +107,26 @@ while true; do
                 python -m civis certify --agent-name "$_cert_name"
             else
                 echo "[civis] nome vazio — abortando."
+            fi
+            ;;
+        # Option 15: install the all-Anthropic config so both persona and
+        # judge run on Claude. Fixes the Qwen-drifts-to-Chinese issue.
+        15)
+            if [ -n "$APPDATA" ]; then
+                target_dir="$APPDATA/civis"
+            else
+                target_dir="${XDG_CONFIG_HOME:-$HOME/.config}/civis"
+            fi
+            mkdir -p "$target_dir"
+            cp data/configs/config.all-anthropic.example.toml "$target_dir/config.toml"
+            echo "Config instalada em $target_dir/config.toml"
+            if [ -z "$ANTHROPIC_API_KEY" ]; then
+                echo "AVISO: ANTHROPIC_API_KEY não está setada."
+                echo "  Windows: setx ANTHROPIC_API_KEY sk-ant-... (abra novo cmd)"
+                echo "  Linux/Mac: export ANTHROPIC_API_KEY=sk-ant-..."
+            else
+                echo "OK: ANTHROPIC_API_KEY detectada."
+                echo "Escolha a opção 1 para abrir o Streamlit rodando com Claude."
             fi
             ;;
         0)  exit 0 ;;

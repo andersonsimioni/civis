@@ -294,6 +294,71 @@ BASE_CSS = f"""
         text-transform: uppercase;
         opacity: 0.75;
     }}
+    /* Onda 2 M2.4 — mystery-shopper reveal card on the verdict page.
+       Deliberately noisier than a rubric card (purple/orange border)
+       so an investor sees this is a different event from the judge
+       verdict. */
+    .civis-audit-header {{
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        color: #6a2b8c;
+        margin: 0.6rem 0 0.5rem 0;
+    }}
+    .civis-audit-reveal {{
+        border: 2px solid #6a2b8c;
+        background: #f6ebfa;
+        color: {NEUTRAL_TEXT};
+        border-radius: 8px;
+        padding: 0.9rem 1rem;
+        line-height: 1.45;
+        margin-bottom: 0.9rem;
+    }}
+    .civis-audit-criteria-label {{
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: {NEUTRAL_SUBTLE};
+        margin: 0.6rem 0 0.35rem 0;
+    }}
+    .civis-audit-row {{
+        border: 1px solid #dfe3ea;
+        border-left: 4px solid #d68f1f;
+        border-radius: 6px;
+        padding: 0.55rem 0.8rem;
+        margin-bottom: 0.4rem;
+        background: white;
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-audit-pill {{
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 0.12rem 0.55rem;
+        border-radius: 999px;
+        color: white;
+        margin-right: 0.55rem;
+        background: {NEUTRAL_SUBTLE};
+    }}
+    .civis-audit-pill[data-status="passed"] {{
+        background: #1f7a34;
+    }}
+    .civis-audit-pill[data-status="failed"] {{
+        background: #b3261e;
+    }}
+    .civis-audit-pill[data-status="inconclusive"] {{
+        background: #b58900;
+    }}
+    .civis-audit-row-label {{
+        font-weight: 600;
+        color: {NEUTRAL_TEXT};
+    }}
+    .civis-audit-row-reason {{
+        color: {NEUTRAL_SUBTLE};
+        font-size: 0.88rem;
+        margin-top: 0.2rem;
+    }}
     /* Onda 2 T1.3 — a "queue" turn (customer waiting complaining).
        Shown as an assistant bubble but with a coloured border so the
        trainee sees it is not the persona speaking. Orange for warning

@@ -93,6 +93,7 @@ from civis.web.formatting import scenario_label
 from civis.web.state import get_sessions_dir
 from civis.web.theme import PRIMARY_COLOR
 from civis.web.verdict_view import (
+    render_audit_reveal,
     render_contradictions,
     render_honeytoken_leaks,
     render_verdict,
@@ -809,6 +810,36 @@ def _render_verdict_view() -> None:
     pending_warning = st.session_state.pop(ERROR_KEY, None)
     if pending_warning:
         st.warning(pending_warning)
+
+    # Onda 2 M2.4: reveal the mystery-shopper audit above the judge
+    # verdict when the scenario carries a hidden_agenda. The helper is
+    # a no-op for regular scenarios so this call is always safe.
+    scenario_file: ScenarioFile | None = st.session_state.get(SCENARIO_FILE_KEY)
+    orchestrator: SessionOrchestrator | None = st.session_state.get(ORCH_KEY)
+    if scenario_file is not None and orchestrator is not None:
+        audit_outcome = render_audit_reveal(
+            scenario_file=scenario_file,
+            transcript=orchestrator.transcript,
+        )
+        # Persist the audit outcome next to verdict.json when it exists,
+        # so downstream aggregation tools can pull it without replaying
+        # the transcript through evaluate_hidden_agenda.
+        if audit_outcome is not None and output_dir is not None:
+            audit_path = (
+                output_dir
+                / session_id
+                / "audit_outcome.json"
+            )
+            audit_path.parent.mkdir(parents=True, exist_ok=True)
+            audit_path.write_text(
+                json.dumps(
+                    audit_outcome.model_dump(mode="json"),
+                    indent=2,
+                    ensure_ascii=False,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
 
     if verdict is not None:
         render_verdict(verdict)

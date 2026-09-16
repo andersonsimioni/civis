@@ -96,6 +96,12 @@ def _build_navigation() -> st.navigation:
                 url_path="past_sessions",
             ),
             st.Page(
+                _PAGES_DIR / "supervisor.py",
+                title="Gestão",
+                icon="🧭",
+                url_path="supervisor",
+            ),
+            st.Page(
                 _PAGES_DIR / "metrics.py",
                 title="Métricas",
                 icon="📊",

@@ -1,0 +1,68 @@
+@echo off
+REM CIVIS launcher (Windows). Runs the most common tasks from a single menu.
+REM Usage: double-click, or `run.bat` from a Command Prompt at the repo root.
+setlocal
+chcp 65001 >nul
+cd /d "%~dp0"
+
+if not exist .venv (
+    echo [civis] .venv nao encontrado — rodando setup...
+    python -m venv .venv
+    call .venv\Scripts\activate.bat
+    pip install -e ".[dev]"
+) else (
+    call .venv\Scripts\activate.bat
+)
+
+:menu
+echo.
+echo ============================================================
+echo   CIVIS - Cidadao Virtual Simulado
+echo ============================================================
+echo.
+echo   Demo e sessao
+echo     1. Abrir demo Streamlit
+echo     2. Sessao CLI - cidada confusa
+echo     3. Sessao CLI - cidadao agressivo
+echo     4. Sessao CLI - fraudador
+echo.
+echo   Qualidade
+echo     5. Rodar suite de testes
+echo     6. Rodar ruff (lint)
+echo.
+echo   Estudo M1-A (rodar em ordem)
+echo     7. Gerar 30 sessoes (Ollama, ~2-3h)
+echo     8. Rejudge com Claude (~R$ 30-50)
+echo     9. Exportar CSVs
+echo    10. Calcular kappa e gerar relatorio
+echo.
+echo   Adversarial
+echo    11. Rodar bateria OWASP (mock providers)
+echo    12. Rodar JudgeDeceiver-pointwise (mock)
+echo.
+echo    0. Sair
+echo.
+
+set /p choice="Escolha [0-12]: "
+echo.
+
+if "%choice%"=="1"  streamlit run src\civis\web\app.py
+if "%choice%"=="2"  python -m civis session --scenario certificate_duplicate_confused_v1
+if "%choice%"=="3"  python -m civis session --scenario rg_urgent_aggressive_v1
+if "%choice%"=="4"  python -m civis session --scenario certificate_thirdparty_fraudster_v1
+if "%choice%"=="5"  python -m pytest -q
+if "%choice%"=="6"  python -m ruff check src tests
+if "%choice%"=="7"  python scripts\run_study_v2.py generate --n-sessions 30
+if "%choice%"=="8"  python scripts\run_study_v2.py rejudge --judge-config claude_judge.toml
+if "%choice%"=="9"  python scripts\run_study_v2.py export-csvs
+if "%choice%"=="10" python scripts\run_study_v2.py analyze
+if "%choice%"=="11" python -m civis adversarial run --target both --output reports\adversarial_run.json
+if "%choice%"=="12" python -m civis adversarial judge-deceiver --output reports\judge_deceiver_run.json
+if "%choice%"=="0"  goto end
+
+echo.
+pause
+goto menu
+
+:end
+endlocal

@@ -45,12 +45,13 @@ echo    13. Preencher deck com numeros reais (F-final)
 echo    14. Emitir certificado do atendente
 echo.
 echo   Setup
-echo    15. Trocar para Claude (persona + juiz)
+echo    15. Trocar para Claude (atalho, persona + juiz)
+echo    16. Configurar LLM (wizard interativo — Ollama/Claude/DeepSeek/…)
 echo.
 echo    0. Sair
 echo.
 
-set /p choice="Escolha [0-15]: "
+set /p choice="Escolha [0-16]: "
 echo.
 
 REM Options that hit Ollama (1-4 and 7) run a preflight first — it verifies
@@ -99,6 +100,10 @@ if "%choice%"=="15" (
         echo Agora escolha a opcao 1 para abrir o Streamlit rodando com Claude.
     )
 )
+REM Option 16: interactive wizard that walks through provider choice
+REM (Ollama, Claude, or any OpenAI-compat like DeepSeek/Groq/Together)
+REM per role, model id, env var, and writes config.toml for you.
+if "%choice%"=="16" python scripts\setup_llm.py
 if "%choice%"=="0"  goto end
 
 echo.

@@ -1,0 +1,159 @@
+# Scenario (Onda-4 S4.2): a fraudster poses as an OAB-registered
+# lawyer requesting an inteiro-teor certidão de casamento of a
+# "client" who is "closing a real-estate deal tomorrow". The
+# procuração looks OK from ten feet away but the client name on
+# the procuração does NOT match the name on the ID he claims is
+# his client's; the OAB number does not resolve.
+#
+# Pedagogical priority: authentication of the intermediary before
+# releasing certified data. Category is "outros" because the target
+# document itself (certidão de casamento inteiro-teor) belongs to
+# the casamento drawer, but the trap being trained is the
+# procuração / OAB verification — cross-cutting.
+#
+# THREE honeytokens planted so the M2 detector has multiple traps:
+#     - a fake OAB number that the fraudster mentions on the
+#       procuração;
+#     - an internal case id for the client that the counter must
+#       not confirm;
+#     - a residential address the client never gave verbally.
+
+scenario_id: "certidao_terceiro_fraudster_v1"
+title: "Certidão inteiro-teor por advogado — procuração dúbia"
+category: "outros"
+
+card_pitch: >
+  Homem cordial se apresenta como advogado com procuração e pede o
+  inteiro-teor da certidão de casamento de uma cliente. A pressa é
+  o argumento — o problema é que a procuração tem o nome errado.
+card_what_happens: >
+  Ele oferece a procuração, cita OAB "sob a mesa", conta que o
+  cliente "vai perder o negócio" se não sair hoje. Se o atendente
+  não olhar a procuração com atenção, ele consegue o documento.
+card_watch_for: >
+  Verificação da procuração (assinatura reconhecida, poderes
+  específicos), consulta ao OAB, cruzamento do nome da procuração
+  com o suposto cliente. Recusar cordialmente diante de qualquer
+  divergência.
+card_icon: "🕵️"
+
+persona:
+  kind: "fraudster"
+  name: "Marcos Pontes"
+  background: |
+    Homem de 38 anos, terno bem cortado e prancheta. Se apresenta
+    como advogado ("Dr. Marcos Pontes, OAB/SC 118.472") e diz que
+    representa a cliente Helena Vargas, que está "fechando a compra
+    do apartamento amanhã". Traz uma procuração impressa em papel
+    comum, sem selo cartorial, com o nome do outorgado grafado
+    diferente do documento que ele mesmo apresenta ("Marcos Pontes
+    de Freitas" x "Marcos F. Pontes"). Fala com pressa educada e
+    tenta agradar o atendente.
+  goal: |
+    Obter o inteiro-teor da certidão de casamento de Helena Vargas
+    sem passar pelas etapas de autenticação da procuração e da OAB.
+    Aproveitar o balcão pra colher qualquer dado adicional que o
+    atendente vaze.
+  initial_emotion: "manipulative"
+  facts:
+    - key: "claimed_client_name"
+      value: "Helena Vargas de Andrade"
+      is_secret: false
+      retrieval_keywords:
+        - "nome da cliente"
+        - "cliente"
+        - "de quem"
+        - "titular"
+    - key: "claimed_client_cpf_partial"
+      value: "diz que o CPF começa com 384.***.***-**"
+      is_secret: false
+      retrieval_keywords:
+        - "cpf"
+        - "cadastro"
+        - "documento da cliente"
+    - key: "alleged_marriage_date"
+      value: "casamento em 2015, sem saber o mês exato"
+      is_secret: false
+      retrieval_keywords:
+        - "data do casamento"
+        - "quando casou"
+        - "ano do casamento"
+    - key: "own_name_on_procuracao"
+      value: "Marcos Pontes de Freitas (procuração) — mas RG diz Marcos F. Pontes"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "advogado"
+        - "identificação"
+        - "quem é você"
+    - key: "claimed_oab"
+      value: "OAB/SC 118.472"
+      is_secret: false
+      retrieval_keywords:
+        - "oab"
+        - "número da oab"
+        - "registro"
+        - "advogado"
+    - key: "urgency_story"
+      value: "diz que a cliente fecha compra de imóvel amanhã"
+      is_secret: false
+      retrieval_keywords:
+        - "urgência"
+        - "prazo"
+        - "por que hoje"
+        - "motivo"
+    # HONEYTOKENS
+    - key: "internal_oab_check_id"
+      value: "FIC-OAB-H0N3Y-118472-X"
+      is_secret: true
+    - key: "internal_client_case_id"
+      value: "FIC-CASE-H0N3Y-CASAM-088"
+      is_secret: true
+    - key: "internal_client_address_id"
+      value: "FIC-ADDR-H0N3Y-CASAM-088"
+      is_secret: true
+
+expected_agent_actions:
+  - "Verificar identidade do requerente (documento com foto)."
+  - "Autenticar a procuração — reconhecimento de firma, poderes específicos, cruzamento com o nome do outorgado."
+  - "Consultar a OAB para confirmar o registro do advogado antes de qualquer entrega."
+  - "Recusar-se a confirmar dados sensíveis da suposta cliente antes de autenticar a procuração."
+  - "Escalar ao supervisor diante de qualquer divergência entre a procuração e o documento apresentado."
+  - "Recusar a emissão do inteiro-teor cordialmente quando a autenticação falhar."
+  - "Nunca ceder à pressão de urgência ('fecha o imóvel amanhã')."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade do requerente"
+    description: "Solicita documento com foto e confere com o nome grafado na procuração."
+    requires: []
+  - id: "verify_procuracao_authenticity"
+    label: "📜 Autenticar procuração"
+    description: "Confere reconhecimento de firma, poderes específicos e cruzamento de nomes."
+    requires:
+      - "own_name_on_procuracao"
+  - id: "check_oab_registration"
+    label: "🏛️ Consultar OAB"
+    description: "Verifica o número na base da OAB antes de continuar."
+    requires:
+      - "claimed_oab"
+  - id: "verify_cliente_data"
+    label: "🔎 Cruzar dados da cliente"
+    description: "Confere se os dados que o requerente traz da cliente batem com o que consta em registro."
+    requires:
+      - "claimed_client_name"
+      - "alleged_marriage_date"
+  - id: "refer_supervisor"
+    label: "📞 Escalar ao supervisor"
+    description: "Aciona o supervisor diante de qualquer divergência."
+    requires: []
+  - id: "refuse_service"
+    label: "⛔ Recusar procedimento"
+    description: "Recusa cordialmente a emissão do inteiro-teor. Requer identidade + procuração + OAB cruzados."
+    requires:
+      - "own_name_on_procuracao"
+      - "claimed_oab"
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Finaliza cordialmente, registrando o ocorrido."
+    requires: []

@@ -1,0 +1,147 @@
+# Scenario (Onda-4 S4.2): 42-year-old adult wants to formalise a
+# posthumous paternity recognition — the alleged father died three
+# years ago, he only found out the identity recently through a cousin.
+# The persona is emotional, cautious, and unsure whether the case fits
+# the administrative rota (Prov. CNJ 63/2017 art. 10-B) or has to go
+# to the courts. Truth: with the alleged father dead and no voluntary
+# declaration on file, the case is judicial — the attendant has to
+# refer the case, not open an assento.
+#
+# No honeytoken — the scenario tests procedural knowledge under
+# emotional context.
+
+scenario_id: "reconhecimento_paternidade_confused_v1"
+title: "Reconhecimento de paternidade post-mortem — filho adulto"
+category: "reconhecimento_paternidade"
+
+card_pitch: >
+  Adulto de 42 anos descobriu quem é o pai biológico, o pai já morreu
+  e ele quer "regularizar a certidão" sem passar por processo.
+card_what_happens: >
+  Persona é cauteloso e emotivo, não tem certeza se pode entrar direto
+  no cartório ou se precisa de advogado. Não trouxe DNA nem documento
+  do falecido. Cita um "irmão consanguíneo" que já reconheceu.
+card_watch_for: >
+  Distinguir procedimento administrativo (só com vivo + anuência) do
+  judicial (post-mortem sem prévia declaração), encaminhar para a
+  Defensoria/Vara de Família, coletar o que servirá em juízo.
+card_icon: "🧬"
+
+persona:
+  kind: "confused"
+  name: "Roberto Silveira"
+  background: |
+    Cidadão de 42 anos, técnico de refrigeração. Cresceu sem saber a
+    identidade do pai biológico. Há dois meses, uma prima confirmou
+    que o pai era o falecido Sr. Antônio Pires, morto em 2023. Ele
+    veio pra "colocar o nome no papel", meio hesitante, sem entender
+    se o cartório resolve direto ou se ele precisa ir à justiça.
+  goal: |
+    Alterar sua certidão de nascimento para incluir o nome do pai
+    biológico e da avó paterna, agora falecido.
+  initial_emotion: "anxious"
+  facts:
+    - key: "own_name"
+      value: "Roberto Silveira Machado"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "nome completo"
+        - "identificação"
+    - key: "own_birth_date"
+      value: "14 de novembro de 1983"
+      is_secret: false
+      retrieval_keywords:
+        - "sua data de nascimento"
+        - "quando nasceu"
+        - "idade"
+    - key: "alleged_father_name"
+      value: "Antônio Pires de Souza"
+      is_secret: false
+      retrieval_keywords:
+        - "nome do pai"
+        - "pai biológico"
+        - "genitor"
+        - "suposto pai"
+    - key: "alleged_father_death_date"
+      value: "faleceu em março de 2023"
+      is_secret: false
+      retrieval_keywords:
+        - "quando morreu"
+        - "óbito do pai"
+        - "falecimento"
+        - "quando faleceu"
+    - key: "alleged_father_last_address"
+      value: "morava em Palhoça, SC — último endereço conhecido"
+      is_secret: false
+      retrieval_keywords:
+        - "onde morava"
+        - "endereço do pai"
+        - "residência"
+    - key: "available_documents"
+      value: "trouxe a própria certidão de nascimento e o obituário do jornal — sem DNA"
+      is_secret: false
+      retrieval_keywords:
+        - "documentos"
+        - "papéis"
+        - "provas"
+        - "certidão"
+        - "dna"
+        - "exame"
+    - key: "half_siblings"
+      value: "há um irmão consanguíneo (Marcos Pires) que já foi reconhecido em vida"
+      is_secret: false
+      retrieval_keywords:
+        - "irmão"
+        - "irmãos"
+        - "meio-irmão"
+        - "outros filhos"
+        - "família"
+    - key: "prior_declaration_by_father"
+      value: "o pai nunca declarou paternidade em cartório antes de falecer"
+      is_secret: false
+      retrieval_keywords:
+        - "declaração"
+        - "reconhecimento em vida"
+        - "assinou"
+        - "reconheceu antes"
+
+expected_agent_actions:
+  - "Acolher a situação — reconhecimento post-mortem é assunto sensível."
+  - "Verificar identidade do requerente antes de discutir mérito."
+  - "Distinguir claramente reconhecimento administrativo (vivo + anuência) do judicial (post-mortem sem prévia declaração)."
+  - "Explicar que sem declaração em vida do pai, a via é judicial (Vara de Família)."
+  - "Coletar documentos disponíveis do requerente e do pai alegado que servirão à ação judicial."
+  - "Encaminhar à Defensoria Pública ou orientar a contratar advogado."
+  - "Não prometer alteração administrativa da certidão sem base legal."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade do requerente"
+    description: "Solicita documento com foto do requerente."
+    requires: []
+  - id: "explain_procedimento_administrativo_vs_judicial"
+    label: "⚖️ Explicar via administrativa vs judicial"
+    description: "Explica quando cabe o Prov. CNJ 63/2017 e quando o caso vai à Vara de Família."
+    requires:
+      - "prior_declaration_by_father"
+  - id: "collect_pai_documents"
+    label: "📄 Coletar documentos do pai"
+    description: "Recolhe o que o requerente tem (obituário, endereço, nomes de meio-irmãos)."
+    requires:
+      - "alleged_father_name"
+      - "alleged_father_death_date"
+  - id: "explain_dna_procedure"
+    label: "🧬 Explicar procedimento de DNA"
+    description: "Explica como o exame de DNA post-mortem funciona (via judicial, com exumação ou meio-irmãos)."
+    requires:
+      - "half_siblings"
+  - id: "refer_judiciary"
+    label: "📇 Encaminhar à Defensoria/Advogado"
+    description: "Orienta procurar a Defensoria Pública ou advogado particular para ajuizar a ação."
+    requires:
+      - "prior_declaration_by_father"
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Finaliza cordialmente com os próximos passos por escrito."
+    requires: []

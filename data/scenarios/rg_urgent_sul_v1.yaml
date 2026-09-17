@@ -13,6 +13,7 @@
 
 scenario_id: "rg_urgent_sul_v1"
 title: "Segunda via de RG com urgência — cidadão agressivo (Sul)"
+category: "nascimento"
 
 persona:
   kind: "aggressive"

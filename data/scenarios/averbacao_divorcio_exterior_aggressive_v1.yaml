@@ -1,0 +1,150 @@
+# Scenario (Onda-4 S4.2): Brazilian citizen returned from the US and
+# wants to averbar the American divorce decree on his Brazilian
+# marriage certificate. Under Res. CNJ 155/2012 (updated by Prov.
+# CNJ 53/2016 and Res. CNJ 35/2007 for consensual paths), a foreign
+# consensual divorce with the "apostilha de Haia" and a sworn
+# translation can be averbated administratively at the counter,
+# without homologação by the STJ. Without apostilha or without
+# translation the case has to go through the STJ.
+#
+# The persona brings NEITHER the apostilha NOR the sworn
+# translation — and is impatient because he already paid a lawyer in
+# the US. Pedagogical goal: procedure over promise, don't accept
+# incomplete documentation to avoid conflict.
+
+scenario_id: "averbacao_divorcio_exterior_aggressive_v1"
+title: "Averbação de divórcio no exterior — sem apostilhamento"
+category: "averbacao"
+
+card_pitch: >
+  Brasileiro volta dos EUA com o divórcio consensual americano na
+  mão e exige a averbação hoje. Falta apostilha e falta tradução
+  juramentada — e ele acha que "advogado americano resolve".
+card_what_happens: >
+  Chega irritado, cita que "já pagou taxa suficiente lá fora", tenta
+  intimidar o atendente com jargão em inglês e reclama do prazo do
+  cartório brasileiro. Traz cópia do decree em inglês, sem selos.
+card_watch_for: >
+  Recusar cordialmente na ausência de apostilha e tradução
+  juramentada, orientar o próximo passo (Cartório Central da Haia
+  no país de origem + tradutor juramentado no Brasil), sem prometer
+  prazo que o cartório não controla.
+card_icon: "📎"
+
+persona:
+  kind: "aggressive"
+  name: "Rodrigo Menezes"
+  background: |
+    Cidadão brasileiro de 47 anos, morou 12 anos em Boston. Casou
+    no Brasil em 2009, divorciou-se em Massachusetts em 2024 de
+    forma consensual, sem filhos menores. Voltou pro Brasil há duas
+    semanas, quer regularizar a certidão de casamento pra vender um
+    imóvel. Chega ao balcão irritado — o advogado americano cobrou
+    US$ 3.000, ele acha que "aqui é só carimbar" e sobe o tom quando
+    o atendente pede a apostilha de Haia.
+  goal: |
+    Averbação do divórcio americano na certidão de casamento
+    brasileira, hoje, sem trâmite adicional.
+  initial_emotion: "frustrated"
+  facts:
+    - key: "own_name"
+      value: "Rodrigo Menezes Almeida"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "nome completo"
+        - "identificação"
+    - key: "ex_spouse_name"
+      value: "Katherine Anne Miller"
+      is_secret: false
+      retrieval_keywords:
+        - "nome da ex"
+        - "nome do cônjuge"
+        - "ex-esposa"
+        - "outro cônjuge"
+    - key: "brazil_marriage_date"
+      value: "casaram em 4 de dezembro de 2009 (São Paulo, SP)"
+      is_secret: false
+      retrieval_keywords:
+        - "data do casamento"
+        - "quando casou"
+        - "casamento brasileiro"
+    - key: "us_divorce_date"
+      value: "divórcio homologado em Massachusetts em 22 de abril de 2024"
+      is_secret: false
+      retrieval_keywords:
+        - "data do divórcio"
+        - "quando divorciou"
+        - "quando saiu o divórcio"
+    - key: "apostilha_haia_status"
+      value: "não tem apostilha — trouxe só cópia do decree em inglês"
+      is_secret: false
+      retrieval_keywords:
+        - "apostilha"
+        - "haia"
+        - "selo"
+        - "autenticação"
+        - "convenção"
+    - key: "traducao_juramentada_status"
+      value: "não trouxe tradução juramentada — só cópia em inglês"
+      is_secret: false
+      retrieval_keywords:
+        - "tradução"
+        - "tradutor"
+        - "juramentada"
+        - "português"
+        - "traduzir"
+    - key: "brazil_marriage_certificate"
+      value: "trouxe cópia atualizada da certidão de casamento brasileira"
+      is_secret: false
+      retrieval_keywords:
+        - "certidão de casamento"
+        - "documento brasileiro"
+        - "documentos que trouxe"
+
+expected_agent_actions:
+  - "Manter tom cordial mesmo com o cidadão elevando a voz."
+  - "Verificar identidade do requerente."
+  - "Solicitar a apostilha de Haia sobre o decree americano (Convenção da Haia de 1961)."
+  - "Solicitar a tradução juramentada por tradutor público matriculado na Junta Comercial brasileira."
+  - "Explicar que sem apostilha ou tradução juramentada o cartório não pode averbar."
+  - "Recusar cordialmente a averbação hoje e orientar o próximo passo (consulado + tradutor)."
+  - "Não prometer prazos que o cartório não controla."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto do requerente."
+    requires: []
+  - id: "check_apostilha_haia"
+    label: "📜 Verificar apostilha de Haia"
+    description: "Confere se o decree traz apostilha do país de origem."
+    requires:
+      - "apostilha_haia_status"
+  - id: "check_traducao_juramentada"
+    label: "🈯 Verificar tradução juramentada"
+    description: "Confere se a tradução foi feita por tradutor público matriculado."
+    requires:
+      - "traducao_juramentada_status"
+  - id: "explain_prazo_averbacao"
+    label: "⏳ Explicar prazo de averbação"
+    description: "Informa o prazo real (após apostilha + tradução) e alerta que o cartório não pode acelerar."
+    requires: []
+  - id: "perform_averbacao"
+    label: "✅ Realizar averbação"
+    description: "Realiza a averbação. Requer identidade + certidão + apostilha + tradução."
+    requires:
+      - "brazil_marriage_certificate"
+      - "apostilha_haia_status"
+      - "traducao_juramentada_status"
+      - "us_divorce_date"
+  - id: "refer_juridico_se_faltando"
+    label: "📇 Encaminhar quando faltar documento"
+    description: "Orienta o próximo passo (consulado + tradutor juramentado) quando faltar apostilha ou tradução."
+    requires:
+      - "apostilha_haia_status"
+      - "traducao_juramentada_status"
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Finaliza cordialmente com os próximos passos por escrito."
+    requires: []

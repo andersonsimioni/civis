@@ -17,6 +17,7 @@
 
 scenario_id: "certificate_duplicate_confused_v1"
 title: "Segunda via de certidão de nascimento — cidadã confusa"
+category: "nascimento"
 
 persona:
   kind: "confused"

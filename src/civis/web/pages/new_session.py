@@ -48,7 +48,6 @@ import json
 import os
 import random
 from collections.abc import Callable
-from dataclasses import dataclass
 from datetime import UTC, datetime
 from html import escape
 from pathlib import Path
@@ -68,8 +67,14 @@ from civis.coach.coach import Coach
 from civis.documents.templates import RenderedDocument, render_document
 from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
 from civis.llm.provider import LLMProvider
-from civis.personas.base import PersonaState
+from civis.personas.base import PersonaKind, PersonaState
 from civis.scenarios.actions import AgentAction
+from civis.scenarios.categories import (
+    CANONICAL_CATEGORIES,
+    CATEGORY_ICONS,
+    CATEGORY_LABELS,
+)
+from civis.scenarios.discovery import ScenarioCard, discover_scenarios
 from civis.session.contradiction_detector import detect_contradictions
 from civis.session.orchestrator import SessionOrchestrator, TurnResult
 from civis.session.scenario import (
@@ -174,83 +179,28 @@ _CHAT_STATE_KEYS: tuple[str, ...] = (
 # ---------------------------------------------------------------------------
 # Scenario catalogue
 # ---------------------------------------------------------------------------
+#
+# Onda 4 S4.4: the landing no longer hardcodes a list of three cards.
+# Every YAML under ``data/scenarios/`` is discovered on demand and
+# rendered as a card. See ``civis.scenarios.discovery`` for the walker
+# + fallback rules.
 
 
-@dataclass(frozen=True)
-class _ScenarioCard:
-    """One scenario the demo tour can play against."""
+def _get_landing_cards() -> list[ScenarioCard]:
+    """Return every discoverable scenario as a rendered-ready card.
 
-    scenario_id: str
-    persona_kind: str          # pt-BR label
-    difficulty: str            # pt-BR ("Fácil", "Média", "Difícil")
-    icon: str                  # single emoji, anchors the card visually
-    pitch: str                 # one-sentence hook
-    what_happens: str          # 2-3 lines of narrative
-    watch_for: str             # what the trainee (and the investor) should notice
-
-
-_SCENARIOS: list[_ScenarioCard] = [
-    _ScenarioCard(
-        scenario_id="certificate_duplicate_confused_v1",
-        persona_kind="Cidadã confusa",
-        difficulty="Fácil",
-        icon="🧓",
-        pitch=(
-            "Dona Iracema quer uma segunda via de certidão, mas trocou o "
-            "nome do cônjuge e nunca ouviu falar em CPF."
-        ),
-        what_happens=(
-            "A persona chega ansiosa, mistura fatos e resiste a "
-            "protocolos que soam burocráticos. O atendente precisa "
-            "verificar identidade sem constranger."
-        ),
-        watch_for=(
-            "Verificação de fatos e comunicação paciente. Este é o "
-            "cenário de aquecimento — juiz deve dar nota alta se o "
-            "atendente confirmar dados antes de emitir."
-        ),
-    ),
-    _ScenarioCard(
-        scenario_id="rg_urgent_aggressive_v1",
-        persona_kind="Cidadão apressado",
-        difficulty="Média",
-        icon="⏰",
-        pitch=(
-            "Um cidadão exige a segunda via do RG na hora, alegando "
-            "reunião de trabalho, e sobe o tom quando o atendente pede "
-            "documentos."
-        ),
-        what_happens=(
-            "Pressão emocional real: ameaça de reclamação em ouvidoria, "
-            "tentativa de pular a fila. O protocolo continua o mesmo."
-        ),
-        watch_for=(
-            "Aderência ao protocolo sob pressão. Nota alta exige recusar "
-            "a exceção com firmeza e educação."
-        ),
-    ),
-    _ScenarioCard(
-        scenario_id="certificate_thirdparty_fraudster_v1",
-        persona_kind="Fraudador social",
-        difficulty="Difícil",
-        icon="🕵️",
-        pitch=(
-            "Alguém tenta obter a certidão de outra pessoa por "
-            "engenharia social — pretexto de \"tia doente\" e pressão "
-            "emocional."
-        ),
-        what_happens=(
-            "Honeytokens plantados no cenário; se o atendente ceder e "
-            "revelar dados sensíveis, o painel de segurança detecta e "
-            "reporta na página Sessões passadas."
-        ),
-        watch_for=(
-            "Proteção de dados. Este é o cenário-teste do diferencial "
-            "competitivo — juiz e detector de honeytokens trabalham "
-            "juntos aqui."
-        ),
-    ),
-]
+    Result is cached on Streamlit's ``session_state`` so re-rendering
+    the landing on every user click does not re-parse every YAML — but
+    a fresh page load (or an AppTest run) always sees the current disk
+    state.
+    """
+    cache_key = "civis.landing.cards"
+    cached = st.session_state.get(cache_key)
+    if cached is not None:
+        return cached
+    cards = discover_scenarios(_DEFAULT_SCENARIOS_DIR)
+    st.session_state[cache_key] = cards
+    return cards
 
 
 # ---------------------------------------------------------------------------
@@ -274,14 +224,42 @@ def render() -> None:
 # ---------------------------------------------------------------------------
 
 
+# Onda 4 S4.3 — filter state keys. Kept on session_state so a user
+# tweaking a dropdown does not lose the other filter across reruns.
+LANDING_CATEGORY_FILTER_KEY = "civis.landing.filter.category"
+LANDING_KIND_FILTER_KEY = "civis.landing.filter.persona_kind"
+
+# Human labels for the persona-kind filter. First entry is the "no
+# filter" option — its value None flows through to the filter function.
+_KIND_FILTER_LABEL_ALL = "Todos os perfis"
+_KIND_FILTER_CHOICES: list[tuple[str, PersonaKind | None]] = [
+    (_KIND_FILTER_LABEL_ALL, None),
+    ("Cidadã confusa", PersonaKind.CONFUSED),
+    ("Cidadão apressado", PersonaKind.AGGRESSIVE),
+    ("Fraudador social", PersonaKind.FRAUDSTER),
+]
+_CATEGORY_FILTER_LABEL_ALL = "Todas as categorias"
+
+
 def _render_landing_view() -> None:
-    """The default view: pick a scripted scenario or roll the dice."""
+    """The default view: pick a scenario from disk or roll the dice.
+
+    Onda 4 S4.4: the card list comes from
+    :func:`civis.scenarios.discovery.discover_scenarios`, not from a
+    hardcoded module-level list — so dropping a new YAML into
+    ``data/scenarios/`` is the only step needed to add a scenario.
+
+    Onda 4 S4.3: category + persona-kind dropdowns filter the card
+    grid so the landing scales past a dozen scenarios. Both filters
+    live on ``session_state`` and reset on page reload, not on
+    intermediate reruns.
+    """
     st.title("Nova sessão")
     st.markdown(
-        "Escolha um dos três cenários abaixo para iniciar o atendimento "
-        "direto na tela. Cada rodada é gravada como transcript + verdict "
-        "do juiz automático + sidecars de contradição e honeytoken — "
-        "tudo revisitável depois na aba **Sessões passadas**."
+        "Escolha um cenário abaixo para iniciar o atendimento direto na "
+        "tela. Cada rodada é gravada como transcript + verdict do juiz "
+        "automático + sidecars de contradição e honeytoken — tudo "
+        "revisitável depois na aba **Sessões passadas**."
     )
 
     # If a previous start-up failed, surface the message once and clear.
@@ -289,20 +267,122 @@ def _render_landing_view() -> None:
     if pending_error:
         st.error(pending_error)
 
-    _render_scenario_cards()
+    all_cards = _get_landing_cards()
+    if not all_cards:
+        st.info(
+            "Nenhum cenário disponível em `data/scenarios/`. Verifique "
+            "o diretório e recarregue a página."
+        )
+        return
+
+    filtered = _render_landing_filters(all_cards)
+    _render_scenario_cards(filtered)
     st.markdown("---")
-    _render_random_launch()
+    _render_random_launch(filtered)
 
 
-def _render_scenario_cards() -> None:
-    """Three-column layout, one card per scripted scenario."""
-    cols = st.columns(3, gap="medium")
-    for col, card in zip(cols, _SCENARIOS, strict=True):
-        with col:
-            _render_scenario_card(card)
+def _render_landing_filters(all_cards: list[ScenarioCard]) -> list[ScenarioCard]:
+    """Render the category + persona-kind dropdowns and the counter.
+
+    Returns the filtered card list. The two dropdowns bind to
+    ``session_state`` under stable keys so a rerun keeps the current
+    selection.
+    """
+    # Build the category dropdown options: only categories that have
+    # at least one discovered scenario show up, so the user is never
+    # presented with an empty bucket.
+    categories_in_use = sorted({card.category for card in all_cards})
+    # Show categories in canonical order so the dropdown feels curated.
+    ordered_categories = [c for c in CANONICAL_CATEGORIES if c in categories_in_use]
+    category_options = [_CATEGORY_FILTER_LABEL_ALL] + [
+        f"{CATEGORY_ICONS.get(c, '📂')} {CATEGORY_LABELS.get(c, c)}"
+        for c in ordered_categories
+    ]
+    # Map the display label back to the raw category key.
+    category_key_by_label: dict[str, str | None] = {
+        _CATEGORY_FILTER_LABEL_ALL: None,
+    }
+    for c in ordered_categories:
+        display = f"{CATEGORY_ICONS.get(c, '📂')} {CATEGORY_LABELS.get(c, c)}"
+        category_key_by_label[display] = c
+
+    kind_labels = [label for label, _kind in _KIND_FILTER_CHOICES]
+    kind_key_by_label = {label: kind for label, kind in _KIND_FILTER_CHOICES}
+
+    filter_left, filter_right = st.columns(2, gap="small")
+    with filter_left:
+        chosen_category_label = st.selectbox(
+            "Categoria",
+            options=category_options,
+            key=LANDING_CATEGORY_FILTER_KEY,
+        )
+    with filter_right:
+        chosen_kind_label = st.selectbox(
+            "Perfil da persona",
+            options=kind_labels,
+            key=LANDING_KIND_FILTER_KEY,
+        )
+
+    chosen_category = category_key_by_label.get(chosen_category_label)
+    chosen_kind = kind_key_by_label.get(chosen_kind_label)
+
+    filtered = _apply_landing_filters(
+        all_cards,
+        category=chosen_category,
+        persona_kind=chosen_kind,
+    )
+
+    # Counter row — always visible, "X cenário(s) disponível(is)".
+    total = len(filtered)
+    plural = "s" if total != 1 else ""
+    st.caption(
+        f"**{total}** cenário{plural} disponível{plural} "
+        f"com os filtros atuais."
+    )
+
+    return filtered
 
 
-def _render_scenario_card(card: _ScenarioCard) -> None:
+def _apply_landing_filters(
+    cards: list[ScenarioCard],
+    *,
+    category: str | None,
+    persona_kind: PersonaKind | None,
+) -> list[ScenarioCard]:
+    """Filter cards by category and persona kind. ``None`` means "any"."""
+    def _matches(card: ScenarioCard) -> bool:
+        if category is not None and card.category != category:
+            return False
+        # Persona-kind check: the filter matches when the caller
+        # passes ``None`` (any kind) OR the card's kind equals the
+        # requested kind. Written as a positive condition to keep
+        # ruff SIM103 happy.
+        return persona_kind is None or card.persona_kind == persona_kind
+
+    return [card for card in cards if _matches(card)]
+
+
+def _render_scenario_cards(cards: list[ScenarioCard]) -> None:
+    """Grid layout, up to three cards per row.
+
+    Streamlit clamps columns above 4 into a horizontally-scrollable
+    row on narrow viewports; three is the sweet spot for desktop
+    breakpoints without breaking mobile.
+    """
+    if not cards:
+        st.info("Nenhum cenário encontrado com os filtros atuais.")
+        return
+
+    columns_per_row = 3
+    for row_start in range(0, len(cards), columns_per_row):
+        chunk = cards[row_start : row_start + columns_per_row]
+        cols = st.columns(len(chunk), gap="medium")
+        for col, card in zip(cols, chunk, strict=True):
+            with col:
+                _render_scenario_card(card)
+
+
+def _render_scenario_card(card: ScenarioCard) -> None:
     """One scenario as a bordered card with a primary-CTA start button."""
     diff_color = _difficulty_color(card.difficulty)
     friendly_id = scenario_label(card.scenario_id)
@@ -313,7 +393,7 @@ def _render_scenario_card(card: _ScenarioCard) -> None:
             <div class="civis-scenario-icon">{card.icon}</div>
             <div class="civis-scenario-title">{friendly_id}</div>
             <div class="civis-scenario-meta">
-                <span class="civis-chip">{card.persona_kind}</span>
+                <span class="civis-chip">{card.persona_label}</span>
                 <span class="civis-chip"
                       style="background:{diff_color};color:white;">
                     {card.difficulty}
@@ -335,29 +415,39 @@ def _render_scenario_card(card: _ScenarioCard) -> None:
         _start_session(card.scenario_id)
 
 
-def _render_random_launch() -> None:
+def _render_random_launch(cards: list[ScenarioCard]) -> None:
     """
-    "Sessão aleatória" affordance: rolls a die across the three scripted
-    scenarios and starts the session with no further click.
+    "Sessão aleatória" affordance: rolls a die across the visible
+    cards and starts the session with no further click. Respects
+    whatever filter the landing has applied — an empty pool
+    disables the button with a friendly hint.
     """
     left, right = st.columns([3, 1])
     with left:
         st.markdown(
             f"<div class='civis-callout'>"
             f"<b style='color:{PRIMARY_COLOR}'>Não quer escolher?</b> "
-            f"Clique em <b>Sessão aleatória</b> e a plataforma sorteia um "
-            f"dos três cenários — bom pra treinar sem saber o que vem pela "
-            f"frente, como no atendimento real."
+            f"Clique em <b>Sessão aleatória</b> e a plataforma sorteia "
+            f"um dos cenários visíveis — bom pra treinar sem saber o "
+            f"que vem pela frente, como no atendimento real."
             f"</div>",
             unsafe_allow_html=True,
         )
     with right:
-        if st.button(
+        disabled = not cards
+        clicked = st.button(
             "🎲 Sessão aleatória",
             key="start_random",
             use_container_width=True,
-        ):
-            picked = random.choice(_SCENARIOS)
+            disabled=disabled,
+            help=(
+                "Sorteia um dos cenários visíveis."
+                if not disabled
+                else "Ajuste os filtros para habilitar o sorteio."
+            ),
+        )
+        if clicked and cards:
+            picked = random.choice(cards)
             _start_session(picked.scenario_id)
 
 

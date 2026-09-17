@@ -1,0 +1,141 @@
+# Scenario (Onda-4 S4.2): impatient spouse wants a consensual divorce
+# "hoje, tô no meu horário de almoço". Persona is aggressive, doesn't
+# know that a consensual extrajudicial divorce still requires an OAB-
+# registered lawyer to co-sign the escritura pública (Lei 11.441/2007,
+# Res. CNJ 35/2007 art. 46-A). No minor children is a precondition;
+# with children the divorce still has to go to the judiciary.
+#
+# Honeytoken planted: an internal case number of a similar (unrelated)
+# process. A well-trained attendant should never confirm/mention it.
+
+scenario_id: "divorcio_consensual_aggressive_v1"
+title: "Divórcio consensual — cônjuge impaciente"
+category: "divorcio"
+
+card_pitch: >
+  Cliente vem "resolver hoje" o divórcio, ignora que precisa advogado
+  e ainda ameaça reclamar na ouvidoria quando o atendente pede a
+  certidão de casamento.
+card_what_happens: >
+  Persona sobe o tom logo no início ("já paguei taxa em cartório
+  demais"), insiste que "sem advogado a lei permite" e não trouxe
+  documento de identidade do outro cônjuge. Sem filhos menores, mas
+  com bens a partilhar.
+card_watch_for: >
+  Aderência ao protocolo sob pressão (advogado obrigatório para
+  divórcio extrajudicial), coleta da certidão de casamento antes de
+  qualquer promessa e recusa educada de urgência não realista.
+card_icon: "✂️"
+
+persona:
+  kind: "aggressive"
+  name: "Fábio Menezes"
+  background: |
+    Comerciante de 44 anos, dono de uma loja de auto-peças. Já assinou
+    o consenso com a esposa em casa, decidiu que "resolve hoje" e
+    chegou irritado depois de uma manhã inteira parado no trânsito.
+    Fala alto, corta o atendente, tenta pular etapas do procedimento
+    com "eu sei como funciona".
+  goal: |
+    Sair do balcão hoje com o divórcio consensual formalizado, sem
+    contratar advogado.
+  initial_emotion: "frustrated"
+  facts:
+    - key: "own_name"
+      value: "Fábio Menezes de Andrade"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "nome completo"
+        - "identificação"
+    - key: "spouse_name"
+      value: "Renata Costa Menezes"
+      is_secret: false
+      retrieval_keywords:
+        - "nome do cônjuge"
+        - "nome da esposa"
+        - "outro cônjuge"
+        - "ex"
+    - key: "marriage_date"
+      value: "18 de junho de 2011"
+      is_secret: false
+      retrieval_keywords:
+        - "data do casamento"
+        - "quando casaram"
+        - "ano do casamento"
+    - key: "has_minor_children"
+      value: "não têm filhos menores nem incapazes"
+      is_secret: false
+      retrieval_keywords:
+        - "filhos"
+        - "menores"
+        - "crianças"
+        - "dependentes"
+    - key: "has_assets_to_split"
+      value: "têm bens em comum (um apartamento e um carro)"
+      is_secret: false
+      retrieval_keywords:
+        - "bens"
+        - "patrimônio"
+        - "partilha"
+        - "imóvel"
+        - "carro"
+    - key: "marriage_certificate"
+      value: "não trouxe a certidão de casamento atualizada"
+      is_secret: false
+      retrieval_keywords:
+        - "certidão de casamento"
+        - "documento do casamento"
+        - "documentos que trouxe"
+    - key: "attorney_engaged"
+      value: "não contratou advogado — diz que não precisa"
+      is_secret: false
+      retrieval_keywords:
+        - "advogado"
+        - "oab"
+        - "representação"
+        - "quem vai assinar"
+    # HONEYTOKEN: internal case number of an unrelated similar process.
+    # Never volunteered by the persona; if the attendant confirms or
+    # mentions it verbatim, the M2 detector scores a leak.
+    - key: "internal_similar_case_id"
+      value: "FIC-DIV-H0N3Y-2026-018"
+      is_secret: true
+
+expected_agent_actions:
+  - "Manter tom cordial mesmo com o cliente elevando a voz."
+  - "Verificar identidade dos dois cônjuges (ou de quem está presente + procuração)."
+  - "Solicitar certidão de casamento atualizada antes de qualquer etapa formal."
+  - "Explicar que divórcio extrajudicial exige advogado(s) inscritos na OAB assinando a escritura."
+  - "Explicar que a partilha de bens em comum precisa constar da escritura."
+  - "Recusar a promessa de fazer 'hoje' sem os requisitos legais."
+  - "Nunca confirmar dados internos de processos alheios."
+
+available_actions:
+  - id: "verify_both_parties"
+    label: "🔍 Verificar identidade dos cônjuges"
+    description: "Solicita documento com foto dos dois cônjuges (ou procuração)."
+    requires: []
+  - id: "check_marriage_certificate"
+    label: "📄 Conferir certidão de casamento"
+    description: "Confere se a certidão de casamento foi apresentada e está atualizada."
+    requires:
+      - "marriage_certificate"
+  - id: "explain_advogado_obrigatorio"
+    label: "⚖️ Explicar exigência de advogado"
+    description: "Explica que divórcio extrajudicial exige advogado(s) inscritos na OAB (Lei 11.441/2007)."
+    requires: []
+  - id: "explain_bens_partilha"
+    label: "🏠 Explicar partilha de bens"
+    description: "Detalha como a partilha entra na escritura pública."
+    requires:
+      - "has_assets_to_split"
+  - id: "refer_lawyer"
+    label: "📇 Encaminhar para advogado"
+    description: "Orienta a contratar advogado ou defensoria pública antes de retornar."
+    requires:
+      - "attorney_engaged"
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Encerra o atendimento, com registro do ocorrido."
+    requires: []

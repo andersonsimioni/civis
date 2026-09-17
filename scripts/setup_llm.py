@@ -102,16 +102,35 @@ OLLAMA_DEFAULT_JUDGE = "llama3.1:8b-instruct-q4_K_M"
 # Config path resolution
 # ---------------------------------------------------------------------------
 
+# Repo root computed once so both resolve_config_path (below) and the
+# .env writer (further down) refer to the same anchor.
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
 def resolve_config_path() -> Path:
-    """OS-appropriate location of the user's CIVIS config.toml."""
-    if platform.system() == "Windows":
-        base = os.environ.get("APPDATA")
-        if base:
-            return Path(base) / "civis" / "config.toml"
-    xdg = os.environ.get("XDG_CONFIG_HOME")
-    if xdg:
-        return Path(xdg) / "civis" / "config.toml"
-    return Path.home() / ".config" / "civis" / "config.toml"
+    """
+    OS-appropriate location of the user's CIVIS config.toml.
+
+    Delegates to civis.config.store.config_path() so the wizard writes to
+    the exact same file the CLI reads. Historically this function computed
+    the path by hand from %APPDATA%/XDG_CONFIG_HOME and drifted from the
+    loader's platformdirs computation — the wizard would write to
+    Roaming\\civis while the loader looked at Local\\civis\\civis, and
+    configs were silently ignored. Fixed on 2026-09-16.
+    """
+    src_dir = _REPO_ROOT / "src"
+    added = str(src_dir) not in sys.path
+    if added:
+        sys.path.insert(0, str(src_dir))
+    try:
+        from civis.config.store import config_path  # noqa: PLC0415
+        return config_path()
+    finally:
+        if added:
+            try:
+                sys.path.remove(str(src_dir))
+            except ValueError:
+                pass
 
 
 # ---------------------------------------------------------------------------
@@ -305,8 +324,8 @@ def _render_entry(key: str, entry: BuiltEntry) -> list[str]:
 
 # Local .env file at the repo root. civis/__init__.py loads it on import,
 # so anything we write here becomes visible to every entrypoint (CLI,
-# Streamlit, scripts) with no shell restart.
-_REPO_ROOT = Path(__file__).resolve().parent.parent
+# Streamlit, scripts) with no shell restart. _REPO_ROOT is defined near
+# the top of the file (before resolve_config_path).
 DOTENV_PATH = _REPO_ROOT / ".env"
 
 

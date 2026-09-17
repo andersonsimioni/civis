@@ -3,7 +3,21 @@ TOML persistence layer for CIVIS configuration.
 
 Path resolution follows OS conventions via platformdirs:
     Linux/Mac : $XDG_CONFIG_HOME/civis/config.toml (usually ~/.config/civis/)
-    Windows   : %APPDATA%\\civis\\config.toml
+    Windows   : %APPDATA%\\civis\\config.toml (Roaming, matches the docstring
+                promise and what the setup wizard uses)
+
+Two platformdirs knobs matter here and were both defaulted wrong before:
+    - appauthor=False    prevents Windows from injecting a "civis/civis/"
+                         double-directory (platformdirs adds an author
+                         folder equal to the app name when not overridden).
+    - roaming=True       picks %APPDATA% (Roaming) over %LOCALAPPDATA%
+                         (Local), matching the docstring and every example
+                         config the launcher installs via option 15 / 16.
+
+Without these, the loader looked under Local\\civis\\civis while the
+wizard wrote to Roaming\\civis — configs were silently ignored and CIVIS
+fell back to the default Ollama-dual, which surprised the user during
+demos. Fixed on 2026-09-16 after Anderson reported the drift.
 
 The file is human-editable; tomlkit is used on write so future edits can
 preserve comments. On read, we validate through Pydantic — any structural
@@ -23,7 +37,7 @@ CONFIG_FILENAME = "config.toml"
 
 def config_path() -> Path:
     """OS-appropriate path to the CIVIS config file. May not exist yet."""
-    return Path(user_config_dir(APP_NAME)) / CONFIG_FILENAME
+    return Path(user_config_dir(APP_NAME, appauthor=False, roaming=True)) / CONFIG_FILENAME
 
 
 def load(path: Path | None = None) -> CivisConfig | None:

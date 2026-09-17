@@ -271,15 +271,25 @@ def test_random_button_starts_a_session_from_a_shipping_scenario(
     chat_env: Path,
 ) -> None:
     """
-    Clicking 'Sessão aleatória' picks one of the three scripted scenarios
-    and flips the view state to "chat".
+    Clicking 'Sessão aleatória' picks any discoverable scenario and
+    flips the view state to "chat". (Onda 4 S4.4: the landing now
+    discovers every YAML under data/scenarios/, so the picked id can
+    be any of them — we assert it resolves to a real file on disk.)
     """
+    from civis.scenarios.discovery import discover_scenarios
+
     at = _boot_landing(chat_env)
     random_btn = next(b for b in at.button if b.key == "start_random")
     random_btn.click()
     at.run()
     assert at.session_state["civis.chat.view"] == "chat"
-    assert at.session_state["civis.chat.scenario_id"] in _SHIPPING_SCENARIO_IDS
+
+    scenarios_dir = _REPO_ROOT / "data" / "scenarios"
+    known_ids = {c.scenario_id for c in discover_scenarios(scenarios_dir)}
+    picked_id = at.session_state["civis.chat.scenario_id"]
+    assert picked_id in known_ids, (
+        f"random pick '{picked_id}' is not a discoverable scenario"
+    )
 
 
 def test_choosing_scenario_opens_chat_view_with_expected_id(
@@ -501,16 +511,42 @@ def test_start_session_with_missing_scenario_stays_on_landing(
     chat_env: Path, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     """
-    If the scenario yaml can't be resolved, the start-session flow flags
-    an st.error on the landing without flipping the view.
-    """
-    # Point scenarios lookup at an empty folder so resolve_scenario_path fails.
-    empty_scenarios = tmp_path / "scenarios"
-    empty_scenarios.mkdir()
-    monkeypatch.chdir(tmp_path)  # so 'data/scenarios' resolves under tmp
+    If the scenario yaml can't be resolved, the start-session flow
+    surfaces an st.error on the landing without flipping the view.
 
-    at = _boot_landing(chat_env)
-    btn = next(b for b in at.button if b.key == "start_certificate_duplicate_confused_v1")
+    Onda 4 S4.4: the landing discovers scenarios from disk. To exercise
+    the "resolve failed" branch, we prime the landing cache with a
+    ScenarioCard whose scenario_id does not match any yaml file.
+    Clicking the resulting button takes the code through
+    ``resolve_scenario_path`` → ``FileNotFoundError`` → the error
+    banner path, exactly the branch this test always meant to cover.
+    """
+    del monkeypatch, tmp_path  # unused
+    from civis.personas.base import PersonaKind
+    from civis.scenarios.discovery import ScenarioCard
+
+    stub_card = ScenarioCard(
+        scenario_id="does_not_exist_anywhere_v1",
+        title="Cenário fantasma",
+        category="outros",
+        persona_kind=PersonaKind.CONFUSED,
+        persona_label="Cidadã confusa",
+        difficulty="Fácil",
+        icon="👻",
+        pitch="Cenário sem arquivo em disco.",
+        what_happens="—",
+        watch_for="—",
+    )
+
+    at = AppTest.from_file(str(_APP_PATH))
+    at.switch_page(str(_PAGES_DIR / "new_session.py"))
+    _inject_provider_factory(at, persona_replies=["não usado"])
+    # Prime the landing cache before .run() so the first render picks
+    # up the stub instead of walking data/scenarios/.
+    at.session_state["civis.landing.cards"] = [stub_card]
+    at.run()
+
+    btn = next(b for b in at.button if b.key == "start_does_not_exist_anywhere_v1")
     btn.click()
     at.run()
 

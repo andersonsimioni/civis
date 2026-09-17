@@ -27,6 +27,12 @@ registry-office scope the scenario covers (nascimento, casamento,
 divorcio, ...). Absent from the YAML → the scenario ends up in the
 ``outros`` bucket. The list of accepted values lives in
 :mod:`civis.scenarios.categories`.
+
+Onda 4 S4.4: four optional top-level ``card_*`` fields drive the
+landing card copy — ``card_pitch``, ``card_what_happens``,
+``card_watch_for`` and ``card_icon``. When any is absent, the
+discovery layer applies a persona-kind-specific fallback so an
+unadorned YAML still produces a card.
 """
 
 from pathlib import Path
@@ -79,6 +85,31 @@ class ScenarioFile(BaseModel):
             "canonical set. Optional in the YAML — omitted values fall "
             "back to 'outros'."
         ),
+    )
+    # Onda 4 S4.4: optional per-scenario landing-card metadata.
+    #   card_pitch         one-sentence hook shown as the tagline.
+    #   card_what_happens  2-3 lines of narrative under "Como corre:".
+    #   card_watch_for     2-3 lines under "Observe:".
+    #   card_icon          single emoji anchor above the title.
+    # Any missing field is filled in by
+    # ``civis.scenarios.discovery.build_card_metadata`` with a
+    # persona-kind-specific fallback, so an unadorned YAML still
+    # produces a valid card.
+    card_pitch: str | None = Field(
+        default=None,
+        description="One-line hook shown as the card tagline on the landing.",
+    )
+    card_what_happens: str | None = Field(
+        default=None,
+        description="2-3 lines of narrative under 'Como corre:' on the card.",
+    )
+    card_watch_for: str | None = Field(
+        default=None,
+        description="2-3 lines under 'Observe:' on the card.",
+    )
+    card_icon: str | None = Field(
+        default=None,
+        description="Single emoji anchor for the card header. Category icon used as fallback.",
     )
 
     @field_validator("category", mode="before")

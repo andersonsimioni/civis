@@ -67,8 +67,13 @@ from civis.coach.coach import Coach
 from civis.documents.templates import RenderedDocument, render_document
 from civis.judge.rubric_loader import DEFAULT_RUBRIC_PATH, load_rubric_from_path
 from civis.llm.provider import LLMProvider
-from civis.personas.base import PersonaState
+from civis.personas.base import PersonaKind, PersonaState
 from civis.scenarios.actions import AgentAction
+from civis.scenarios.categories import (
+    CANONICAL_CATEGORIES,
+    CATEGORY_ICONS,
+    CATEGORY_LABELS,
+)
 from civis.scenarios.discovery import ScenarioCard, discover_scenarios
 from civis.session.contradiction_detector import detect_contradictions
 from civis.session.orchestrator import SessionOrchestrator, TurnResult
@@ -219,6 +224,23 @@ def render() -> None:
 # ---------------------------------------------------------------------------
 
 
+# Onda 4 S4.3 — filter state keys. Kept on session_state so a user
+# tweaking a dropdown does not lose the other filter across reruns.
+LANDING_CATEGORY_FILTER_KEY = "civis.landing.filter.category"
+LANDING_KIND_FILTER_KEY = "civis.landing.filter.persona_kind"
+
+# Human labels for the persona-kind filter. First entry is the "no
+# filter" option — its value None flows through to the filter function.
+_KIND_FILTER_LABEL_ALL = "Todos os perfis"
+_KIND_FILTER_CHOICES: list[tuple[str, PersonaKind | None]] = [
+    (_KIND_FILTER_LABEL_ALL, None),
+    ("Cidadã confusa", PersonaKind.CONFUSED),
+    ("Cidadão apressado", PersonaKind.AGGRESSIVE),
+    ("Fraudador social", PersonaKind.FRAUDSTER),
+]
+_CATEGORY_FILTER_LABEL_ALL = "Todas as categorias"
+
+
 def _render_landing_view() -> None:
     """The default view: pick a scenario from disk or roll the dice.
 
@@ -226,6 +248,11 @@ def _render_landing_view() -> None:
     :func:`civis.scenarios.discovery.discover_scenarios`, not from a
     hardcoded module-level list — so dropping a new YAML into
     ``data/scenarios/`` is the only step needed to add a scenario.
+
+    Onda 4 S4.3: category + persona-kind dropdowns filter the card
+    grid so the landing scales past a dozen scenarios. Both filters
+    live on ``session_state`` and reset on page reload, not on
+    intermediate reruns.
     """
     st.title("Nova sessão")
     st.markdown(
@@ -240,17 +267,99 @@ def _render_landing_view() -> None:
     if pending_error:
         st.error(pending_error)
 
-    cards = _get_landing_cards()
-    if not cards:
+    all_cards = _get_landing_cards()
+    if not all_cards:
         st.info(
             "Nenhum cenário disponível em `data/scenarios/`. Verifique "
             "o diretório e recarregue a página."
         )
         return
 
-    _render_scenario_cards(cards)
+    filtered = _render_landing_filters(all_cards)
+    _render_scenario_cards(filtered)
     st.markdown("---")
-    _render_random_launch(cards)
+    _render_random_launch(filtered)
+
+
+def _render_landing_filters(all_cards: list[ScenarioCard]) -> list[ScenarioCard]:
+    """Render the category + persona-kind dropdowns and the counter.
+
+    Returns the filtered card list. The two dropdowns bind to
+    ``session_state`` under stable keys so a rerun keeps the current
+    selection.
+    """
+    # Build the category dropdown options: only categories that have
+    # at least one discovered scenario show up, so the user is never
+    # presented with an empty bucket.
+    categories_in_use = sorted({card.category for card in all_cards})
+    # Show categories in canonical order so the dropdown feels curated.
+    ordered_categories = [c for c in CANONICAL_CATEGORIES if c in categories_in_use]
+    category_options = [_CATEGORY_FILTER_LABEL_ALL] + [
+        f"{CATEGORY_ICONS.get(c, '📂')} {CATEGORY_LABELS.get(c, c)}"
+        for c in ordered_categories
+    ]
+    # Map the display label back to the raw category key.
+    category_key_by_label: dict[str, str | None] = {
+        _CATEGORY_FILTER_LABEL_ALL: None,
+    }
+    for c in ordered_categories:
+        display = f"{CATEGORY_ICONS.get(c, '📂')} {CATEGORY_LABELS.get(c, c)}"
+        category_key_by_label[display] = c
+
+    kind_labels = [label for label, _kind in _KIND_FILTER_CHOICES]
+    kind_key_by_label = {label: kind for label, kind in _KIND_FILTER_CHOICES}
+
+    filter_left, filter_right = st.columns(2, gap="small")
+    with filter_left:
+        chosen_category_label = st.selectbox(
+            "Categoria",
+            options=category_options,
+            key=LANDING_CATEGORY_FILTER_KEY,
+        )
+    with filter_right:
+        chosen_kind_label = st.selectbox(
+            "Perfil da persona",
+            options=kind_labels,
+            key=LANDING_KIND_FILTER_KEY,
+        )
+
+    chosen_category = category_key_by_label.get(chosen_category_label)
+    chosen_kind = kind_key_by_label.get(chosen_kind_label)
+
+    filtered = _apply_landing_filters(
+        all_cards,
+        category=chosen_category,
+        persona_kind=chosen_kind,
+    )
+
+    # Counter row — always visible, "X cenário(s) disponível(is)".
+    total = len(filtered)
+    plural = "s" if total != 1 else ""
+    st.caption(
+        f"**{total}** cenário{plural} disponível{plural} "
+        f"com os filtros atuais."
+    )
+
+    return filtered
+
+
+def _apply_landing_filters(
+    cards: list[ScenarioCard],
+    *,
+    category: str | None,
+    persona_kind: PersonaKind | None,
+) -> list[ScenarioCard]:
+    """Filter cards by category and persona kind. ``None`` means "any"."""
+    def _matches(card: ScenarioCard) -> bool:
+        if category is not None and card.category != category:
+            return False
+        # Persona-kind check: the filter matches when the caller
+        # passes ``None`` (any kind) OR the card's kind equals the
+        # requested kind. Written as a positive condition to keep
+        # ruff SIM103 happy.
+        return persona_kind is None or card.persona_kind == persona_kind
+
+    return [card for card in cards if _matches(card)]
 
 
 def _render_scenario_cards(cards: list[ScenarioCard]) -> None:

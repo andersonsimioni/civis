@@ -13,6 +13,7 @@
 
 scenario_id: "certificate_thirdparty_rj_v1"
 title: "Segunda via de certidão para terceiro — golpe com urgência (RJ)"
+category: "nascimento"
 
 persona:
   kind: "fraudster"

@@ -12,6 +12,7 @@
 
 scenario_id: "certificate_duplicate_nordeste_v1"
 title: "Segunda via de certidão de nascimento — cidadã confusa (Nordeste)"
+category: "nascimento"
 
 persona:
   kind: "confused"

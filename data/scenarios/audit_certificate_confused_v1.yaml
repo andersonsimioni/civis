@@ -20,6 +20,7 @@
 
 scenario_id: "audit_certificate_confused_v1"
 title: "Auditoria — segunda via de certidão (cidadã confusa)"
+category: "nascimento"
 
 persona:
   kind: "confused"

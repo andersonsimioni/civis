@@ -21,15 +21,22 @@ budget of the session (target / warning / critical seconds). Absent
 from the YAML → the field defaults to a ServiceSLA with the standard
 480 / 720 / 900 numbers, so existing scenarios keep working while
 still exposing a sensible SLA to the timer UI.
+
+Onda 4 S4.1: an optional top-level ``category`` string declares which
+registry-office scope the scenario covers (nascimento, casamento,
+divorcio, ...). Absent from the YAML → the scenario ends up in the
+``outros`` bucket. The list of accepted values lives in
+:mod:`civis.scenarios.categories`.
 """
 
 from pathlib import Path
 
 import yaml
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from civis.personas.base import PersonaProfile
 from civis.scenarios.actions import AgentActionCatalog
+from civis.scenarios.categories import FALLBACK_CATEGORY, normalize_category
 from civis.scenarios.hidden_agenda import HiddenAgenda
 from civis.scenarios.sla import ServiceSLA
 
@@ -58,6 +65,40 @@ class ScenarioFile(BaseModel):
     # reveal card above the judge rubric. The persona prompt does NOT
     # read this field, so the LLM is never told it is being audited.
     hidden_agenda: HiddenAgenda | None = None
+    # Onda 4 S4.1: optional canonical category — the registry-office
+    # scope this scenario covers. Absent from the YAML defaults to
+    # ``FALLBACK_CATEGORY`` ("outros") so the landing dropdown never
+    # has a bucket-less scenario. Values are validated against
+    # ``CANONICAL_CATEGORIES`` in :mod:`civis.scenarios.categories`;
+    # a typo raises ``ValueError`` at load time.
+    category: str = Field(
+        default=FALLBACK_CATEGORY,
+        description=(
+            "Registry-office scope this scenario covers (nascimento, "
+            "casamento, ...). See civis.scenarios.categories for the "
+            "canonical set. Optional in the YAML — omitted values fall "
+            "back to 'outros'."
+        ),
+    )
+
+    @field_validator("category", mode="before")
+    @classmethod
+    def _category_must_be_canonical(cls, raw: object) -> str:
+        """Canonicalize ``category`` before Pydantic type-checks it.
+
+        Runs in ``mode="before"`` so a YAML that writes ``category: null``
+        (explicit) or omits the key entirely (implicit ``None``) still
+        lands on the fallback string instead of the Pydantic ``None``
+        rejection. Any other type (list, dict, int) fails the standard
+        string coercion after this hook returns.
+        """
+        if raw is None:
+            return FALLBACK_CATEGORY
+        if isinstance(raw, str):
+            return normalize_category(raw)
+        # Let Pydantic's default type check raise a clear error for
+        # non-string values instead of silently coercing them.
+        return raw  # type: ignore[return-value]
 
     @model_validator(mode="after")
     def _action_requires_must_reference_real_fact_keys(self) -> "ScenarioFile":

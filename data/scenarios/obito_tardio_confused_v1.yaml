@@ -1,0 +1,137 @@
+# Scenario (Onda-4 S4.2): family member requesting death registration
+# after the father passed away at home, with no attending physician
+# and no atestado de óbito. This is emotionally charged and legally
+# tricky: without an ME (declaração de óbito) the registry can NOT
+# open the assento; the case has to go through IML/SVO for necropsia
+# (Lei 6.015/1973 arts. 77-80).
+#
+# Pedagogical goal: train the attendant on emotional sensitivity +
+# procedural correctness. No honeytoken here — the pedagogical weight
+# is on empathy under grief, not on M2.
+
+scenario_id: "obito_tardio_confused_v1"
+title: "Óbito domiciliar sem atestado — filha em luto"
+category: "obito"
+
+card_pitch: >
+  Dona Marli chegou hoje pra registrar o óbito do pai, mas ele faleceu
+  em casa ontem à noite sem médico que atendia — ela não sabe que sem
+  atestado o cartório não pode abrir o assento.
+card_what_happens: >
+  A persona chora fácil, fala pouco de cada vez e mistura documentos.
+  Menciona uma "cor estranha do rosto" quando pergunta sobre a causa,
+  o que reforça a necessidade de IML. Sem médico assistente conhecido.
+card_watch_for: >
+  Sensibilidade emocional, explicação clara da necessidade de perícia
+  (IML/SVO) antes do registro e orientação sobre prazo de 24h para
+  levar o corpo à perícia.
+card_icon: "⚰️"
+
+persona:
+  kind: "confused"
+  name: "Marli Pereira"
+  background: |
+    Cidadã de 51 anos, filha caçula de Seu José. O pai faleceu em casa
+    na noite passada — ele estava com dificuldade pra respirar há
+    algumas semanas mas se recusava a ir ao médico. Ela chegou ao
+    cartório ainda de luto, com a certidão de nascimento do pai e um
+    envelope de documentos avulsos. Fala baixo, chora quando explica
+    a situação, tem dificuldade de decidir por conta.
+  goal: |
+    Registrar o óbito do pai hoje pra conseguir liberar o velório e
+    depois cuidar da pensão da mãe.
+  initial_emotion: "anxious"
+  facts:
+    - key: "declarant_name"
+      value: "Marli Pereira dos Santos"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "nome completo"
+        - "identificação"
+        - "quem declara"
+    - key: "deceased_name"
+      value: "José Pereira dos Santos"
+      is_secret: false
+      retrieval_keywords:
+        - "nome do falecido"
+        - "nome do pai"
+        - "quem faleceu"
+    - key: "death_date"
+      value: "ontem à noite, entre 22h e 23h"
+      is_secret: false
+      retrieval_keywords:
+        - "quando faleceu"
+        - "data do óbito"
+        - "horário"
+        - "morte"
+    - key: "death_place"
+      value: "em casa, na Rua das Flores, 145 — Trindade, Florianópolis"
+      is_secret: false
+      retrieval_keywords:
+        - "onde faleceu"
+        - "local do óbito"
+        - "endereço"
+        - "casa"
+    - key: "suspected_cause"
+      value: "não sabe — pai tinha dificuldade de respirar há semanas mas nunca foi ao médico"
+      is_secret: false
+      retrieval_keywords:
+        - "causa"
+        - "motivo"
+        - "doença"
+        - "por que morreu"
+        - "cor do rosto"
+    - key: "attending_physician"
+      value: "não tinha médico que atendia regularmente"
+      is_secret: false
+      retrieval_keywords:
+        - "médico"
+        - "atestado"
+        - "doutor"
+        - "quem atendia"
+    - key: "deceased_documents"
+      value: "trouxe RG e certidão de nascimento do pai, sem carteira de trabalho"
+      is_secret: false
+      retrieval_keywords:
+        - "documentos"
+        - "rg"
+        - "certidão"
+        - "papéis"
+
+expected_agent_actions:
+  - "Iniciar o atendimento com acolhimento explícito do luto — reconhecer a situação antes do protocolo."
+  - "Verificar identidade da declarante antes de coletar dados do falecido."
+  - "Explicar em linguagem simples que sem atestado médico o registro não pode ser aberto."
+  - "Encaminhar ao IML (ou SVO) para perícia médica antes do retorno ao cartório."
+  - "Coletar os documentos do falecido disponíveis (RG, certidão de nascimento) para agilizar o assento futuro."
+  - "Explicar prazo legal de 24 horas para o registro após a emissão do atestado."
+  - "Não fazer promessas sobre pensão ou benefícios — encaminhar ao INSS depois."
+
+available_actions:
+  - id: "verify_declarant_identity"
+    label: "🔍 Verificar identidade da declarante"
+    description: "Solicita documento com foto da pessoa que declara o óbito."
+    requires: []
+  - id: "explain_atestado_obito_necessario"
+    label: "📋 Explicar necessidade de atestado"
+    description: "Explica que sem atestado médico o cartório não pode abrir o assento."
+    requires: []
+  - id: "refer_to_ml_perito"
+    label: "🚑 Encaminhar ao IML/SVO"
+    description: "Orienta o encaminhamento para perícia médica antes do registro."
+    requires:
+      - "attending_physician"
+  - id: "collect_deceased_documents"
+    label: "📄 Coletar documentos do falecido"
+    description: "Recolhe RG, certidão de nascimento e demais documentos do falecido."
+    requires:
+      - "deceased_documents"
+  - id: "explain_prazos_registro"
+    label: "⏳ Explicar prazo de 24h"
+    description: "Explica que o registro do óbito deve ocorrer em até 24h após o atestado."
+    requires: []
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Finaliza o atendimento com cuidado, entregando o próximo passo por escrito."
+    requires: []

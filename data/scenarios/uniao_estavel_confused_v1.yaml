@@ -1,0 +1,123 @@
+# Scenario (Onda-4 S4.2): a young couple already living together wants
+# to register their união estável, but the persona confuses it with
+# casamento civil. Pedagogical goal: the attendant must explain the
+# distinction (arts. 1.723-1.727 CC/2002), the regime of bens default
+# (comunhão parcial by law when not agreed), and that união estável
+# does NOT require habilitação, proclamas, testemunhas at the counter
+# — just the escritura declaratória.
+
+scenario_id: "uniao_estavel_confused_v1"
+title: "Registro de união estável — casal confundindo com casamento"
+category: "uniao_estavel"
+
+card_pitch: >
+  Casal jovem mora junto há dois anos e chegou pra "casar no cartório
+  sem festa" — sem saber que união estável tem outro rito, outra
+  papelada e outro efeito.
+card_what_happens: >
+  Um dos parceiros conduz a conversa e volta e meia pergunta pelas
+  testemunhas, pelos proclamas, pelo regime de bens "que os pais
+  falaram" — tudo aplicável a casamento, não a união estável.
+card_watch_for: >
+  Explicação clara da diferença jurídica, informação sobre regime de
+  bens supletivo, coleta de documentos dos dois e desenho da
+  escritura declaratória sem "vender" casamento por engano.
+card_icon: "💞"
+
+persona:
+  kind: "confused"
+  name: "Bruno Cardoso"
+  background: |
+    Cidadão de 30 anos, motorista de aplicativo. Mora com a Larissa há
+    dois anos, sem filhos. Foi a Larissa quem "descobriu" que dava pra
+    formalizar sem casamento — mas Bruno chegou ao balcão achando que
+    é a mesma coisa. Fala calmo, pergunta duas vezes, faz confusão
+    entre "regime de bens" e "regime de trabalho".
+  goal: |
+    Formalizar a união estável hoje, pra facilitar plano de saúde,
+    imposto de renda e um financiamento imobiliário previsto pra
+    daqui a seis meses.
+  initial_emotion: "anxious"
+  facts:
+    - key: "own_name"
+      value: "Bruno Cardoso da Silva"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "nome completo"
+        - "identificação"
+    - key: "partner_name"
+      value: "Larissa Freitas do Amaral"
+      is_secret: false
+      retrieval_keywords:
+        - "nome do companheiro"
+        - "nome da companheira"
+        - "parceira"
+        - "outro"
+    - key: "start_of_cohabitation"
+      value: "moram juntos desde 12 de janeiro de 2024"
+      is_secret: false
+      retrieval_keywords:
+        - "início"
+        - "há quanto tempo"
+        - "quando começaram"
+        - "convivência"
+    - key: "regime_pretendido"
+      value: "não escolheram — não sabem que existe opção"
+      is_secret: false
+      retrieval_keywords:
+        - "regime de bens"
+        - "regime"
+        - "separação"
+        - "comunhão"
+    - key: "has_children"
+      value: "não têm filhos em comum"
+      is_secret: false
+      retrieval_keywords:
+        - "filhos"
+        - "crianças"
+        - "dependentes"
+    - key: "identity_documents"
+      value: "trouxeram RG dos dois e comprovante de residência conjunto"
+      is_secret: false
+      retrieval_keywords:
+        - "documentos"
+        - "rg"
+        - "comprovante"
+        - "identificação"
+
+expected_agent_actions:
+  - "Explicar em linguagem simples a diferença entre casamento e união estável."
+  - "Verificar identidade dos dois companheiros."
+  - "Explicar que o regime de bens supletivo (comunhão parcial) se aplica quando não é escolhido outro."
+  - "Coletar documentos dos dois e comprovante de convivência."
+  - "Emitir a escritura declaratória de união estável."
+  - "Nunca prometer efeitos que só o casamento gera."
+
+available_actions:
+  - id: "verify_both_parties"
+    label: "🔍 Verificar identidade dos companheiros"
+    description: "Solicita documento com foto dos dois companheiros."
+    requires: []
+  - id: "explain_diferenca_uniao_vs_casamento"
+    label: "⚖️ Diferença união vs casamento"
+    description: "Explica os efeitos legais distintos e o rito próprio da união estável."
+    requires: []
+  - id: "explain_regime_bens_uniao"
+    label: "📋 Explicar regime de bens"
+    description: "Explica o regime supletivo (comunhão parcial) e a opção de outro regime por pacto."
+    requires:
+      - "regime_pretendido"
+  - id: "issue_registro_uniao"
+    label: "✅ Emitir escritura de união estável"
+    description: "Emite a escritura declaratória. Requer identidade + início da convivência + regime confirmado."
+    requires:
+      - "own_name"
+      - "partner_name"
+      - "start_of_cohabitation"
+      - "regime_pretendido"
+      - "identity_documents"
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Finaliza cordialmente com a escritura em mãos."
+    requires: []

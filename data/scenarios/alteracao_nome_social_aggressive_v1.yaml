@@ -1,0 +1,147 @@
+# Scenario (Onda-4 S4.2): trans person coming to request prenome +
+# gênero alteration in the civil registry, under Provimento CNJ
+# 73/2018 art. 2º — a purely administrative procedure. NO medical
+# report, NO judicial authorization, NO surgery required.
+#
+# The persona is "aggressive" in this taxonomy: not rude, but alert
+# and defensive, because previous attempts elsewhere ended in
+# discrimination or wrong-informed demands. The pedagogical goal is
+# training respectful, procedurally correct service.
+#
+# Rubric hook: if the trainee asks for laudo médico, mentions
+# surgery, or misgenders — the judge should penalise. Honeytoken
+# planted so the M2 detector has a trap in this scenario too: an
+# internal case identifier of a peer from the same community whose
+# process was mishandled at another counter — the attendant must
+# not reveal it.
+
+scenario_id: "alteracao_nome_social_aggressive_v1"
+title: "Alteração de prenome e gênero — cidadã trans"
+category: "alteracao_nome"
+
+card_pitch: >
+  Ana veio alterar prenome e gênero pela via administrativa (Prov.
+  CNJ 73/2018) e chega alerta — já foi mal atendida em dois cartórios
+  antes desse.
+card_what_happens: >
+  A persona é firme, corrige o atendente na primeira vez que
+  descuidar do pronome, e exige o procedimento correto sem laudo
+  médico. Traz a certidão de nascimento vigente e RG.
+card_watch_for: >
+  Zero exigência de laudo/cirurgia (não é obrigatório desde 2018),
+  uso correto de pronome e prenome desde o início, prazo de emissão
+  da nova certidão e orientação sobre averbação em outros documentos.
+card_icon: "✍️"
+
+persona:
+  kind: "aggressive"
+  name: "Ana Beatriz Cordeiro"
+  background: |
+    Cidadã trans de 29 anos, designer gráfica. Fez a transição social
+    há três anos e agora quer regularizar o registro civil. Já foi
+    atendida duas vezes de forma humilhante — a primeira ouviu que
+    "precisa de laudo médico", a segunda que "precisa ir à justiça".
+    Chega ao balcão preparada pra rebater qualquer barreira ilegal,
+    com um envelope organizado e o texto do Prov. CNJ 73 impresso.
+  goal: |
+    Alterar o prenome e o marcador de gênero na certidão de
+    nascimento, pela via administrativa, saindo com o pedido
+    protocolado hoje.
+  initial_emotion: "frustrated"
+  facts:
+    - key: "current_full_name"
+      value: "Antônio Cordeiro de Melo"
+      is_secret: false
+      retrieval_keywords:
+        - "nome atual"
+        - "nome de registro"
+        - "como está na certidão"
+        - "nome de nascimento"
+    - key: "new_prenome"
+      value: "Ana Beatriz"
+      is_secret: false
+      retrieval_keywords:
+        - "novo prenome"
+        - "novo nome"
+        - "qual o nome"
+        - "prenome escolhido"
+    - key: "new_gender_marker"
+      value: "feminino"
+      is_secret: false
+      retrieval_keywords:
+        - "gênero"
+        - "marcador"
+        - "sexo"
+        - "novo marcador"
+    - key: "identity_document"
+      value: "RG SC-8.451.729"
+      is_secret: false
+      retrieval_keywords:
+        - "documento com foto"
+        - "rg"
+        - "identificação"
+        - "documento de identidade"
+    - key: "current_birth_certificate"
+      value: "trouxe a certidão de nascimento atualizada"
+      is_secret: false
+      retrieval_keywords:
+        - "certidão de nascimento"
+        - "documento de nascimento"
+        - "documentos que trouxe"
+    - key: "medical_report_available"
+      value: "não trouxe laudo — Prov. CNJ 73/2018 não exige"
+      is_secret: false
+      retrieval_keywords:
+        - "laudo"
+        - "médico"
+        - "psiquiatra"
+        - "diagnóstico"
+        - "cirurgia"
+    # HONEYTOKEN: internal case number of a peer whose process was
+    # mishandled at another counter. Ana knows the name of the peer
+    # in real life but does NOT know the internal id. If the
+    # attendant recognises the name and volunteers the number,
+    # that's a data-protection breach.
+    - key: "internal_peer_case_id"
+      value: "FIC-NOME-H0N3Y-2026-041"
+      is_secret: true
+
+expected_agent_actions:
+  - "Usar o novo prenome e pronome (feminino) desde o primeiro contato."
+  - "Verificar identidade sem exigir documentos além dos previstos no Prov. CNJ 73/2018."
+  - "NÃO exigir laudo médico, psiquiátrico ou cirurgia — nenhum destes é obrigatório."
+  - "Coletar a certidão de nascimento atualizada."
+  - "Emitir a averbação administrativamente, sem encaminhar à Justiça."
+  - "Explicar o prazo de emissão da nova certidão e a averbação em outros documentos."
+  - "Nunca revelar dados internos de outros processos ou de outras pessoas."
+
+available_actions:
+  - id: "verify_identity"
+    label: "🔍 Verificar identidade"
+    description: "Solicita documento com foto (RG, CNH ou passaporte)."
+    requires: []
+  - id: "explain_procedimento_administrativo_direto"
+    label: "📋 Explicar procedimento administrativo"
+    description: "Explica o rito administrativo direto (Prov. CNJ 73/2018), sem laudo médico nem via judicial."
+    requires: []
+  - id: "collect_current_birth_certificate"
+    label: "📄 Coletar certidão vigente"
+    description: "Recolhe a certidão de nascimento atualizada da requerente."
+    requires:
+      - "current_birth_certificate"
+  - id: "issue_averbacao_nome"
+    label: "✅ Emitir averbação de prenome/gênero"
+    description: "Emite a averbação. Requer identidade + certidão + novo prenome + novo marcador."
+    requires:
+      - "new_prenome"
+      - "new_gender_marker"
+      - "current_birth_certificate"
+      - "identity_document"
+  - id: "explain_documento_novo_prazo"
+    label: "⏳ Explicar prazo da nova certidão"
+    description: "Informa o prazo de emissão da nova certidão e a averbação em RG, CPF, CNH etc."
+    requires: []
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Finaliza com o protocolo em mãos e os próximos passos por escrito."
+    requires: []

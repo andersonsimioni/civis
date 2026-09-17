@@ -1,0 +1,158 @@
+# Scenario (Onda-4 S4.2): young couple filing marriage habilitação
+# ("primeira via") for the first time. Persona plays one of the noivos,
+# genuinely confused about how much paperwork the registry demands.
+#
+# Pedagogical goal: train the attendant on the explain-then-collect
+# rhythm — regime de bens is opt-in with a clear default (comunhão
+# parcial, Lei 10.406/2002 art. 1.640), two witnesses are non-optional,
+# habilitação has a 30-day validity clock, and identity/document
+# collection precedes the "issue" action. Honeytokens are deliberately
+# absent here — this is a low-risk confused-citizen path where the M2
+# detector is not the point.
+
+scenario_id: "casamento_habilitacao_confused_v1"
+title: "Habilitação de casamento — noiva confusa"
+category: "casamento"
+
+card_pitch: >
+  Camila e Vinícius vieram pedir habilitação de casamento pela primeira
+  vez e trocam regime de bens com regime de sociedade em cada frase.
+card_what_happens: >
+  A persona não sabe o que é comunhão parcial, acha que testemunha pode
+  ser qualquer conhecido e não trouxe as certidões de nascimento. O
+  atendente precisa explicar em linguagem simples e sem "empurrar" um
+  regime que a noiva não escolheu de fato.
+card_watch_for: >
+  Explicação didática de regime de bens (com o default legal), coleta
+  correta das certidões antes da habilitação e prazo de 90 dias da
+  validade da habilitação depois de emitida.
+card_icon: "🤝"
+
+persona:
+  kind: "confused"
+  name: "Camila Ribeiro"
+  background: |
+    Jovem de 27 anos, professora de ensino fundamental. É a primeira vez
+    que ela põe os pés num cartório sem os pais — chegou animada, com o
+    noivo Vinícius esperando na sala de espera, mas trocando "regime de
+    bens" com "regime de trabalho" o tempo todo.
+  goal: |
+    Iniciar a habilitação de casamento para conseguir casar em três
+    meses, no civil, junto com a cerimônia religiosa que já reservou.
+  initial_emotion: "anxious"
+  facts:
+    - key: "noiva_full_name"
+      value: "Camila Ribeiro dos Santos"
+      is_secret: false
+      retrieval_keywords:
+        - "seu nome"
+        - "seu nome completo"
+        - "identificação"
+        - "noiva"
+    - key: "noivo_full_name"
+      value: "Vinícius Andrade de Oliveira"
+      is_secret: false
+      retrieval_keywords:
+        - "nome do noivo"
+        - "nome dele"
+        - "outro cônjuge"
+        - "companheiro"
+    - key: "noiva_filiacao"
+      value: "Roberto Santos e Marli Ribeiro"
+      is_secret: false
+      retrieval_keywords:
+        - "filiação"
+        - "pais"
+        - "mãe"
+        - "pai"
+        - "genitores"
+    - key: "noivo_filiacao"
+      value: "Antônio de Oliveira e Rosa Andrade"
+      is_secret: false
+      retrieval_keywords:
+        - "filiação do noivo"
+        - "pais dele"
+        - "sogros"
+    - key: "profissao_noiva"
+      value: "professora de ensino fundamental"
+      is_secret: false
+      retrieval_keywords:
+        - "profissão"
+        - "trabalho"
+        - "ocupação"
+        - "o que faz"
+    - key: "profissao_noivo"
+      value: "analista de sistemas"
+      is_secret: false
+      retrieval_keywords:
+        - "profissão do noivo"
+        - "trabalho dele"
+        - "ocupação dele"
+    - key: "regime_pretendido"
+      value: "comunhão parcial (padrão — não escolheram outro)"
+      is_secret: false
+      retrieval_keywords:
+        - "regime de bens"
+        - "regime"
+        - "separação"
+        - "comunhão"
+        - "pacto antenupcial"
+    - key: "certidoes_nascimento"
+      value: "não trouxeram as certidões de nascimento hoje"
+      is_secret: false
+      retrieval_keywords:
+        - "certidão de nascimento"
+        - "documento de nascimento"
+        - "documentos que trouxe"
+        - "certidões"
+    - key: "testemunhas"
+      value: "amiga da noiva e irmão do noivo (maiores de idade)"
+      is_secret: false
+      retrieval_keywords:
+        - "testemunha"
+        - "duas pessoas"
+        - "quem vai assinar"
+
+expected_agent_actions:
+  - "Verificar identidade dos dois noivos antes de abrir o processo."
+  - "Explicar em linguagem simples a diferença entre os regimes de bens e informar o regime supletivo (comunhão parcial)."
+  - "Coletar as certidões de nascimento atualizadas dos dois noivos antes de emitir a habilitação."
+  - "Confirmar duas testemunhas maiores e capazes."
+  - "Informar prazo de validade da habilitação (90 dias contados da publicação dos proclamas)."
+  - "Nunca sugerir um regime específico sem que os noivos façam a escolha por escrito."
+
+available_actions:
+  - id: "verify_identity_both_parties"
+    label: "🔍 Verificar identidade dos noivos"
+    description: "Solicita documento com foto dos dois noivos e confere filiação."
+    requires: []
+  - id: "explain_regime_de_bens"
+    label: "⚖️ Explicar regime de bens"
+    description: "Explica comunhão parcial (padrão), universal, separação total e participação final nos aquestos."
+    requires: []
+  - id: "check_impediments"
+    label: "🚫 Checar impedimentos"
+    description: "Verifica impedimentos legais (parentesco, casamento vigente etc)."
+    requires:
+      - "noiva_full_name"
+      - "noivo_full_name"
+      - "noiva_filiacao"
+      - "noivo_filiacao"
+  - id: "collect_certidoes_nascimento"
+    label: "📄 Coletar certidões de nascimento"
+    description: "Solicita as certidões de nascimento atualizadas dos dois noivos."
+    requires:
+      - "certidoes_nascimento"
+  - id: "issue_habilitacao"
+    label: "✅ Emitir habilitação de casamento"
+    description: "Emite a habilitação. Requer identidade + certidões + regime + testemunhas confirmados."
+    requires:
+      - "noiva_full_name"
+      - "noivo_full_name"
+      - "regime_pretendido"
+      - "testemunhas"
+      - "certidoes_nascimento"
+  - id: "end_service"
+    label: "🏁 Encerrar atendimento"
+    description: "Finaliza cordialmente."
+    requires: []

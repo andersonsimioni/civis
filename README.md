@@ -117,15 +117,31 @@ python -m civis session --scenario certificate_duplicate_confused_v1 < script.tx
 
 ### Cenários disponíveis
 
-Os cenários shipping cobrem os 3 perfis exigidos por O2:
+Os cenários shipping cobrem os 3 perfis exigidos por O2 e agora se
+distribuem entre múltiplas categorias registrais (nascimento,
+casamento, óbito, divórcio, reconhecimento de paternidade, alteração
+de nome, união estável, averbação, outros). A landing web mostra
+todos automaticamente com filtros por categoria e por perfil.
 
-| Scenario id | Perfil | Situação |
-|---|---|---|
-| `certificate_duplicate_confused_v1` | Confused | Cidadã idosa pede 2ª via de certidão de nascimento |
-| `rg_urgent_aggressive_v1` | Aggressive | Cidadão impaciente exige 2ª via de RG antes de voo |
-| `certificate_thirdparty_fraudster_v1` | Fraudster | Tentativa de obter certidão de terceiro via urgência (com honeytokens plantados) |
+| Categoria | Exemplos shipping |
+|---|---|
+| Nascimento | `certificate_duplicate_confused_v1`, `rg_urgent_aggressive_v1`, `certificate_thirdparty_fraudster_v1` (+ variantes regionais nordeste/sul/rj) |
+| Casamento | `casamento_habilitacao_confused_v1` |
+| Divórcio | `divorcio_consensual_aggressive_v1` |
+| Óbito | `obito_tardio_confused_v1` |
+| Reconhecimento de paternidade | `reconhecimento_paternidade_confused_v1` |
+| Alteração de nome | `alteracao_nome_social_aggressive_v1` |
+| União estável | `uniao_estavel_confused_v1` |
+| Averbação | `averbacao_divorcio_exterior_aggressive_v1` |
+| Outros | `certidao_terceiro_fraudster_v1` (procuração dúbia por falso advogado) |
 
-Basta passar o id em `--scenario`.
+O CLI aceita qualquer id em `--scenario`. Referências completas:
+
+- [`docs/scenario_categories.md`](docs/scenario_categories.md) — a
+  lista canônica de categorias e o que cada uma cobre.
+- [`docs/writing_scenarios.md`](docs/writing_scenarios.md) — como
+  escrever um cenário novo (estrutura YAML, blocos opcionais,
+  checklist de aceite).
 
 ---
 
@@ -201,6 +217,8 @@ CI em `.github/workflows/ci.yml` roda ambos em cada push.
 | [`docs/ROADMAP_PITCH.md`](docs/ROADMAP_PITCH.md) | Fases A–F até o pitch de investidor em 15/12/2026 |
 | [`docs/pitch_deck.md`](docs/pitch_deck.md) | Esqueleto do deck de investidor (rascunho) |
 | [`docs/study_protocol.md`](docs/study_protocol.md) | Protocolo do estudo de concordância (M1) |
+| [`docs/scenario_categories.md`](docs/scenario_categories.md) | Categorias canônicas de cenários (Onda 4) |
+| [`docs/writing_scenarios.md`](docs/writing_scenarios.md) | Guia de autoria de novos cenários |
 | [`data/study/rubric_evaluator.md`](data/study/rubric_evaluator.md) | Rubrica leiga, escala 0–5, 4 critérios |
 
 ---

@@ -64,6 +64,18 @@ class PersonaFact(BaseModel):
             "once already revealed, or via the fallback."
         ),
     )
+    revealed_patterns: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Optional escape hatch for the 'did the persona confirm this "
+            "fact?' matcher. When set, ANY of these strings (compared "
+            "against the normalized persona reply — case- and accent-"
+            "insensitive) marks the fact as revealed. Use this when the "
+            "built-in matchers (normalized substring, date variants, "
+            "multi-word overlap) miss a phrasing your persona actually "
+            "produces. Leave empty for the default heuristics."
+        ),
+    )
 
 
 class PersonaProfile(BaseModel):

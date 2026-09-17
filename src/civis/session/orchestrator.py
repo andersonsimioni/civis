@@ -53,6 +53,7 @@ from civis.llm.provider import LLMMessage, LLMProvider, LLMResponse
 from civis.personas.base import PersonaState
 from civis.prompts.fact_retrieval import fact_keys_matched_by_agent_message
 from civis.prompts.persona import build_persona_prompt
+from civis.session.fact_matching import fact_value_appears_in_reply
 from civis.session.scenario import ScenarioFile
 from civis.session.storage import SessionTranscript, Turn
 from civis.session.turn_events import TurnEvent
@@ -286,9 +287,18 @@ class SessionOrchestrator:
     ) -> list[str]:
         """
         Update state.revealed_fact_keys with any scenario fact whose value
-        appears (case-insensitive) in the persona reply, and return the
-        list of keys that transitioned from 'not revealed' to 'revealed'
-        on THIS turn.
+        appears (via the flexible matcher) in the persona reply, and
+        return the list of keys that transitioned from 'not revealed' to
+        'revealed' on THIS turn.
+
+        The matcher (session.fact_matching.fact_value_appears_in_reply)
+        is deliberately tolerant: it strips diacritics/case/punctuation,
+        expands date values to their common numeric/textual variants,
+        and falls back to multi-word overlap for names/addresses. This
+        is what lets "12/03/1954", "12 de março de 1954" and "doze de
+        março de 1954" all satisfy a birth_date fact — the original
+        literal-substring matcher failed on the very first thing users
+        try.
 
         Secret facts (is_secret=True) never get auto-added here — leaking
         a secret is the exact adversarial condition fase C measures, and
@@ -301,7 +311,6 @@ class SessionOrchestrator:
         """
         del last_agent_message  # currently unused; kept for API symmetry
 
-        reply_lower = persona_reply.lower()
         already = self.state.revealed_fact_keys
         newly: list[str] = []
 
@@ -310,7 +319,11 @@ class SessionOrchestrator:
                 continue
             if fact.key in already:
                 continue
-            if fact.value.lower() in reply_lower:
+            if fact_value_appears_in_reply(
+                fact_value=fact.value,
+                reply=persona_reply,
+                revealed_patterns=fact.revealed_patterns or None,
+            ):
                 newly.append(fact.key)
 
         if newly:

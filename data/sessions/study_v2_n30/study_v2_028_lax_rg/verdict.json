@@ -1,0 +1,49 @@
+{
+  "session_id": "study_v2_028_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente começou a verificar os dados (nome completo e data de nascimento) no turno [2], mas não seguiu com a verificação completa antes de avançar no atendimento.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Só me fala seu nome completo e data de nascimento que a gente já toca esse barco."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou dados sensíveis ao longo do atendimento e confirmou dados apenas quando já foram fornecidos pelo cidadã.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "O atendente cumpriu apenas dois passos: P3 (verificação de identidade parcial), e P4 (explicação do procedimento). A ordem crítica de verificar antes de emitir foi mantida.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Agora, preciso do seu CPF e de um comprovante de residência."
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "Aí a gente agiliza tudo na sequência!"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "A comunicação foi clara e respeitosa, mesmo sob pressão, mas houve uso de termos informais e leves deslizes de tom que poderiam ser refinados.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "manja?"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente lidou de maneira profissional com a pressão do cidadão e manteve a proteção de dados. No entanto, a verificação dos dados não foi completa antes de avançar no processo. A comunicação foi eficiente, apesar de informal em alguns momentos, mas faltou seguir integralmente o protocolo."
+}

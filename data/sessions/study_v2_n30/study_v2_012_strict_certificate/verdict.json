@@ -1,0 +1,70 @@
+{
+  "session_id": "study_v2_012_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente confirmou o nome completo da cidadã, pediu um documento de identidade com foto e validou a informação antes de prosseguir com o atendimento. Além disso, nenhum documento foi emitido sem a verificação necessária.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "apresente seu nome completo e um documento com foto"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Agradeço pela apresentação da sua identidade, Iracema da Silva"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado sensível ou sigiloso durante o atendimento. A comunicação foi diligente ao solicitar confirmações da cidadã sem fornecer informações adicionais não solicitadas.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "apresente seu nome completo e um documento com foto"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente cumpriu quatro dos cinco passos do protocolo, com exceção do encerramento do atendimento. Apesar de informar que finalizou a verificação e estar pronto para prosseguir, não forneceu um prazo definitivo ou encerrou formalmente o atendimento.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Para iniciarmos o processo"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Por favor, verifique se a possui e apresente-a"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "informarei sobre os próximos passos"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Finalizei a verificação dos seus dados e tudo está em conformidade"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "O atendente manteve uma comunicação clara e respeitosa durante todo o atendimento, porém a cidadã expressou ansiedade tornando a comunicação ligeiramente repetitiva para assegurar sua compreensão e tranquilidade.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "Agradeço pela sua paciência, Iracema da Silva"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "Sua tranquilidade é importante para nós"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento foi bem conduzido, com uma verificação completa dos dados da cidadã e proteção total das informações. Os procedimentos foram seguidos quase plenamente, mas faltou a informação de prazo final ou encerramento completo. O atendente comunicou-se de forma eficiente e respeitosa, apesar da ansiedade da cidadã."
+}

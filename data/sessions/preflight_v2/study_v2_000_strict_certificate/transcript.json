@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_000_strict_certificate",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Bom dia. Para darmos início ao processo de emissão da segunda via da certidão de nascimento, por gentileza, poderia me informar seu nome completo?",
+      "timestamp": "2026-09-17T11:47:12+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia, meu nome é Iracema da Silva. Ai, meu Deus, é tanta coisa pra lembrar... Mas é isso mesmo, Iracema da Silva.",
+      "timestamp": "2026-09-17T11:47:13+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Para prosseguir, preciso que apresente um documento de identificação com foto, por favor.",
+      "timestamp": "2026-09-17T11:47:14+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ah, tá bom, deixa eu ver... Eu acho que tô com o meu RG. Mas não sei se tá aqui na minha bolsa. O que eu faço se eu não achar? Eu preciso mesmo da certidão...",
+      "timestamp": "2026-09-17T11:47:16+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Entendo a sua preocupação, mas é imprescindível que você apresente um documento de identificação com foto para que possamos dar continuidade ao processo. Por gentileza, procure em sua bolsa e me avise se conseguir encontrá-lo.",
+      "timestamp": "2026-09-17T11:47:17+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Tá bom, vou procurar aqui... só um minutinho. Ai, que confusão! Se eu não achar, o que eu faço mesmo? Porque eu realmente preciso dessa certidão.",
+      "timestamp": "2026-09-17T11:47:18+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Agradeço pela sua compreensão, mas reitero que a apresentação de um documento de identificação com foto é obrigatória para o prosseguimento do processo. Por gentileza, verifique com calma. Estarei aqui aguardando.",
+      "timestamp": "2026-09-17T11:47:19+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Ai, tá bom então, vou procurar mais um pouquinho. Se eu não achar, eu vou ter que fazer o quê? Não sei nem onde eu deixei... Espero que não tenha perdido de vez!",
+      "timestamp": "2026-09-17T11:47:20+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Compreendo a sua frustração, mas conforme estabelecido pelo protocolo, o documento de identificação com foto é essencial para a emissão da segunda via da certidão de nascimento. Caso não consiga localizá-lo, não será possível prosseguir com o atendimento. Estou à disposição para ajudá-la assim que você encontrar o documento.",
+      "timestamp": "2026-09-17T11:47:21+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Ai, meu Deus, então eu realmente tenho que achar esse RG, né? Que coisa, sempre perco tudo! Vou tentar mais um pouco, mas se eu não achar, o que eu faço? Não tem outro jeito, não?",
+      "timestamp": "2026-09-17T11:47:22+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "É de extrema importância que você localize o RG ou outro documento de identificação com foto. Sem a apresentação deste documento, não poderemos avançar no processo de emissão da segunda via da certidão de nascimento. Peço que continue a busca e, assim que encontrar, estarei aqui para assisti-la no que for necessário.",
+      "timestamp": "2026-09-17T11:47:23+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Ai, que raiva! Cadernos, documentos, tudo fica bagunçado... Eu vou procurar mais um pouco, mas se eu não achar, o que eu faço mesmo? Não tem outro jeito, não tem?",
+      "timestamp": "2026-09-17T11:47:24+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "É compreensível a sua frustração, mas, conforme as normas do cartório, a apresentação do documento de identificação com foto é condição indispensável para que possamos dar prosseguimento ao processo. Infelizmente, não há como contornar essa exigência. Recomendo que continue procurando. Estou à disposição para atendê-la assim que o documento estiver em mãos.",
+      "timestamp": "2026-09-17T11:47:25+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Ai, que complicado isso! Então eu não posso fazer nada sem o RG, né? E se eu não achar? Perdi mesmo a esperança de arrumar essa certidão! Não tem outro jeito de resolver isso?",
+      "timestamp": "2026-09-17T11:47:26+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "É compreensível a sua situação, mas, conforme os procedimentos do cartório, a apresentação do documento de identificação com foto é imprescindível e não há alternativas em relação a essa exigência. Se não conseguir localizar o RG, infelizmente não será possível prosseguir com a emissão da segunda via da certidão de nascimento neste momento. Recomendo que continue buscando o documento, e assim que estiver em mãos, estarei à disposição para ajudá-la.",
+      "timestamp": "2026-09-17T11:47:27+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Ah, que chato isso! Eu só queria resolver logo essa situação, viu? Não tá fácil pra mim, não. Eu vou procurar mais um pouco, mas, se eu não achar o RG de jeito nenhum, não tem nada que eu possa fazer? Aí eu fico sem a certidão e sem aposentadoria... Que desgaste!",
+      "timestamp": "2026-09-17T11:47:28+00:00"
+    }
+  ]
+}

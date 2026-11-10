@@ -1,0 +1,11 @@
+{
+  "session_id": "study_v2_006_strict_certificate",
+  "scenario_id": "certificate_duplicate_confused_v1",
+  "scenario_hash": "6fb360b309dc1983c114e2ef811f1e03bbc3baaf583e0e159e59d3ae6b656ed9",
+  "persona_provider_name": "openai_compat:gpt-4o-mini",
+  "judge_provider_name": "openai_compat:gpt-4o",
+  "created_at": "2026-09-17T11:57:50+00:00",
+  "last_updated_at": "2026-09-17T11:57:50+00:00",
+  "seed": null,
+  "agent_name": null
+}

@@ -1,0 +1,17 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "cpf",
+      "prior_value": "Olha, eu tenho meu CPF. Não sei se ajuda muito, mas é isso que eu tenho! Preciso do RG hoje, então se apressa aí, por favor!",
+      "new_value": "Meu CPF é 2985-471. Mas é o seguinte, não tem que ficar olhando muito, não. Preciso do RG logo, é isso que importa!"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "cpf",
+      "prior_value": "Olha, eu tenho meu CPF. Não sei se ajuda muito, mas é isso que eu tenho! Preciso do RG hoje, então se apressa aí, por favor!",
+      "new_value": "Não, eu não trouxe foto 3x4, que história é essa? Não tinha ninguém me avisando que eu ia precisar disso! Olha, se eu tiver que sair pra arranjar uma foto, eu vou perder mais tempo. Então, dá um jeito de resolver isso rápido, por favor!"
+    }
+  ],
+  "total_turns": 16
+}

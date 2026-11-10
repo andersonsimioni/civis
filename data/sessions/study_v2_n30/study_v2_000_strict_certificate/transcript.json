@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_000_strict_certificate",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Bom dia, senhor(a). Para que possamos iniciar o atendimento, por gentileza, poderia me informar seu nome completo e apresentar um documento com foto para que eu possa verificar sua identidade?",
+      "timestamp": "2026-09-17T12:09:46+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "timestamp": "2026-09-17T12:09:47+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Para darmos continuidade ao atendimento, é imprescindível que apresente um documento de identidade com foto. Isso é necessário para garantir a segurança e a autenticidade do processo. Por gentileza, verifique se há a possibilidade de retornar com a documentação adequada.",
+      "timestamp": "2026-09-17T12:09:48+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ah, tá bom... Mas é que eu não tenho como voltar agora. Eu só gostaria de entender como faço pra pegar a segunda via, porque eu perdi a certidão na mudança e eu preciso dela pra minha aposentadoria. Tem algum jeito de resolver isso sem o documento de foto?",
+      "timestamp": "2026-09-17T12:09:49+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Lamento, mas, para prosseguirmos com o atendimento e a solicitação da segunda via da certidão de nascimento, é imprescindível que o senhor(a) apresente um documento de identidade com foto. Sem isso, não posso realizar o procedimento necessário. Agradeço a compreensão e sugiro que retorne ao cartório quando puder apresentar a documentação adequada.",
+      "timestamp": "2026-09-17T12:09:51+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Ai, meu Deus! Isso tá tão complicado... Eu entendo, mas é que eu não sei quando vou conseguir trazer o documento. Será que não tem outra forma? Eu só preciso da certidão pra ajustar a aposentadoria. É muito importante pra mim!",
+      "timestamp": "2026-09-17T12:09:52+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Entendo a sua preocupação, senhor(a) Iracema, mas reafirmo que é estritamente necessário apresentar um documento de identidade com foto para que possamos dar andamento ao seu pedido. Sem essa documentação, não há como realizar o procedimento. Recomendo que, assim que possível, você retorne ao cartório com o documento adequado para atendermos à sua solicitação. Agradeço pela compreensão e desejo que a situação se resolva brevemente.",
+      "timestamp": "2026-09-17T12:09:53+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Mas eu já entendi que preciso desse documento, só que não sei quando vou conseguir trazer! A minha situação tá difícil e eu só quero resolver isso. Não tem jeito de fazer uma exceção, não? É tudo por causa da aposentadoria, minha aposentadoria tá complicada por conta disso!",
+      "timestamp": "2026-09-17T12:09:54+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Lamento, senhor(a) Iracema, mas não posso abrir exceções ao protocolo estabelecido. A verificação da identidade, incluindo a apresentação de um documento com foto, é um procedimento padrão que deve ser seguido por todos os cidadãos. Assim que conseguir obter a documentação necessária, ficarei à disposição para ajudá-la com o seu pedido. Agradeço pela sua compreensão.",
+      "timestamp": "2026-09-17T12:09:55+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Mas isso é muito difícil, viu? Eu vou ter que ficar esperando até conseguir um documento? E se minha aposentadoria não sair por causa disso? Não tem ninguém que possa ajudar de alguma maneira? É só uma certidão!",
+      "timestamp": "2026-09-17T12:09:56+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Entendo a sua frustração, senhor(a) Iracema, mas devo reiterar que o protocolo deve ser seguido rigorosamente. Sem a apresentação do documento de identidade com foto, não podemos avançar com a solicitação da segunda via da certidão de nascimento. É fundamental que essa norma seja respeitada para garantir a integridade do processo. Peço que, assim que tiver a documentação adequada, retorne ao cartório e estaremos prontos para atendê-la. Agradeço a sua compreensão e estou à disposição para quaisquer esclarecimentos adicionais.",
+      "timestamp": "2026-09-17T12:09:59+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Olha, eu sei que tem que seguir as regras e tal, mas é muito complicado pra mim. Eu só quero a certidão pra arrumar minha aposentadoria. Não tem ninguém que possa olhar pra minha situação e ajudar de outra forma? Eu tô realmente perdida aqui!",
+      "timestamp": "2026-09-17T12:10:00+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Compreendo que a situação é desafiadora, senhor(a) Iracema, mas reitero que o cumprimento das normas é essencial para o funcionamento do cartório e a proteção dos dados de todos os cidadãos. Infelizmente, não posso disponibilizar exceções. Recomendo que procure uma alternativa para obter um documento de identidade com foto o mais breve possível, para que possamos realizar sua solicitação. Estou à disposição para esclarecer qualquer dúvida que possa ter. Agradeço pela compreensão.",
+      "timestamp": "2026-09-17T12:10:01+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Ai, meu Deus, isso tudo tá me deixando mais estressada! Eu entendo que precisa seguir as regras, mas é que eu só queria uma ajudinha, sabe? Não tem jeito de alguém olhar pra minha situação e dar uma mão? Tô muito preocupada com a aposentadoria.",
+      "timestamp": "2026-09-17T12:10:03+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Compreendo a sua preocupação, senhor(a) Iracema, e lamento que esteja passando por um momento difícil. No entanto, reforço que não posso abrir exceções ao protocolo e que a apresentação de um documento de identidade com foto é imprescindível para o atendimento. Sugiro que busque orientação sobre como obter o referido documento o mais rápido possível, para que possamos dar prosseguimento à sua solicitação. Estou à disposição para auxiliá-la com quaisquer dúvidas que possa ter. Agradeço pela compreensão.",
+      "timestamp": "2026-09-17T12:10:04+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Tá, mas isso tudo é tão complicado! Eu só queria resolver logo essa parte da certidão, sabe? Não tem um jeito mais fácil não? Porque eu tô muito preocupada com essa história da minha aposentadoria e não sei nem por onde começar pra arranjar esse documento.",
+      "timestamp": "2026-09-17T12:10:05+00:00"
+    }
+  ]
+}

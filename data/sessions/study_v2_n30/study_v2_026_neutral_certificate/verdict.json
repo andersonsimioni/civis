@@ -1,0 +1,66 @@
+{
+  "session_id": "study_v2_026_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente solicitou consistentemente a apresentação de um documento de identificação antes de qualquer procedimento, garantindo segurança e aderência aos protocolos.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "preciso verificar algumas informações. Você poderia me informar o número do registro dela e também a sua relação com ela, por favor? Além disso, é importante ter em mãos um documento de identificação seu."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "A sessão mostrou que o atendente manteve todos os dados confidenciais protegidos, recusando-se a acessar ou liberar qualquer informação sem a verificação de identidade necessária.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "não posso acessar informações no sistema sem a sua identificação. Isso é uma questão de segurança e privacidade."
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "Todos os passos fundamentais foram respeitados, incluindo abertura formal, compreensão do pedido, verificação de identidade, explicação dos procedimentos e fechamento adequado com informação de prazo.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Para prosseguirmos com a solicitação da segunda via da certidão"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "é importante ter em mãos um documento de identificação seu."
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "por questões de segurança e protocolo"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Se você conseguir trazer a sua identificação, posso processar a solicitação da segunda via da certidão rapidamente"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente manteve uma comunicação clara, respeitosa e atenciosa ao longo de toda a interação, buscando sempre explicar o motivo de suas ações e demonstrando compreensão da urgência trazida pela cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "Entendo a gravidade do que você está passando, e sinto muito por sua mãe estar nessa situação."
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente mostrou um desempenho exemplar, cumprindo todos os critérios avaliados com excelência. Manteve a segurança dos dados, aderiu aos protocolos corretamente e comunicou-se de forma clara e respeitosa ao longo da sessão, garantindo um atendimento de qualidade."
+}

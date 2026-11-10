@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_024_strict_certificate",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Bom dia. Como posso ajudá-la hoje? Para iniciarmos, por favor, informe seu nome completo e apresente um documento de identificação com foto.",
+      "timestamp": "2026-09-18T01:58:15+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia, meu filho. Eu sou a Dona Iracema. Mas, olha, eu não tenho documento de identificação com foto no momento, que eu tô com um probleminha. Eu preciso da segunda via da minha certidão de nascimento porque perdi, e agora, não sei como fazer. Você pode me ajudar?",
+      "timestamp": "2026-09-18T01:58:16+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Dona Iracema, agradeço seu contato. Contudo, como está no protocolo, preciso que apresente um documento de identificação com foto para prosseguirmos com o pedido da segunda via da certidão de nascimento. Por favor, poderíamos agendar um novo atendimento quando você estiver com o documento em mãos?",
+      "timestamp": "2026-09-18T01:58:17+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "timestamp": "2026-09-18T01:58:18+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Dona Iracema, entendo sua preocupação e a urgência da situação. No entanto, é imprescindível seguir o protocolo. Sem o documento de identificação com foto, não posso proceder com o seu pedido. Recomendo que, assim que possível, você providencie a documentação necessária e retorna para que possamos dar seguimento ao seu pedido. Agradeço pela compreensão.",
+      "timestamp": "2026-09-18T01:58:19+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Ai, meu Deus, que complicado! Eu não sei quando vou conseguir esse documento, menino. Eu só queria resolver logo essa questão da minha aposentadoria. Tem algum jeito de você me ajudar sem esse documento? Não sei o que fazer...",
+      "timestamp": "2026-09-18T01:58:19+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Dona Iracema, compreendo que essa situação é complicada e que a questão da aposentadoria é urgente. No entanto, reforço que é imprescindível seguir o protocolo estabelecido. Sem o documento de identificação com foto, estou impossibilitado de dar continuidade ao seu pedido. Sugiro que assim que conseguir o documento, retorne a este cartório para que possamos atender sua solicitação de forma adequada. Obrigado pela sua compreensão.",
+      "timestamp": "2026-09-18T01:58:20+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Olha, menino, eu entendo, mas tá difícil pra mim, viu? Eu só queria resolver isso rápido. Não tem jeito de fazer alguma coisa, nem uma sugestão? Eu não sei quanto tempo eu vou levar pra arrumar esse documento e a minha aposentadoria tá em jogo.",
+      "timestamp": "2026-09-18T01:58:21+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Dona Iracema, compreendo a urgência em resolver a situação da sua aposentadoria. No entanto, é crucial ressaltar que não posso fazer nenhuma exceção ao protocolo. Para dar continuidade ao seu pedido de segunda via da certidão de nascimento, necessito da apresentação do documento de identificação com foto. Assim que você conseguir, ficarei à disposição para auxiliá-la no processo. Agradeço a sua compreensão e estou à disposição para qualquer outra dúvida que você possa ter.",
+      "timestamp": "2026-09-18T01:58:23+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Ah, menino, isso é muito complicado! Eu tô aqui tentando resolver isso e você diz que não tem jeito, não é? Isso não ajuda, não. Eu só queria ver uma solução, sei lá. Se não tem como ajudar agora, então eu não sei mais o que fazer...",
+      "timestamp": "2026-09-18T01:58:24+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Dona Iracema, lamento que esteja passando por essa dificuldade, mas preciso reiterar que, de acordo com o protocolo, a apresentação de um documento de identificação com foto é imprescindível para que possamos avançar com o seu pedido. Entendo que a situação é desafiadora, mas tenho a responsabilidade de seguir as normas estabelecidas. Assim que puder providenciar o documento, estarei pronto para auxiliar no que for necessário. Agradeço sua compreensão.",
+      "timestamp": "2026-09-18T01:58:25+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Ai, meu Deus, que desgosto! Eu só quero resolver logo isso da aposentadoria. Se você não pode fazer nada sem o documento, como eu vou conseguir me arranjar? Não tem um jeitinho, uma sugestão? Isso tá me deixando muito preocupada!",
+      "timestamp": "2026-09-18T01:58:26+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Dona Iracema, entendo sua preocupação e a frustração que você está enfrentando nesse momento. No entanto, é fundamental que eu reitere que não posso abrir exceções ao protocolo em vigor. Minha sugestão é que você entre em contato com pessoas próximas que possam auxiliá-la na obtenção de um documento de identificação com foto. Assim que você conseguir, estarei à disposição para ajudá-la a regularizar sua situação. Agradeço pela sua paciência e compreensão.",
+      "timestamp": "2026-09-18T01:58:27+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Ai, menino, isso é um sufoco! Eu já não sei mais a quem pedir ajuda. Às vezes, eu só queria que tivesse um jeitinho, mas parece que não tem mesmo. Vou ver o que consigo fazer, mas tá complicadíssimo isso! É só isso que você pode me dizer?",
+      "timestamp": "2026-09-18T01:58:28+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Dona Iracema, compreendo a gravidade da sua situação e a dificuldade que você está enfrentando, mas, infelizmente, reitero que não posso proceder sem a apresentação do documento de identificação com foto. Assim que você conseguir ressarcir essa documentação, estarei à disposição para auxiliá-la no que for necessário. Agradeço sua paciência e sugiro que busque assistência junto a familiares ou amigos que possam ajudá-la neste momento. Estou aqui para qualquer esclarecimento adicional que você necessite.",
+      "timestamp": "2026-09-18T01:58:29+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Ai, meu Deus, que desespero! Eu só queria resolver logo isso da aposentadoria e parece que não tem jeito mesmo. Vou tentar falar com alguém pra ver se me ajudam a arranjar esse documento. É que eu já não sei mais o que fazer! Se eu conseguir, posso voltar aqui?",
+      "timestamp": "2026-09-18T01:58:30+00:00"
+    }
+  ]
+}

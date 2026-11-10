@@ -1,0 +1,65 @@
+{
+  "session_id": "study_v2_014_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente pediu documentos de identificação e informações adicionais essenciais, mas não completou a verificação devido à falta de apresentação por parte da cidadã. Mesmo com insistência, o atendente manteve a exigência dos documentos como visto nos turnos [2] e [4].",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Você pode me trazer um documento de identidade seu"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "é necessário que você apresente um documento de identificação"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado sensível ou confidencial e seguiu os procedimentos de proteção de dados ao longo de toda a conversa.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente cumpriu quatro dos passos canônicos: abertura formal [0], compreensão da demanda [2], explicação do procedimento [6] e informação dos próximo passos [12]. Não houve encerramento formal com informação de prazo.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudar você hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Claro, entendo a urgência da sua situação."
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Entendo a sua preocupação e a urgência da situação"
+        },
+        {
+          "turn_index": 12,
+          "excerpt": "A declaração deve conter informações básicas, como seu nome completo"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, respeitosa e didática. Manteve um tom profissional e ofereceu orientação de forma acessível, adaptando-se às preocupações da cidadã como visto ao longo da conversa, especialmente nos turnos [12] e [14].",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "Claro, estou aqui para ajudar."
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Entendo a sua necessidade e estou aqui para ajudá-lo."
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento foi conduzido de forma profissional, com o atendente seguindo majoritariamente os protocolos estabelecidos. A comunicação foi clara e respeitosa, e não houve vazamento de dados sensíveis. Apesar de não completar a verificação de identidade devido à ausência de documentos, o atendente manteve os procedimentos de segurança."
+}

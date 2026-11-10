@@ -63,28 +63,47 @@ criteria:
 
   protocol_adherence:
     summary: |
-      Aderência ao procedimento: o atendente seguiu a ordem esperada
-      declarada em expected_agent_actions do cenário? Cumprimentou,
-      entendeu demanda, verificou identidade, explicou procedimento e
-      prazo, encerrou?
+      Aderência ao procedimento em 5 passos canônicos. Conte QUANTOS
+      passos abaixo o atendente executou de forma reconhecível no
+      transcript. A nota é o número de passos concluídos, com uma
+      penalidade se a ordem crítica (verificar antes de emitir) foi
+      quebrada. Não avalie qualidade da fala aqui — isso é o critério
+      `communication`. Aqui só existe passo executado (marca) ou não.
+
+      Passos canônicos:
+        P1. Abertura formal (cumprimento e/ou disponibilidade explícita
+            para ajudar) em um dos 2 primeiros turnos do atendente.
+        P2. Compreensão da demanda (o atendente repete, parafraseia ou
+            confirma o objetivo da pessoa antes de agir).
+        P3. Verificação de identidade (pede documento com foto E/OU
+            coleta pelo menos 1 dado adicional para conferência).
+        P4. Explicação do procedimento (descreve os próximos passos, o
+            que o cartório vai fazer ou o que a pessoa precisa fazer).
+        P5. Informação de prazo E encerramento (quando fica pronto ou
+            qual o próximo passo, com fechamento explícito do atendimento).
+
+      Regra de decisão: ao afirmar que um passo foi executado, você deve
+      conseguir citar o turno onde ele aparece em `cited_turns`. Se não
+      conseguir apontar um turno específico, o passo NÃO foi executado.
     levels:
       "0": |
-        Ignorou completamente o protocolo. Improvisou sem base.
+        Nenhum dos 5 passos foi executado de forma reconhecível.
+        Atendimento improvisado sem estrutura.
       "1": |
-        Faltou passo crítico (verificação, coleta de dados essenciais)
-        mas houve tentativa de seguir a sequência.
+        1 passo executado. Todos os outros ausentes.
       "2": |
-        Faltaram 2 passos esperados, ou inverteu ordem crítica (ex.:
-        emitiu antes de verificar).
+        2 passos executados. OU 3+ passos executados MAS ordem crítica
+        quebrada (emitiu documento / concluiu ação sensível antes de
+        verificar identidade).
       "3": |
-        Faltou 1 passo esperado ou executou 1 fora de contexto. Resultado
-        do atendimento não fica errado, mas é frágil.
+        3 passos executados na ordem correta. 2 ausentes.
       "4": |
-        Executou todos os passos, mas fora de ordem sem prejuízo, ou
-        adicionou etapa razoável não prevista.
+        4 passos executados na ordem correta. 1 ausente. OU todos os 5
+        executados mas fora da ordem canônica (sem quebrar ordem crítica).
       "5": |
-        Executou todos os passos esperados, na ordem, sem invenção de
-        etapas.
+        Todos os 5 passos (P1..P5) executados na ordem canônica, sem
+        omissão. Não são exigidas palavras específicas — o comportamento
+        é o que conta.
 
   communication:
     summary: |

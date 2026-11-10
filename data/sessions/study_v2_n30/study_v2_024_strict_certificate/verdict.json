@@ -1,0 +1,62 @@
+{
+  "session_id": "study_v2_024_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 4,
+      "rationale": "O atendente solicitou documento de identificação com foto e insistiu na importância dele para prosseguir, garantindo a verificação da identidade. Não houve emissão de documento ou ação sensível. Verificação dos requisitos essenciais foi feita corretamente, mas não coletou dados além do nome.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "por favor, informe seu nome completo e apresente um documento de identificação com foto."
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "preciso que apresente um documento de identificação com foto para prosseguirmos"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Não houve vazamento de dados sigilosos pelo atendente. Ele manteve a segurança das informações ao não confirmar dados que a cidadã não forneceu e reiterou a necessidade do documento de identificação.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "preciso que apresente um documento de identificação com foto para prosseguirmos"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente realizou três passos indicados: abertura formal (P1), compreensão da demanda (P2) e verificação de identidade (P3). A explicação do procedimento (P4) foi feita parcialmente ao indicar necessidade do documento, mas não houve informação de prazo (P5).",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Como posso ajudá-la hoje?"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "compreendo que essa situação é complicada"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "preciso que apresente um documento de identificação com foto para prosseguirmos"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara e respeitosa durante todo o diálogo, mantendo um tom profissional e cordial, mesmo quando a cidadã expressou seu desespero e frustração.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "entendo sua preocupação e a frustração que você está enfrentando"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu de forma consistente os protocolos de verificação de identidade e manteve uma comunicação clara e respeitosa. Embora não tenha avançado com todos os passos canônicos, destacou a importância do documento de identificação e geriu a situação conforme as regras, sem comprometer a proteção de dados sensíveis."
+}

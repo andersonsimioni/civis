@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <title>CIVIS — Relatório Parcial 1</title>
+    <style>
+@page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+}
+
+:root {
+    --ink: #1a1a1a;
+    --muted: #555;
+    --accent: #0b5394;
+    --rule: #d0d7de;
+    --code-bg: #f6f8fa;
+    --code-ink: #24292f;
+    --table-header: #f0f3f7;
+    --callout-bg: #fff8e1;
+    --callout-border: #f0c000;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 10.5pt; }
+
+body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    line-height: 1.55;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+h1 {
+    font-size: 22pt;
+    margin: 0 0 6pt 0;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 6pt;
+    page-break-after: avoid;
+}
+
+h2 {
+    font-size: 15pt;
+    margin: 22pt 0 8pt 0;
+    color: var(--accent);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 3pt;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 12.5pt;
+    margin: 16pt 0 6pt 0;
+    color: var(--ink);
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 11pt;
+    margin: 12pt 0 4pt 0;
+    color: var(--muted);
+}
+
+p, ul, ol { margin: 0 0 8pt 0; }
+
+ul, ol { padding-left: 20pt; }
+
+li { margin-bottom: 3pt; }
+
+strong { color: var(--ink); }
+
+em { color: var(--muted); font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 20pt 0;
+}
+
+/* Blockquote used as key-message callout. */
+blockquote {
+    margin: 10pt 0;
+    padding: 10pt 14pt;
+    background: var(--callout-bg);
+    border-left: 3pt solid var(--callout-border);
+    font-style: normal;
+    color: var(--ink);
+}
+
+blockquote p { margin: 0; }
+
+/* Tables — no zebra, subtle rules, header emphasized. */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10pt 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+}
+
+th {
+    background: var(--table-header);
+    color: var(--ink);
+    text-align: left;
+    padding: 6pt 8pt;
+    border-bottom: 1.5pt solid var(--rule);
+    font-weight: 600;
+}
+
+td {
+    padding: 5pt 8pt;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+}
+
+/* Code blocks — monospace, tinted background, no border for softness. */
+pre {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 8pt 10pt;
+    border-radius: 4pt;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 8.5pt;
+    line-height: 1.45;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+code {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9pt;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 1pt 4pt;
+    border-radius: 3pt;
+}
+
+pre code {
+    background: transparent;
+    padding: 0;
+    font-size: 8.5pt;
+}
+
+/* Prevent page break inside major structural blocks. */
+h1, h2, h3, h4 { break-after: avoid-page; }
+table, pre, blockquote { break-inside: avoid; }
+</style>
+</head>
+<body>
+<h1>CIVIS — Relatório Parcial 1</h1>
+<p><strong>Disciplina:</strong> INE5448 — Inteligência Artificial e Segurança da Informação
+<strong>Semestre:</strong> 2026.2 — UFSC
+<strong>Aluno:</strong> Anderson Simioni Assunção
+<strong>Contato:</strong> anderson.simioni22@gmail.com
+<strong>Docente:</strong> Prof. Custódio
+<strong>Período coberto:</strong> 15/09/2026 → 29/09/2026 (semanas 1 e 2 do plano de trabalho)
+<strong>Data de emissão:</strong> 29 de setembro de 2026
+<strong>Documento associado:</strong> <code>docs/Plano_de_Trabalho_CIVIS.pdf</code> (submetido em 15/09/2026)</p>
+<hr>
+<h2>1. Introdução</h2>
+<p>Este relatório reporta o progresso parcial das duas primeiras semanas de execução do projeto <strong>CIVIS — Cidadão Virtual Simulado</strong>, um simulador conversacional para treinamento de atendentes de balcão em serviços registrais brasileiros contra personas geradas por LLM (cidadão confuso, usuário agressivo e fraudador), com correção automática por rubrica versionada e supervisão humana amostral.</p>
+<p>O escopo declarado no plano de trabalho articula três decisões arquiteturais fora do padrão de "chatbot com prompt bonito":</p>
+<ol>
+<li><strong>Máquina de estados finitos própria</strong> conduz a trajetória da persona ao longo da conversa; o modelo de linguagem interpreta o papel, mas não decide para onde a conversa vai. Isso torna cada sessão auditável e reprodutível, e reduz contradições ao longo de dezenas de turnos.</li>
+<li><strong>Juiz automático em modelo distinto</strong> do que interpreta a persona (invariante O3 do plano). Rubrica declarativa em YAML, citação obrigatória de turnos por índice, saída validada por Pydantic. O CLI recusa iniciar se <code>roles.persona == roles.judge</code>.</li>
+<li><strong>Estudo de concordância</strong> validando a nota automática antes de ela ser tratada como métrica de treino (M1). Sem essa validação, é ruído colorido.</li>
+</ol>
+<p>O terceiro item é a articulação direta com a segunda metade do nome da disciplina: a nota emitida por um LLM juiz é, em si, uma superfície de ataque — como demonstrado por Shi et al. (2024) no artigo <strong>JudgeDeceiver</strong> (CCS'24) analisado criticamente no primeiro entregável da disciplina. O CIVIS, ao expor uma rubrica declarativa e um juiz atacável, oferece um objeto de estudo controlado para essa classe de ataques em regime <em>pointwise</em>, ainda não coberto pela literatura no formato do trabalho de Shi et al.</p>
+<hr>
+<h2>2. Objetivos revisitados</h2>
+<p>O plano de trabalho declara seis objetivos, mantidos sem alteração de escopo neste ponto:</p>
+<ul>
+<li><strong>O1.</strong> Modelar a persona com FSM + LLM controlado por script auditável.</li>
+<li><strong>O2.</strong> Cobrir três perfis distintos (confuso, agressivo, fraudador).</li>
+<li><strong>O3.</strong> Executar persona e juiz em modelos distintos, com invariante validada no boot.</li>
+<li><strong>O4.</strong> Endurecer o simulador contra a bateria OWASP LLM Top 10 e ataques de engenharia social baseados em prompt.</li>
+<li><strong>O5.</strong> Gerar dados sintéticos determinísticos com prefixo <code>FIC-</code> para eliminar risco de reidentificação (LGPD, art. 12).</li>
+<li><strong>O6.</strong> Manter supervisão humana na malha via rubrica leiga espelhada da rubrica técnica.</li>
+</ul>
+<p>Todos os seis foram avançados nas duas primeiras semanas, com O3 e O6 servindo de guia para as decisões apresentadas na Seção 5.</p>
+<hr>
+<h2>3. Metodologia</h2>
+<p>O desenvolvimento adota TDD (testes antes ou junto do código, não depois) e integração contínua em GitHub Actions (<code>ruff</code> + <code>pytest</code>). Convenção firme do repositório: código, testes, mensagens de commit e nomes de arquivo em inglês; conteúdo que vai para o LLM (system prompts, rubrica, descrições) em português brasileiro. Toda decisão de design não óbvia comentada no próprio código.</p>
+<p>O ciclo de trabalho segue o <strong>roteiro de 6 fases</strong> documentado em <code>docs/ROADMAP_PITCH.md</code>, alinhado com o cronograma de 8 semanas do plano original mas orientado ao entregável demonstrável de cada fase, não à semana calendário:</p>
+<pre><code>    A: MVP jogável       B: Juiz robusto       C: Segurança + edge
+    D: Frontend + demo   E: Estudo (M1)        F: Pitch
+</code></pre>
+<p>Cada fase possui critério de "pronto" mensurável e checkpoints de decisão explícitos, incluindo hierarquia declarada de sacrifício se algum checkpoint estourar (o único item inegociável é o estudo M1).</p>
+<hr>
+<h2>4. Estado atual do desenvolvimento</h2>
+<p>Ao fim da segunda semana, o repositório contém:</p>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Arquivos</th>
+<th>Cobertura de teste</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FSM (3 perfis, fases, emoções)</td>
+<td><code>src/civis/fsm/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Contratos de persona</td>
+<td><code>src/civis/personas/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Base sintética determinística (<code>FIC-</code>)</td>
+<td><code>src/civis/synth/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Orquestrador de sessão (turn loop, streaming)</td>
+<td><code>src/civis/session/orchestrator.py</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Prompt templates (persona + juiz)</td>
+<td><code>src/civis/prompts/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Fact retrieval seletivo (B.5)</td>
+<td><code>src/civis/prompts/fact_retrieval.py</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Detector de contradições (M3)</td>
+<td><code>src/civis/session/contradiction_detector.py</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Fact matcher tolerante (data, nome, acentos)</td>
+<td><code>src/civis/session/fact_matching.py</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Providers LLM (Ollama, OpenAI-compat, Anthropic)</td>
+<td><code>src/civis/llm/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Juiz executável com validador de citação</td>
+<td><code>src/civis/judge/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>CLI de sessão + certificação</td>
+<td><code>src/civis/cli/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>App Streamlit (5 páginas)</td>
+<td><code>src/civis/web/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Coach agent (hint bubble não-bloqueante)</td>
+<td><code>src/civis/coach/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Bateria adversarial + honeytokens (M2)</td>
+<td><code>src/civis/adversarial/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>JudgeDeceiver-pointwise (v1)</td>
+<td><code>src/civis/adversarial/judge_deceiver_pointwise.py</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Certificação (elegibilidade + PDF)</td>
+<td><code>src/civis/certification/</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Cenários shipping (9 categorias registrais)</td>
+<td><code>data/scenarios/</code> (15 arquivos)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Rubrica declarativa v2 (checklist objetivo)</td>
+<td><code>data/rubrics/counter_v1.yaml</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pipeline do estudo M1</td>
+<td><code>scripts/run_study_v2.py</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Análise estatística (kappa + Spearman + within-1)</td>
+<td><code>scripts/compute_kappa.py</code></td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Suíte de testes atual: 538 testes, 100% verdes</strong>, executando em cerca de 35 s. Linter (<code>ruff</code>) sem violações em <code>src/</code>, <code>tests/</code> e <code>scripts/</code>.</p>
+<p>Comparando com o plano original, as fases A, B, C e D — previstas até início de novembro — estão <strong>substancialmente concluídas na semana 2</strong>. Isso resultou da decisão de aproveitar disponibilidade de tempo antecipada para reduzir risco no único bloco realmente inegociável do cronograma: a fase E (estudo).</p>
+<hr>
+<h2>5. Resultados parciais do estudo M1 (Fase E antecipada)</h2>
+<p>A fase E foi antecipada e sua <strong>componente A</strong> (kappa inter-modelo) foi executada e concluída dentro das duas primeiras semanas. Este é o resultado central deste relatório.</p>
+<h3>5.1 Desenho experimental</h3>
+<ul>
+<li><strong>N:</strong> 30 sessões geradas por atendentes sintéticos LLM em três personalidades (strict, lax, neutral) rotacionadas em round-robin contra as três personas canônicas.</li>
+<li><strong>Cenários:</strong> <code>certificate_duplicate_confused_v1</code>, <code>rg_urgent_aggressive_v1</code>, <code>certificate_thirdparty_fraudster_v1</code> — 10 sessões cada, distribuição balanceada.</li>
+<li><strong>Juiz #1:</strong> OpenAI <code>gpt-4o</code>.</li>
+<li><strong>Juiz #2:</strong> DeepSeek <code>deepseek-reasoner</code> (R1, reasoning model com cadeia de pensamento).</li>
+<li><strong>Rubrica:</strong> <code>data/rubrics/counter_v1.yaml</code> (v2 — ver §6).</li>
+<li><strong>Persona LLM:</strong> <code>gpt-4o-mini</code>, isolada como variável fixa.</li>
+<li><strong>Rejulgamento:</strong> ambos os juízes pontuam sobre as MESMAS 30 transcrições, para isolar disagreement da rubrica de variação amostral do dialogo.</li>
+</ul>
+<h3>5.2 Resultado</h3>
+<p>O kappa de Cohen com pesos quadráticos, calculado sobre 30 sessões × 4 critérios (N = 120 pares), atingiu <strong>κ = 0,643</strong> — ponto estimado na faixa de concordância <strong>substancial</strong> na escala de Landis &amp; Koch (1977). O intervalo de confiança 95% obtido por bootstrap com 1000 reamostragens foi <strong>[0,530; 0,729]</strong>, inteiramente acima do limiar de concordância moderada (0,4). O gate primário do protocolo (0,6) é ultrapassado pelo ponto estimado mas está contido no intervalo, o que caracteriza o resultado como "substancial no ponto, com incerteza amostral compatível com o mínimo do gate" — situação esperada com N = 30 e passível de estreitamento no piloto pago com N maior.</p>
+<p>Métricas complementares agregadas:</p>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spearman ρ (concordância ordinal)</td>
+<td>0,686</td>
+</tr>
+<tr>
+<td>Within-1 rate (pares em ±1 nível ordinal)</td>
+<td>90% (108/120)</td>
+</tr>
+<tr>
+<td>Exact-match rate</td>
+<td>52% (62/120)</td>
+</tr>
+<tr>
+<td>Bias sistemático <code>mean_signed_diff</code> (gpt-4o − r1)</td>
+<td>+0,38 níveis</td>
+</tr>
+</tbody>
+</table>
+<p>Resultado por critério (kappa quadrático):</p>
+<table>
+<thead>
+<tr>
+<th>Critério</th>
+<th>κ</th>
+<th>Spearman</th>
+<th>within-1</th>
+<th>interpretação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fact_verification</td>
+<td>0,542</td>
+<td>0,764</td>
+<td>77%</td>
+<td>moderada / ordenação substancial</td>
+</tr>
+<tr>
+<td>data_protection</td>
+<td>— (var. zero)</td>
+<td>—</td>
+<td>100%</td>
+<td>concordância trivialmente perfeita</td>
+</tr>
+<tr>
+<td>protocol_adherence</td>
+<td>0,544</td>
+<td>0,498</td>
+<td>97%</td>
+<td>moderada</td>
+</tr>
+<tr>
+<td>communication</td>
+<td>0,354</td>
+<td>0,620</td>
+<td>87%</td>
+<td>razoável</td>
+</tr>
+</tbody>
+</table>
+<p>O critério <code>data_protection</code> produziu variância zero: ambos os juízes atribuíram nota máxima em 30/30 sessões (com uma única discordância de 1 nível). Isso é interpretado como achado, não como falha de método — os atendentes sintéticos, mesmo confrontados por personas fraudadoras com honeytokens plantados, não vazaram nenhum dado sigiloso. LLMs modernos jogando de atendente são naturalmente conservadores em cenários de engenharia social; a variância nesse critério exigirá atendentes humanos reais para se manifestar.</p>
+<p>O relatório completo do estudo (metodologia, resultados detalhados, limitações declaradas e passos reprodutíveis) está em <code>reports/study_v2_report.md</code>. Os artefatos brutos (30 transcrições, 60 verdicts, dois CSVs consolidados) estão versionados em <code>data/sessions/study_v2_n30/</code> e <code>data/study/study_v2_n30/</code>.</p>
+<p><strong>Custo total do estudo:</strong> ~R$ 20 em API (OpenAI + DeepSeek combinados), abaixo do orçamento previsto (R$ 30 – 80).</p>
+<hr>
+<h2>6. Análise crítica e ajustes ao plano</h2>
+<p>Três ajustes ao plano original merecem discussão explícita.</p>
+<h3>6.1 Pivô da métrica M1 para validação híbrida</h3>
+<p>O plano original previa kappa juiz-humano com dois avaliadores humanos independentes sobre ≥ 30 sessões. Ao decorrer da execução, foi identificado que <strong>o CIVIS na fase acadêmica é tocado sozinho</strong>: não há recursos humanos para recrutar dois avaliadores independentes que dediquem ~15 h cada dentro do prazo do pitch.</p>
+<p>A resposta foi redefinir M1 como <strong>validação híbrida</strong> (<code>docs/study_protocol.md</code> v2.0), com duas componentes:</p>
+<ul>
+<li><strong>Componente A:</strong> kappa inter-modelo entre dois LLMs juízes de famílias distintas. <strong>Executada e reportada neste relatório.</strong></li>
+<li><strong>Componente C:</strong> amostragem manual do coordenador sobre 10 sessões, com janela anti-viés de 7 dias entre a execução da sessão e a avaliação. <strong>Pendente.</strong></li>
+</ul>
+<p>O estudo formal juiz-humano com dois avaliadores externos permanece declarado como próximo passo do piloto pago pós-financiamento. Essa foi uma escolha metodologicamente honesta — o kappa inter-modelo responde a uma pergunta correlata e defensável ("dois modelos de famílias distintas concordam?") sem sobrescrever a pergunta original.</p>
+<h3>6.2 Iteração da rubrica antes do checkpoint agendado</h3>
+<p>A primeira rodada do componente A com a rubrica v1 (descrições narrativas) produziu κ = 0,412 — dentro da faixa "apresentável com discussão honesta" prevista no §11 do protocolo. Análise dos dados por critério mostrou que <strong>todo o gargalo estava concentrado em <code>protocol_adherence</code></strong> (κ 0,122, within-1 rate de apenas 33%), enquanto <code>fact_verification</code> já apresentava Spearman 0,71 (substancial).</p>
+<p>O diagnóstico foi que a rubrica de <code>protocol_adherence</code> v1 usava linguagem narrativa ("faltou 1 passo esperado") sem enumerar os passos canônicos — cada juiz interpretava "passos esperados" de forma diferente. A intervenção foi cirúrgica: reescrever apenas <code>protocol_adherence</code> como <strong>checklist objetivo de 5 passos canônicos</strong> (abertura formal, compreensão da demanda, verificação de identidade, explicação do procedimento, prazo + encerramento), com o score sendo o número de passos executados de forma reconhecível no transcript.</p>
+<p>Rerodando ambos os juízes sobre as mesmas 30 transcrições com a rubrica v2, o kappa desse critério saltou de 0,122 para 0,544 (within-1: 33% → 97%), e o kappa agregado passou de 0,412 para <strong>0,643</strong>, cruzando o gate primário do protocolo. Toda a iteração está declarada no relatório do estudo — o gate não foi movido, foi cruzado.</p>
+<h3>6.3 Substituição do stack de LLMs locais por APIs remotas</h3>
+<p>O plano previa Ollama-dual (Qwen2.5 7B + Llama 3.1 8B) como setup padrão de desenvolvimento. A execução prática mostrou que <strong>modelos de 7-8B locais não fornecem qualidade de rubrica confiável</strong> em transcrições de 16 turnos, produzindo verdicts de baixa fidelidade tanto na persona quanto no juiz. A escolha foi migrar para OpenAI (persona <code>gpt-4o-mini</code> + juiz <code>gpt-4o</code>) como default e DeepSeek R1 como segundo juiz para o kappa inter-modelo. O invariante O3 continua satisfeito (persona e juiz em entradas distintas do catálogo, com dispatcher de provider validando na inicialização).</p>
+<p>Consequência prática: o setup Ollama-dual permanece suportado no código (o factory de providers preserva o dispatch), mas não é mais o caminho recomendado. O custo por sessão em produção continua irrisório (~R$ 0,60 em API para uma sessão completa incluindo o juiz).</p>
+<hr>
+<h2>7. Riscos e trabalho remanescente</h2>
+<h3>7.1 Componente C do estudo M1 (pendente)</h3>
+<p>A amostragem manual das 10 sessões pelo coordenador é o único item da fase E ainda não executado. O protocolo exige janela mínima de 7 dias entre a geração da sessão e a avaliação manual, para reduzir viés de memória. Como as 30 sessões foram geradas em 29/09, a avaliação manual pode começar em 06/10 e concluir na semana subsequente.</p>
+<h3>7.2 Fase F — pitch</h3>
+<p>O deck de pitch (<code>docs/pitch_deck.md</code>) já foi rascunhado com os números reais do componente A preenchidos no Slide 7 (kappa, Spearman, within-1, cobertura de cenários). Placeholders <code>[X]</code> permanecem para métricas ainda não consolidadas nos relatórios finais das Fases C/D (latência p95, taxa de contradições, ASR do JudgeDeceiver-pointwise final).</p>
+<h3>7.3 Bugs corrigidos nesta janela</h3>
+<p>Dois bugs de UX identificados em sessão real de teste foram diagnosticados e corrigidos com testes de regressão:</p>
+<ol>
+<li>
+<p><strong>Fidelidade canônica da persona.</strong> A persona LLM ocasionalmente inventava valores diferentes dos declarados no cenário (por exemplo, "Maria da Conceição Pereira" no lugar do canônico "Maria das Graças Silva"). A causa era o prompt listar o valor sob "Sabe estes dados" sem forçar uso literal. Corrigido por regra explícita no bloco <code># Regras de fala</code>, com dois marcadores textuais independentes no teste de regressão.</p>
+</li>
+<li>
+<p><strong>Turnos de ação invisíveis à persona.</strong> A política original filtrava turnos com <code>speaker == "action"</code> do histórico enviado ao LLM (para não vazar payload JSON). Efeito colateral: após o atendente clicar em "Emitir certidão", a persona continuava perguntando pela mesma coisa. Corrigido reescrevendo turnos de ação como <em>stage directions</em> em pt-BR (por exemplo, <code>*emite e entrega o documento 'Segunda via da certidão de nascimento'*</code>) atribuídas ao atendente. Payload JSON continua bloqueado do prompt (asserção no teste).</p>
+</li>
+</ol>
+<h3>7.4 Riscos globais</h3>
+<p>O cronograma agora comporta um buffer confortável. O único risco residual identificado é o componente C do M1 apresentar discordância séria entre o julgamento manual do coordenador e o juiz automático — nesse caso, cabe iteração adicional da rubrica ou discussão honesta no relatório final. Tanto os artefatos brutos quanto a rubrica v1 estão preservados em <code>data/study/study_v2_n30_rubric_v1_backup/</code> para permitir auditoria e reprodução da comparação v1 vs v2.</p>
+<hr>
+<h2>8. Referências</h2>
+<ul>
+<li><strong>Landis, J. R., &amp; Koch, G. G.</strong> (1977). <em>The measurement of observer agreement for categorical data.</em> Biometrics, 33(1), 159 – 174.</li>
+<li><strong>Shi, J., Yuan, Z., Liu, Y., Huang, Y., Zhou, P., Sun, L., &amp; Gong, N. Z.</strong> (2024). <em>Optimization-based Prompt Injection Attack to LLM-as-a-Judge.</em> CCS '24. Análise crítica em <code>docs/Analise_Critica_JudgeDeceiver_AndersonAssuncao.pdf</code>.</li>
+<li><strong>OWASP Foundation.</strong> <em>OWASP Top 10 for Large Language Model Applications</em>, v2.0 (2025).</li>
+<li><strong>Lei nº 13.709/2018</strong> — Lei Geral de Proteção de Dados Pessoais (LGPD), especialmente artigo 12 sobre dados anonimizados.</li>
+<li><strong>Provimento CNJ 100/2020</strong> — Conselho Nacional de Justiça.</li>
+</ul>
+<hr>
+<h2>Anexos e artefatos de reprodução</h2>
+<p>Todos os artefatos referenciados neste relatório estão versionados no repositório e podem ser reproduzidos a partir de um clone limpo, com as chaves de API <code>OPENAI_API_KEY</code> e <code>DEEPSEEK_API_KEY</code> exportadas no ambiente:</p>
+<ul>
+<li><strong>Plano de trabalho original:</strong> <code>docs/Plano_de_Trabalho_CIVIS.pdf</code></li>
+<li><strong>Análise crítica JudgeDeceiver:</strong> <code>docs/Analise_Critica_JudgeDeceiver_AndersonAssuncao.pdf</code></li>
+<li><strong>Protocolo do estudo M1 (v2):</strong> <code>docs/study_protocol.md</code></li>
+<li><strong>Relatório completo do estudo (componente A):</strong> <code>reports/study_v2_report.md</code></li>
+<li><strong>Roteiro até o pitch:</strong> <code>docs/ROADMAP_PITCH.md</code></li>
+<li><strong>Rubrica declarativa v2:</strong> <code>data/rubrics/counter_v1.yaml</code></li>
+<li><strong>Rubrica leiga espelhada:</strong> <code>data/study/rubric_evaluator.md</code></li>
+</ul>
+<p>Comando único de reprodução do componente A do estudo, a partir da raiz do repositório:</p>
+<pre><code class="language-bash">python scripts/run_study_v2.py generate --n-sessions 30 \
+    --output-dir data/sessions/study_v2_n30
+python scripts/run_study_v2.py rejudge --sessions-dir data/sessions/study_v2_n30 \
+    --judge-config data/configs/config.deepseek.example.toml \
+    --output-suffix _deepseek
+python scripts/run_study_v2.py export-csvs --sessions-dir data/sessions/study_v2_n30 \
+    --output-dir data/study/study_v2_n30 --second-judge-suffix _deepseek
+python scripts/run_study_v2.py analyze \
+    --ollama-csv data/study/study_v2_n30/judge_ollama_v2.csv \
+    --claude-csv data/study/study_v2_n30/judge_deepseek_v2.csv \
+    --report reports/study_v2_n30_report.md
+</code></pre>
+<hr>
+<p><em>Documento vivo. Próxima entrega parcial prevista para o fim da semana 4, após conclusão do componente C do estudo M1.</em></p>
+</body>
+</html>

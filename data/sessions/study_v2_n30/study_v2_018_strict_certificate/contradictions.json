@@ -1,0 +1,47 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema, Dona Iracema. Olha, eu não sei se tô com um documento com foto aqui, pode ser que sim, mas tô perdida com essa burocracia. O que eu faço agora?",
+      "new_value": "Ah, tá... Eu entendi, mas eu fico tão confusa com essas coisas! Eu acho que tenho a carteira de identidade guardada em alguma caixa, mas não tenho certeza se achei na mudança. Será que tem como fazer a segunda via da certidão só com os meus dados, ou precisa mesmo desse documento?"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema, Dona Iracema. Olha, eu não sei se tô com um documento com foto aqui, pode ser que sim, mas tô perdida com essa burocracia. O que eu faço agora?",
+      "new_value": "Ai, que coisa difícil! Eu vou tentar, mas meu Deus, essas caixas tão abarrotadas. E se eu não achar a carteira? Eu fico sem a certidão mesmo? Não tem jeito de ajudar?"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema, Dona Iracema. Olha, eu não sei se tô com um documento com foto aqui, pode ser que sim, mas tô perdida com essa burocracia. O que eu faço agora?",
+      "new_value": "Ai, que coisa mais complicada! Não sei se consigo achar a carteira. E essa segunda via do documento de identidade, como que eu faço? Preciso de ajuda pra entender isso, porque eu não sei onde começar!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema, Dona Iracema. Olha, eu não sei se tô com um documento com foto aqui, pode ser que sim, mas tô perdida com essa burocracia. O que eu faço agora?",
+      "new_value": "Ai, meu Deus, tudo isso? Eu vou ter que entrar na internet? Olha, eu não sei nem procurar essas coisas direito! Será que não tem um jeito mais fácil, não? E se eu precisar de alguém pra me ajudar com isso? Tem alguém que possa me ajudar aqui?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema, Dona Iracema. Olha, eu não sei se tô com um documento com foto aqui, pode ser que sim, mas tô perdida com essa burocracia. O que eu faço agora?",
+      "new_value": "Ai, que complicado! Eu não quero incomodar ninguém, mas se não tem como ajudar aqui, fica difícil pra mim. Vou ver se consigo falar com alguém da família, quem sabe eles me ajudam nessa confusão. Mas sério, eu queria que fosse mais fácil, esses documentos dão uma dor de cabeça!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema, Dona Iracema. Olha, eu não sei se tô com um documento com foto aqui, pode ser que sim, mas tô perdida com essa burocracia. O que eu faço agora?",
+      "new_value": "Ai, muito obrigada, viu? Eu só espero conseguir achar essa carteira logo, porque não tá fácil. Essa burocracia me deixa doida! Se eu precisar de mais ajuda, eu venho aqui de novo, tá bom?"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema, Dona Iracema. Olha, eu não sei se tô com um documento com foto aqui, pode ser que sim, mas tô perdida com essa burocracia. O que eu faço agora?",
+      "new_value": "Obrigada, meu jovem! Vou tentar resolver isso o mais rápido possível. Que complicação, viu? Mas espero voltar aqui logo com a carteira na mão! Tenha um bom dia também!"
+    }
+  ],
+  "total_turns": 16
+}

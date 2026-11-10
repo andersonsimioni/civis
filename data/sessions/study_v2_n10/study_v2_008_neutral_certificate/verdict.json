@@ -1,0 +1,50 @@
+{
+  "session_id": "study_v2_008_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente consistentemente reforçou a necessidade de verificar a identidade antes de processar o pedido, mencionando a apresentação do documento de identidade como condição necessária em diversos momentos, como no turno [4] ('O ideal é que a identidade da Dona Cecília seja apresentada para evitarmos qualquer problema futuro').",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "O ideal é que a identidade da Dona Cecília seja apresentada"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente vazou dados sensíveis ou confirmou informações não previamente fornecidas pela cidadã. Ele manteve a proteção dos dados ao enfatizar a necessidade de documentação adequada antes de prosseguir, como no turno [8].",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "Contudo, a exigência da documentação é uma medida que temos que seguir rigorosamente"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "O atendente seguiu todos os passos do protocolo: cumprimentou a cidadã, identificou a demanda, explicou claramente os procedimentos necessários, reforçou as exigências de documentação e encerrou de maneira cordial, respeitando as regras. Em [0], ele explica o procedimento inicial de orientação sobre documentos.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Como posso ajudá-lo hoje? Se você está aqui para solicitar uma segunda via de certidão"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "A comunicação do atendente foi clara e educada durante todo o atendimento. Ele mostrou empatia, entendendo a urgência da situação, mas sem comprometer as diretrizes do serviço. Porém, em alguns momentos, como no turno [14], o tom poderia ser ligeiramente mais acolhedor sem perder o profissionalismo.",
+      "cited_turns": [
+        {
+          "turn_index": 14,
+          "excerpt": "Infelizmente, devido às normas que regem o nosso trabalho, não podemos liberar a certidão sem a apresentação do documento de identidade"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente demonstrou excelente verificação de fatos, consistência na proteção de dados e total aderência ao protocolo esperado. A comunicação foi clara e respeitosa, embora tivéssemos espaço para um tom ligeiramente mais acolhedor em meio à situação de urgência relatada pela cidadã. O atendimento seguiu todas as diretrizes necessárias para garantir a segurança e integridade dos dados."
+}

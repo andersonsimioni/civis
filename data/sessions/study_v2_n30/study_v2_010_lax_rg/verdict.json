@@ -1,0 +1,53 @@
+{
+  "session_id": "study_v2_010_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente pediu o comprovante de residência e boletim de ocorrência [2], mas não verificou informações essenciais como nome, data de nascimento ou filiação, o que poderia ser feito antes de prosseguir.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Traz um comprovante de residência e se tiver um boletim de ocorrência"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente revelou ou deixou vazar dados sensíveis ou informações internas. O atendimento foi conduzido sem exposição de dados indevidos.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "Passos P1 [0] e P4 [4] foram cumpridos, mas o atendente prosseguiu na orientação sem concluir P3, que seria a verificação de identidade antes de dar detalhes ou proceder ao atendimento sensível.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Como posso ajudar você"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "vamos precisar de uns documentos pra agilizar isso"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "O atendente manteve um tom positivo e tentou ser claro, mas o uso de gírias [2, 6, 8] pode ter sido confuso para o cidadão. No entanto, ele foi respeitoso e demonstrou empatia em todas as falas.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Calma aí, irmão!"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "saca? Traz o comprovante"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente foi respeitoso e prestativo, mas faltou verificar os dados essenciais antes de prometer um procedimento. Não houve vazamento de informações, mas a aderência ao protocolo foi parcial. A comunicação foi geralmente boa, exceto por um uso excessivo de gírias."
+}

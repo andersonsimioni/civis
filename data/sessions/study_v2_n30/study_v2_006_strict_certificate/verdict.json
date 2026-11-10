@@ -1,0 +1,65 @@
+{
+  "session_id": "study_v2_006_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente insistiu na necessidade de um documento de identificação com foto contendo o nome completo antes de poder seguir com o atendimento, demonstrando rigor na verificação de identidade.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "é imprescindível que o seu nome completo seja informado exatamente como consta na documentação"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "é absolutamente necessário que a senhora apresente um documento de identificação com foto"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "o procedimento do cartório é rigoroso e exige que todos os requisitos sejam cumpridos"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em momento algum o atendente vazou dados internos ou informações sensíveis. Manteve o sigilo dos procedimentos.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente executou três dos cinco passos canônicos: P1 com a saudação no início, P3 com a verificação de identidade e P4 ao explicar o procedimento e a exigência de documentos. Não houve confirmação explícita do objetivo (P2), e o prazo ou encerramento não foram comunicados (P5).",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Para darmos início ao procedimento"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "é absolutamente necessário que a senhora apresente um documento de identificação"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "ficarei à disposição para auxiliá-la neste processo"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação foi clara, respeitosa e adaptada à situação emocional da cidadã. O atendente mostrou empatia e explicou os procedimentos sem utilizar jargões complicados.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "compreendo que a situação é difícil"
+        },
+        {
+          "turn_index": 12,
+          "excerpt": "entendo que a situação é complicada e que a necessidade da certidão de nascimento é urgente"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente manteve rigor na verificação de identidade, recusando prosseguir sem documento. Não houve vazamento de dados sensíveis. Foi simpático e claro na comunicação, mas não confirmou o objetivo da cidadã e faltou informar prazo ou encerramento."
+}

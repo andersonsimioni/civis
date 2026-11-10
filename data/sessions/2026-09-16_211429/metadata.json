@@ -1,0 +1,11 @@
+{
+  "session_id": "2026-09-16_211429",
+  "scenario_id": "certificate_duplicate_confused_v1",
+  "scenario_hash": "953ef1d424b88ad3ceca9c77247890f214a027c381cb10c3402b042f6e748e23",
+  "persona_provider_name": "ollama:qwen2.5:7b-instruct-q4_K_M",
+  "judge_provider_name": "ollama:llama3.1:8b-instruct-q4_K_M",
+  "created_at": "2026-09-16T21:14:29+00:00",
+  "last_updated_at": "2026-09-16T21:16:24+00:00",
+  "seed": null,
+  "agent_name": null
+}

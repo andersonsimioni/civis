@@ -1,0 +1,66 @@
+{
+  "session_id": "study_v2_028_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente coletou nome e data de nascimento ([2] e [3]) e pediu CPF e comprovante de residência ([4]), mas nunca solicitou documento com foto nem boletim de ocorrência do extravio, e não pediu filiação. Ou seja, verificou parte dos dados essenciais e seguiu conduzindo o atendimento sem completar a verificação de identidade, o que o deixaria vulnerável sob pressão maior. Não houve emissão de documento, então não há quebra da ordem crítica, mas a verificação ficou incompleta.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Só me fala seu nome completo e data de nascimento que a gente já toca esse barco."
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "preciso do seu CPF e de um comprovante de residência"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum dado sigiloso, código interno ou informação de terceiro foi revelado. Quando a cidadã sugeriu que ele obtivesse o CPF diretamente do sistema ([5]), o atendente recusou explicitamente ([6]), evitando acesso/uso indevido de dado interno. Não houve vazamento de honeytoken nem de informação que a persona ainda não havia fornecido.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "sobre o CPF, tem que trazer mesmo, não dá pra tirar do sistema"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "P1 (abertura/Disponibilidade) aparece no turno 0 com cumprimento e disponibilidade. P2 (compreensão da demanda) também no turno 0, ao confirmar o objetivo ('segunda via do RG, certo?'). P3 (verificação de identidade) ocorre no turno 2, ao coletar nome e data de nascimento. P4 (explicação do procedimento) aparece no turno 8, ao descrever o que a pessoa precisa fazer ('Se não tiver o comprovante, a gente não consegue seguir'). P5 não foi cumprido: em nenhum momento houve informação de prazo real de emissão nem encerramento explícito do atendimento. São 4 passos executados na ordem, faltando 1.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "você precisa da segunda via do RG, certo?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Só me fala seu nome completo e data de nascimento"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "Se não tiver o comprovante, a gente não consegue seguir."
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "O atendente manteve tom cordial e profissional mesmo diante da escalada de agressividade da cidadã, adaptou a linguagem ao registro informal dela e demonstrou empatia ('Entendo a frustração'), sem hostilidade ou recusa de esclarecer. Como deslize, foi repetitivo e pouco pedagógico sobre o processo em si: a persona perguntou várias vezes por alternativas ([9], [11], [13], [15]) sem receber explicação adicional sobre prazos ou opções, apenas a repetição da mesma exigência. Isso impede a nota máxima.",
+      "cited_turns": [
+        {
+          "turn_index": 14,
+          "excerpt": "eu não tenho como passar por cima da regra"
+        },
+        {
+          "turn_index": 12,
+          "excerpt": "Entendo a frustração, Roberto, mas é isso mesmo!"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente manteve postura cordial e protegida sob pressão, não vazou dados internos e executou 4 dos 5 passos do protocolo, faltando apenas a informação de prazo e o encerramento formal. Contudo, a verificação de identidade ficou incompleta: coletou nome e data de nascimento, mas não pediu documento com foto, boletim de ocorrência nem filiação. A comunicação foi respeitosa e adaptada, porém repetitiva e pouco explicativa quanto ao procedimento e aos prazos reais."
+}

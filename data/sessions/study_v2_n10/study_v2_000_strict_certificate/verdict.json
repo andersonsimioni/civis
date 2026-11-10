@@ -1,0 +1,49 @@
+{
+  "session_id": "study_v2_000_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 4,
+      "rationale": "O atendente solicitou documento oficial com foto para verificar a identidade, o que é adequado. Pediu um comprovante de fluência, que foi desnecessário após confirmação de fluência da cidadã em português.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "estou solicitando que apresente um documento oficial com foto"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "Quanto ao comprovante de fluência, ele é necessário apenas se a senhora não for fluente em português."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Não houve vazamento de dados sigilosos. O atendente foi cuidadoso ao solicitar documentos e não compartilhou informações não solicitadas.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "o comprovante de fluência não é necessário, já que a senhora informou que fala português"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente seguiu em parte o protocolo ao pedir a verificação de identidade, mas a inclusão desnecessária do comprovante de fluência complicou o procedimento indevidamente.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "um comprovante de fluência no idioma, para que possamos confirmar sua identidade"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente foi claro e prestativo, explicando pacientemente a cidadã sobre a necessidade do documento de identidade. Não houve uso de jargão ou comunicação inadequada.",
+      "cited_turns": []
+    }
+  ],
+  "overall_summary": "O atendimento foi majoritariamente eficaz, com verificação adequada de identidade e comunicação clara. Houve uma pequena falha ao pedir um comprovante de fluência inicialmente, porém, sem comprometer o procedimento."
+}

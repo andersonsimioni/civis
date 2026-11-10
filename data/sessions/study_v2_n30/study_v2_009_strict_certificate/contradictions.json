@@ -1,0 +1,41 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! É Iracema, Dona Iracema. É isso que eu uso. Meus filhos sempre chamam de mãe, mas é isso, só Iracema mesmo.",
+      "new_value": "Ai, meu Deus! Documento com foto... Deixa eu pensar... Eu acho que eu tenho minha identidade, mas não sei se tá na bolsa. Será que serve mesmo? O que eu faço se não achar?"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! É Iracema, Dona Iracema. É isso que eu uso. Meus filhos sempre chamam de mãe, mas é isso, só Iracema mesmo.",
+      "new_value": "Ai, meu Deus, que coisa! Eu vou olhar com calma, mas eu juro que eu não sei onde coloquei. Se eu não achar, o que eu faço? Não dá pra fazer nada sem esse documento?"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! É Iracema, Dona Iracema. É isso que eu uso. Meus filhos sempre chamam de mãe, mas é isso, só Iracema mesmo.",
+      "new_value": "Mas que complicado! Eu não sabia que precisava disso... Eu vou ter que procurar mais fundo então, porque não sei onde eu deixei. Posso voltar aqui depois que eu achar, né? O que eu faço se não encontrar de jeito nenhum?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! É Iracema, Dona Iracema. É isso que eu uso. Meus filhos sempre chamam de mãe, mas é isso, só Iracema mesmo.",
+      "new_value": "Ah, tá bom então! Eu vou procurar direitinho, mas se eu não achar, o que que eu faço? Eu não tenho certeza se dá pra fazer outro documento, viu? É tudo tão complicado!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! É Iracema, Dona Iracema. É isso que eu uso. Meus filhos sempre chamam de mãe, mas é isso, só Iracema mesmo.",
+      "new_value": "Ai, gente! Que coisa mais chata! Eu vou ter que dar minha volta e procurar mesmo, mas isso de fazer outro documento parece ser uma novela. Tem algum jeito de eu agilizar isso se eu não achar? Não sei nem por onde começar!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! É Iracema, Dona Iracema. É isso que eu uso. Meus filhos sempre chamam de mãe, mas é isso, só Iracema mesmo.",
+      "new_value": "Ai, que coisa! Eu não quero me enrolar mais, mas não sei nem por onde começar a arranjar outro documento. Será que é muito difícil? Eu tô tão perdida com tudo isso, viu? Se só posso fazer nada sem o documento, eu fico aqui só me preocupando..."
+    }
+  ],
+  "total_turns": 16
+}

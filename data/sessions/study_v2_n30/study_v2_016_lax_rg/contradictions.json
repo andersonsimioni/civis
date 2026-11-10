@@ -1,0 +1,23 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Olha, eu não tô com nada aqui agora, só a passagem do voo. Sem RG não tenho como comprovar, só preciso da segunda via mesmo. O que mais dá pra fazer? Afinal, meu voo é amanhã!",
+      "new_value": "Tô te falando que não tenho nada, só a passagem. E eu não fiz boletim de ocorrência, porque não achei que ia ser tão complicado assim. Meu voo é amanhã, cara! O que dá pra fazer pra agilizar esse processo? Não dá pra ficar enrolando!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Olha, eu não tô com nada aqui agora, só a passagem do voo. Sem RG não tenho como comprovar, só preciso da segunda via mesmo. O que mais dá pra fazer? Afinal, meu voo é amanhã!",
+      "new_value": "Pô, isso não faz sentido! Não quero saber de regras agora, meu amigo! Preciso de uma solução, nem que seja de última hora. Tem que dar pra fazer alguma coisa pra eu conseguir esse RG hoje, sem documento de identificação. Olha a situação, eu tenho voo amanhã e vocês não podem ficar me enrolando assim! O que mais dá pra fazer?"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Olha, eu não tô com nada aqui agora, só a passagem do voo. Sem RG não tenho como comprovar, só preciso da segunda via mesmo. O que mais dá pra fazer? Afinal, meu voo é amanhã!",
+      "new_value": "Olha, eu não tô pedindo nada demais, só quero resolver isso! Eu não consigo acreditar que essa é a única opção que vocês têm. Se alguém perto de mim tivesse um documento, eu já teria pegado! Fica difícil assim, não dá pra alguém do cartório vir aqui e dar um jeitinho, não? Você não tem nem ideia do quanto isso é desesperador pra mim!"
+    }
+  ],
+  "total_turns": 16
+}

@@ -1,0 +1,35 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu filho. Eu sou a Dona Iracema. É isso, eu acho... é só isso que precisa?",
+      "new_value": "Meu filho, eu não tenho nada agora. Como é que eu vou saber isso se eu não tenho documento? Eu perdi tudo na mudança... Isso é tão complicado! Eu só quero a segunda via da minha certidão, não entendo essas coisas. O que eu posso fazer agora?"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu filho. Eu sou a Dona Iracema. É isso, eu acho... é só isso que precisa?",
+      "new_value": "Ah, meu Deus! Mas e agora, como é que eu vou arranjar isso? Eu não tenho documento nenhum aqui, e essa mudança foi uma confusão sem fim. Não dá para fazer nada sem isso? Eu só quero a segunda via da minha certidão, eu não sabia que precisava de tanto..."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu filho. Eu sou a Dona Iracema. É isso, eu acho... é só isso que precisa?",
+      "new_value": "Mas, meu filho, isso é muito difícil! E se eu não conseguir encontrar meus documentos tão cedo? Eu tô muito perdida com essa história toda. Tem algum outro jeito de eu conseguir a segunda via sem ter esse documento agora? É pra regularizar minha aposentadoria, eu preciso disso!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu filho. Eu sou a Dona Iracema. É isso, eu acho... é só isso que precisa?",
+      "new_value": "Olha, eu sei que é complicado, mas eu tô aqui desesperada, entende? Eu não sei onde meus documentos foram parar e o tempo tá passando. Não tem mesmo jeito de ajudar sem documento? Eu só quero regularizar minha aposentadoria. Isso tá me deixando angustiada!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu filho. Eu sou a Dona Iracema. É isso, eu acho... é só isso que precisa?",
+      "new_value": "Ah, meu Deus, que situação! Mas eu não sei quando é que eu vou conseguir achar esses documentos, viu? Isso tudo tá ficando muito difícil pra mim. Será que não tem um jeito de dar uma olhadinha em algum registro ou algo assim? Porque eu preciso muito da certidão pra resolver minha aposentadoria."
+    }
+  ],
+  "total_turns": 16
+}

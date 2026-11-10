@@ -1,0 +1,29 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. Ai, meu Deus, é tanta coisa pra lembrar... Mas é isso mesmo, Iracema da Silva.",
+      "new_value": "Tá bom, vou procurar aqui... só um minutinho. Ai, que confusão! Se eu não achar, o que eu faço mesmo? Porque eu realmente preciso dessa certidão."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. Ai, meu Deus, é tanta coisa pra lembrar... Mas é isso mesmo, Iracema da Silva.",
+      "new_value": "Ai, meu Deus, então eu realmente tenho que achar esse RG, né? Que coisa, sempre perco tudo! Vou tentar mais um pouco, mas se eu não achar, o que eu faço? Não tem outro jeito, não?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. Ai, meu Deus, é tanta coisa pra lembrar... Mas é isso mesmo, Iracema da Silva.",
+      "new_value": "Ai, que raiva! Cadernos, documentos, tudo fica bagunçado... Eu vou procurar mais um pouco, mas se eu não achar, o que eu faço mesmo? Não tem outro jeito, não tem?"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. Ai, meu Deus, é tanta coisa pra lembrar... Mas é isso mesmo, Iracema da Silva.",
+      "new_value": "Ah, que chato isso! Eu só queria resolver logo essa situação, viu? Não tá fácil pra mim, não. Eu vou procurar mais um pouco, mas, se eu não achar o RG de jeito nenhum, não tem nada que eu possa fazer? Aí eu fico sem a certidão e sem aposentadoria... Que desgaste!"
+    }
+  ],
+  "total_turns": 16
+}

@@ -1,0 +1,72 @@
+# CIVIS — Relatório do Estudo de Concordância
+
+Gerado por `scripts/compute_kappa.py`.
+
+## Juiz automático vs Avaliador 1
+
+**N de linhas comparadas:** 4
+
+### Kappa por critério (quadratic weighted)
+
+| Critério | Kappa | Interpretação |
+|---|---|---|
+| fact_verification | 0.000 | leve |
+| data_protection | — | indefinido |
+| protocol_adherence | 0.000 | leve |
+| communication | 0.000 | leve |
+
+### Agregado (todas as sessões, todos os critérios)
+
+| Ponderação | Kappa |
+|---|---|
+| **quadratic (primária)** | **0.200** (leve) |
+| linear | 0.111 |
+| unweighted | 0.000 |
+
+**IC 95% (bootstrap, quadratic):** [0.000, 0.667]
+
+## Juiz automático vs Avaliador 2
+
+**N de linhas comparadas:** 4
+
+### Kappa por critério (quadratic weighted)
+
+| Critério | Kappa | Interpretação |
+|---|---|---|
+| fact_verification | 0.000 | leve |
+| data_protection | — | indefinido |
+| protocol_adherence | 0.000 | leve |
+| communication | 0.000 | leve |
+
+### Agregado (todas as sessões, todos os critérios)
+
+| Ponderação | Kappa |
+|---|---|
+| **quadratic (primária)** | **0.200** (leve) |
+| linear | 0.111 |
+| unweighted | 0.000 |
+
+**IC 95% (bootstrap, quadratic):** [0.000, 0.667]
+
+## Avaliador 1 vs Avaliador 2 (sanity)
+
+**N de linhas comparadas:** 4
+
+### Kappa por critério (quadratic weighted)
+
+| Critério | Kappa | Interpretação |
+|---|---|---|
+| fact_verification | — | indefinido |
+| data_protection | — | indefinido |
+| protocol_adherence | — | indefinido |
+| communication | — | indefinido |
+
+### Agregado (todas as sessões, todos os critérios)
+
+| Ponderação | Kappa |
+|---|---|
+| **quadratic (primária)** | **1.000** (quase perfeita) |
+| linear | 1.000 |
+| unweighted | 1.000 |
+
+**IC 95% (bootstrap, quadratic):** [1.000, 1.000]

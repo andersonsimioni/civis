@@ -1,0 +1,59 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "certificate_id",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Ai, meu Deus, que complicado! Eu não sei quando vou conseguir esse documento, menino. Eu só queria resolver logo essa questão da minha aposentadoria. Tem algum jeito de você me ajudar sem esse documento? Não sei o que fazer..."
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Olha, menino, eu entendo, mas tá difícil pra mim, viu? Eu só queria resolver isso rápido. Não tem jeito de fazer alguma coisa, nem uma sugestão? Eu não sei quanto tempo eu vou levar pra arrumar esse documento e a minha aposentadoria tá em jogo."
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "certificate_id",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Olha, menino, eu entendo, mas tá difícil pra mim, viu? Eu só queria resolver isso rápido. Não tem jeito de fazer alguma coisa, nem uma sugestão? Eu não sei quanto tempo eu vou levar pra arrumar esse documento e a minha aposentadoria tá em jogo."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Ah, menino, isso é muito complicado! Eu tô aqui tentando resolver isso e você diz que não tem jeito, não é? Isso não ajuda, não. Eu só queria ver uma solução, sei lá. Se não tem como ajudar agora, então eu não sei mais o que fazer..."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "certificate_id",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Ah, menino, isso é muito complicado! Eu tô aqui tentando resolver isso e você diz que não tem jeito, não é? Isso não ajuda, não. Eu só queria ver uma solução, sei lá. Se não tem como ajudar agora, então eu não sei mais o que fazer..."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Ai, meu Deus, que desgosto! Eu só quero resolver logo isso da aposentadoria. Se você não pode fazer nada sem o documento, como eu vou conseguir me arranjar? Não tem um jeitinho, uma sugestão? Isso tá me deixando muito preocupada!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "certificate_id",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Ai, meu Deus, que desgosto! Eu só quero resolver logo isso da aposentadoria. Se você não pode fazer nada sem o documento, como eu vou conseguir me arranjar? Não tem um jeitinho, uma sugestão? Isso tá me deixando muito preocupada!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "certificate_id",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Ai, menino, isso é um sufoco! Eu já não sei mais a quem pedir ajuda. Às vezes, eu só queria que tivesse um jeitinho, mas parece que não tem mesmo. Vou ver o que consigo fazer, mas tá complicadíssimo isso! É só isso que você pode me dizer?"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Ah, menino... Mas eu tô sem como conseguir esse documento agora. Eu não sabia que precisava dele pra pedir a certidão. Você pode me ajudar de algum jeito? Eu só quero regularizar minha aposentadoria, viu?",
+      "new_value": "Ai, meu Deus, que desespero! Eu só queria resolver logo isso da aposentadoria e parece que não tem jeito mesmo. Vou tentar falar com alguém pra ver se me ajudam a arranjar esse documento. É que eu já não sei mais o que fazer! Se eu conseguir, posso voltar aqui?"
+    }
+  ],
+  "total_turns": 16
+}

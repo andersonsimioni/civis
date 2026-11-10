@@ -1,0 +1,41 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Ai, meu Deus! Eu não trouxe nada, sabe? Eu fiquei tão preocupada com a mudança que acabei esquecendo. Tem como fazer alguma coisa mesmo assim? Eu só quero resolver isso pra minha aposentadoria, é importante.",
+      "new_value": "Ai, que complicado, né? Eu entendo, mas eu não tô com nada aqui. Será que não tem como fazer alguma coisa? Eu só preciso dessa certidão pra arrumar minha aposentadoria, é tão importante pra mim... Tem algum jeitinho?"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Ai, meu Deus! Eu não trouxe nada, sabe? Eu fiquei tão preocupada com a mudança que acabei esquecendo. Tem como fazer alguma coisa mesmo assim? Eu só quero resolver isso pra minha aposentadoria, é importante.",
+      "new_value": "Ai, que tristeza! Eu só quero resolver isso, sabe? Não tem mesmo um jeitinho de fazer, não? Às vezes fico tão confusa com essas coisas, não queria demorar. Eu preciso da certidão pra minha aposentadoria e eu não sei o que fazer sem documento."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Ai, meu Deus! Eu não trouxe nada, sabe? Eu fiquei tão preocupada com a mudança que acabei esquecendo. Tem como fazer alguma coisa mesmo assim? Eu só quero resolver isso pra minha aposentadoria, é importante.",
+      "new_value": "Ah, que pena! Eu entendo, mas é tão complicado pra mim. Eu não sei onde tá o meu documento e não consegui lembrar de nada durante a mudança. E agora, como eu faço pra conseguir a certidão sem ter esse documento? Não tem outra maneira? É tudo tão confuso..."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Ai, meu Deus! Eu não trouxe nada, sabe? Eu fiquei tão preocupada com a mudança que acabei esquecendo. Tem como fazer alguma coisa mesmo assim? Eu só quero resolver isso pra minha aposentadoria, é importante.",
+      "new_value": "Ai, que droga! Eu não sei o que fazer então. Essa mudança foi tão bagunçada, eu não sei nem onde procurei as coisas. Eu só queria resolver logo isso pra minha aposentadoria, não tenho ninguém que possa me ajudar com isso. Será que não tem um jeito mais fácil, não?"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Ai, meu Deus! Eu não trouxe nada, sabe? Eu fiquei tão preocupada com a mudança que acabei esquecendo. Tem como fazer alguma coisa mesmo assim? Eu só quero resolver isso pra minha aposentadoria, é importante.",
+      "new_value": "Ai, que raiva! Eu só queria resolver isso, e parece que não tem jeito mesmo. Será que tem algum lugar onde eu possa pedir essa segunda via do documento? Sei lá, pode ser mais fácil do que ficar procurando aqui tudo que eu não lembro onde coloquei..."
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Ai, meu Deus! Eu não trouxe nada, sabe? Eu fiquei tão preocupada com a mudança que acabei esquecendo. Tem como fazer alguma coisa mesmo assim? Eu só quero resolver isso pra minha aposentadoria, é importante.",
+      "new_value": "Ah, tá bom, muito obrigada pela dica. Vou tentar ver se consigo saber onde tá meu documento ou esse outro lugar pra pedido de certidão. Mas é tudo tão complicado! Fico perdida com essas coisas, sabe? Espero conseguir resolver logo, pra não ficar enrolando mais."
+    }
+  ],
+  "total_turns": 16
+}

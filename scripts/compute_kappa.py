@@ -189,6 +189,87 @@ def cohen_kappa(
 
 
 # ---------------------------------------------------------------------------
+# Complementary ordinal-agreement metrics
+# ---------------------------------------------------------------------------
+# Kappa punishes systematic scale offset even when the raters agree on the
+# ORDERING of sessions. When two judges use different calibrations (e.g. one
+# rater is uniformly one level stricter), kappa collapses despite substantial
+# ordinal agreement. The metrics below capture that agreement directly and
+# are meant to be reported ALONGSIDE kappa, never as a replacement for it.
+
+def spearman_rho(a: Sequence[int], b: Sequence[int]) -> float:
+    """
+    Spearman rank correlation. Measures agreement on the ORDERING of items,
+    insensitive to monotonic scale shifts. A judge that grades one level
+    stricter across the board will still score ~1.0 here.
+
+    Returns NaN when either sequence is constant (rank variance = 0) — the
+    same edge case that breaks kappa on constant columns like data_protection.
+    """
+    n = len(a)
+    if n < 2:
+        return float("nan")
+
+    def to_ranks(xs: Sequence[int]) -> list[float]:
+        # Average-rank convention for ties: two rows tied at positions 3,4
+        # both get rank 3.5. Matches scipy.stats.spearmanr and is what the
+        # ordinal-scale literature expects.
+        indexed = sorted(enumerate(xs), key=lambda t: t[1])
+        ranks = [0.0] * n
+        i = 0
+        while i < n:
+            j = i
+            while j + 1 < n and indexed[j + 1][1] == indexed[i][1]:
+                j += 1
+            avg_rank = (i + j) / 2 + 1
+            for k in range(i, j + 1):
+                ranks[indexed[k][0]] = avg_rank
+            i = j + 1
+        return ranks
+
+    ranks_a = to_ranks(a)
+    ranks_b = to_ranks(b)
+    mean_a = sum(ranks_a) / n
+    mean_b = sum(ranks_b) / n
+    num = sum(
+        (ra - mean_a) * (rb - mean_b)
+        for ra, rb in zip(ranks_a, ranks_b, strict=True)
+    )
+    den_a = sum((ra - mean_a) ** 2 for ra in ranks_a)
+    den_b = sum((rb - mean_b) ** 2 for rb in ranks_b)
+    if den_a == 0 or den_b == 0:
+        return float("nan")
+    return num / (den_a * den_b) ** 0.5
+
+
+def within_one_rate(a: Sequence[int], b: Sequence[int]) -> float:
+    """Fraction of pairs where |a - b| <= 1 (ordinal near-agreement)."""
+    n = len(a)
+    if n == 0:
+        return float("nan")
+    return sum(1 for x, y in zip(a, b, strict=True) if abs(x - y) <= 1) / n
+
+
+def exact_match_rate(a: Sequence[int], b: Sequence[int]) -> float:
+    """Fraction of pairs where a == b."""
+    n = len(a)
+    if n == 0:
+        return float("nan")
+    return sum(1 for x, y in zip(a, b, strict=True) if x == y) / n
+
+
+def mean_signed_diff(a: Sequence[int], b: Sequence[int]) -> float:
+    """
+    Mean of (a - b). Positive means rater A is systematically higher.
+    Isolates the scale-shift component that quadratic kappa penalises.
+    """
+    n = len(a)
+    if n == 0:
+        return float("nan")
+    return sum(x - y for x, y in zip(a, b, strict=True)) / n
+
+
+# ---------------------------------------------------------------------------
 # Study-level aggregation
 # ---------------------------------------------------------------------------
 
@@ -204,6 +285,17 @@ class PairResult:
     aggregate_ci_low: float  # bootstrap 95% CI on quadratic
     aggregate_ci_high: float
     n_pairs: int  # total (session, criterion) rows compared
+    # Complementary ordinal-agreement metrics (see spearman_rho docstring
+    # for the rationale — kappa alone under-represents agreement when the
+    # two raters share ordering but differ in calibration).
+    aggregate_spearman: float
+    aggregate_within_one: float
+    aggregate_exact_match: float
+    aggregate_mean_diff: float
+    per_criterion_spearman: dict[str, float]
+    per_criterion_within_one: dict[str, float]
+    per_criterion_exact_match: dict[str, float]
+    per_criterion_mean_diff: dict[str, float]
 
 
 def _align(
@@ -269,9 +361,17 @@ def compute_pair(
 ) -> PairResult:
     """Compute per-criterion and aggregate kappa for one rater pair."""
     per_criterion: dict[str, float] = {}
+    per_criterion_spearman: dict[str, float] = {}
+    per_criterion_within_one: dict[str, float] = {}
+    per_criterion_exact_match: dict[str, float] = {}
+    per_criterion_mean_diff: dict[str, float] = {}
     for criterion in CRITERIA:
         x, y = _align(rater_x, rater_y, criterion=criterion)
         per_criterion[criterion] = cohen_kappa(x, y, weighting="quadratic")
+        per_criterion_spearman[criterion] = spearman_rho(x, y)
+        per_criterion_within_one[criterion] = within_one_rate(x, y)
+        per_criterion_exact_match[criterion] = exact_match_rate(x, y)
+        per_criterion_mean_diff[criterion] = mean_signed_diff(x, y)
 
     all_x, all_y = _align(rater_x, rater_y)
     quadratic = cohen_kappa(all_x, all_y, weighting="quadratic")
@@ -288,6 +388,14 @@ def compute_pair(
         aggregate_ci_low=ci_low,
         aggregate_ci_high=ci_high,
         n_pairs=len(all_x),
+        aggregate_spearman=spearman_rho(all_x, all_y),
+        aggregate_within_one=within_one_rate(all_x, all_y),
+        aggregate_exact_match=exact_match_rate(all_x, all_y),
+        aggregate_mean_diff=mean_signed_diff(all_x, all_y),
+        per_criterion_spearman=per_criterion_spearman,
+        per_criterion_within_one=per_criterion_within_one,
+        per_criterion_exact_match=per_criterion_exact_match,
+        per_criterion_mean_diff=per_criterion_mean_diff,
     )
 
 
@@ -300,6 +408,20 @@ def format_kappa(k: float) -> str:
     if k != k:
         return "—"
     return f"{k:+.3f}" if k < 0 else f"{k:.3f}"
+
+
+def format_pct(rate: float) -> str:
+    """Format a rate in [0,1] as a percentage string. NaN prints as '—'."""
+    if rate != rate:
+        return "—"
+    return f"{rate * 100:.0f}%"
+
+
+def format_diff(d: float) -> str:
+    """Format a signed mean difference. NaN prints as '—'."""
+    if d != d:
+        return "—"
+    return f"{d:+.2f}"
 
 
 def interpret(k: float) -> str:
@@ -357,6 +479,40 @@ def render_report(results: list[PairResult]) -> str:
             f"**IC 95% (bootstrap, quadratic):** "
             f"[{format_kappa(result.aggregate_ci_low)}, "
             f"{format_kappa(result.aggregate_ci_high)}]"
+        )
+        lines.append("")
+
+        # Complementary metrics — reported alongside kappa, never as a
+        # replacement. Spearman captures ordering agreement independently of
+        # calibration; within-1 rate reflects how often the raters land in
+        # the same ordinal neighbourhood; mean_diff isolates systematic bias.
+        lines.append("### Métricas complementares (concordância ordinal)")
+        lines.append("")
+        lines.append(
+            "Kappa quadrático pune bias sistemático mesmo quando os "
+            "avaliadores concordam na ordenação. As métricas abaixo "
+            "isolam esses componentes: Spearman ignora shift de calibração; "
+            "within-1 mede quantos pares caem no mesmo bairro ordinal; "
+            "mean_diff quantifica o shift sistemático (positivo = juiz A "
+            "sistematicamente maior)."
+        )
+        lines.append("")
+        lines.append("| Critério | Spearman | within-1 | exact | mean_diff (A−B) |")
+        lines.append("|---|---|---|---|---|")
+        for criterion in CRITERIA:
+            lines.append(
+                f"| {criterion} | "
+                f"{format_kappa(result.per_criterion_spearman[criterion])} | "
+                f"{format_pct(result.per_criterion_within_one[criterion])} | "
+                f"{format_pct(result.per_criterion_exact_match[criterion])} | "
+                f"{format_diff(result.per_criterion_mean_diff[criterion])} |"
+            )
+        lines.append(
+            f"| **agregado** | "
+            f"**{format_kappa(result.aggregate_spearman)}** | "
+            f"**{format_pct(result.aggregate_within_one)}** | "
+            f"**{format_pct(result.aggregate_exact_match)}** | "
+            f"**{format_diff(result.aggregate_mean_diff)}** |"
         )
         lines.append("")
 

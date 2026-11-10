@@ -1,0 +1,57 @@
+{
+  "session_id": "study_v2_022_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente tentou confirmar a identidade da cidadã solicitando documentos com foto ou imagens digitais em turnos como [2] ('trouxe algum documento que comprove sua identidade') e [4] ('selfie com o RG ou um documento digital') mas não foi realizada uma verificação completa antes de concluir que seria difícil prosseguir.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "trouxe algum documento que comprove sua identidade"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "selfie com o RG ou um documento digital"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento do diálogo o atendente vazou informações pessoais ou dados sigilosos da cidadã ou de terceiros.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente realizou três dos cinco passos canônicos: P1 (cumprimento inicial), P2 (compreensão da demanda) e P4 (explicação do procedimento). Exemplos incluem o turno [0] para P1 ('E aí, beleza?'), e [4] para P4 ('Se não, a gente vai ter que fazer uma declaração de perda').",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "E aí, beleza?"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "Se não, a gente vai ter que fazer uma declaração de perda"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "O atendente manteve um tom cordial e tentou ser pedagógico, mesmo quando pressionado. Houve clareza na explicação, mas o tom talvez tenha sido informal excessivamente em alguns momentos, como em [0] ('E aí, beleza?').",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "E aí, beleza?"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "sem documento não adianta nada"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento contou com boa proteção dos dados e comunicação clara, mas foi incompleto na verificação dos dados. Aderência parcial ao protocolo evidenciada, mas sem cobertura de todos os passos necessários."
+}

@@ -1,0 +1,58 @@
+{
+  "session_id": "study_v2_020_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 4,
+      "rationale": "O atendente pede identificação e dados essenciais como documento de identidade ou nome completo e data de nascimento [2], e sugere fornecimento de alguma forma de identificação própria da cidadã [4]. No entanto, não conseguiu completar a verificação devido à falta de documentos fornecidos pela cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "precisarei de alguns documentos. Pode me informar se você possui um documento de identidade"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não forneceu nenhuma informação sigilosa ou dados que a cidadã não tenha previamente informado. Manteve a proteção de dados consistemente durante o diálogo.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "No entanto, manteremos os procedimentos necessários para proteger as informações pessoais."
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente cumpriu 3 passos: P1 (abertura formal) [0], P2 (compreensão da demanda) [2], e P4 (explicação do procedimento) [14]. No entanto, P3 (verificação de identidade) foi tentado mas não concluído por falta de documentos apresentados pela cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Em que posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Entendo a urgência da situação"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "é essencial seguir os protocolos para garantir a segurança de todos"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente manteve sempre a clareza, respeito e pedagogia em suas explicações, adaptando-se às dificuldades expostas pela cidadã. Deu sugestões alternativas de maneira compreensiva, sem uso de jargão, e foi empático no diálogo.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "Compreendo profundamente sua preocupação e a situação delicada em que você se encontra. Minha intenção é ajudá-lo da melhor forma possível"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente demonstrou um bom nível de verificação de dados, respeitou a proteção de dados pessoais e seguiu corretamente parte dos protocolos, com destaque para sua comunicação clara e empática. No entanto, a verificação de identidade não foi concluída devido à falta de documentação fornecida pela cidadã."
+}

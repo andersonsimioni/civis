@@ -1,0 +1,45 @@
+{
+  "session_id": "study_v2_004_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente solicitou nome e data de nascimento, o que são elementos essenciais, mas não pediu um documento com foto como seria esperado no caso de emissão de RG, comprometendo a segurança.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Me dá seus dados, nome completo e data de nascimento"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente vazou informações sensíveis ou sequer deixou em aberto a possibilidade de divulgar informações não autorizadas.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "O atendente cumprimentou e entendeu a demanda, mas falhou no essencial ao não verificar adequadamente a identidade com um documento, e mencionou documentos desnecessários como foto 3x4 e comprovante de residência.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "preciso que você me traga um comprovante de residência e uma foto 3x4"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 3,
+      "rationale": "O atendente manteve um tom informal que pode ser considerado inadequado para a situação, embora tenha demonstrado paciência e repetido a necessidade dos documentos.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "E aí, beleza? O que você precisa?"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente identificou a necessidade do cidadão, mas não cumpriu plenamente os procedimentos de identificação, pedindo documentos desnecessários. A comunicação foi cordial mas informal. Nenhum dado sensível foi vazado durante a interação."
+}

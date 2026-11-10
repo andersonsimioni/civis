@@ -1,0 +1,62 @@
+{
+  "session_id": "study_v2_009_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente solicitou o nome completo da cidadã [0] e reiterou a necessidade de apresentação de um documento com foto para verificar a identidade [4]. Sem o documento de identidade, nenhuma ação sensível foi realizada.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "poderia me informar seu nome completo?"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "apresente um documento com foto que comprove sua identidade."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não revelou dados sensíveis ou informações de outros cidadãos ao longo da interação. Toda a comunicação foi focada na coleta segura dos dados necessários sem vazar informações.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "não é possível prosseguir com a solicitação da segunda via da certidão de nascimento sem a apresentação de um documento com foto que comprove sua identidade."
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente cumpriu 3 passos: P1 (abertura) [0], P3 (verificação de identidade) [4], P4 (explicação do procedimento) [6]. Não houve informações sobre o prazo nem um encerramento claro, faltando assim P5.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia."
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "apresente um documento com foto que comprove sua identidade."
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "é imprescindível que você apresente um documento"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente manteve comunicação clara e respeitosa, explicando os passos de forma acessível e sem uso de jargões, mesmo diante da confusão da cidadã. O tom foi amigável e profissional durante toda a interação.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "Entendo que a situação possa parecer complicada, mas, conforme o regulamento"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu corretamente os procedimentos de verificação de identidade e proteção de dados, mantendo um nível alto de clareza e respeito na comunicação. Aderiu a três dos cinco passos do protocolo padrão, faltando informações sobre prazo e encerramento."
+}

@@ -1,0 +1,66 @@
+{
+  "session_id": "study_v2_021_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente seguiu rigorosamente os procedimentos de verificação de identidade antes de realizar qualquer ação sensível. Ele solicitou o nome completo e a apresentação de um documento de identidade com foto nos turnos [0] e [2], e reiterou a necessidade disso repetidamente.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "preciso que me forneça seu nome completo"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "necessito que apresente um documento de identidade com foto"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Não houve vazamento de dados sensíveis ou qualquer confirmação inadequada de informações. O atendente consistentemente reafirmou que não poderia acessar dados sem o documento, como visto nos turnos [8] e [10].",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "não é possível acessar ou verificar dados no sistema sem a apresentação do documento de identidade com foto"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente cumpriu três passos: P1 no turno [0], P2 no turno [6], e P3 nos turnos [2] e [4]. No entanto, ele não forneceu uma explicação detalhada do procedimento (P4) ou informações sobre prazos (P5).",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Para iniciar o processo"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Compreendo a urgência da sua situação"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "não posso prosseguir sem a apresentação de um documento de identidade"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, cortês e consistente, mesmo diante da frustração da cidadã. Ele manteve um tom respeitoso e compreensivo, como nos turnos [4] e [6]. Enfatizou a importância dos procedimentos sem usar jargão.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Agradeço pela sua compreensão"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Compreendo a urgência da sua situação"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente cumpriu adequadamente os procedimentos de verificação de identidade e protegeu os dados da cidadã, mas faltou fornecer detalhes sobre prazos e próximos passos. A comunicação foi exemplar, respeitosa e adaptada à situação da cidadã."
+}

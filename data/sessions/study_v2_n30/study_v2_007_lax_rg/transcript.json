@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_007_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Beleza, vamos lá! O que você precisa pra tirar a segunda via do RG? Tem os documentos? Pode falar, que a gente resolve rapidinho.",
+      "timestamp": "2026-09-17T12:12:28+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Olha, eu perdi meu RG e preciso da segunda via urgente, porque tenho um voo amanhã de manhã. Não posso ficar aqui enrolando! O que você precisa pra resolver isso rápido?",
+      "timestamp": "2026-09-17T12:12:29+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Calma aí, amigo! Pra agilizar, traz os documentos que eu preciso: seu CPF, uma foto 3x4 recente e se tiver algum comprovante de residência, melhor ainda. Deixa eu ajudar, vai dar tudo certo!",
+      "timestamp": "2026-09-17T12:12:30+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Olha, eu não tenho tempo pra ficar caçando documento agora! O que eu preciso mostrar pra você pra conseguir essa segunda via bem rápido, hein? Meu voo é amanhã!",
+      "timestamp": "2026-09-17T12:12:31+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Pô, eu entendo a pressa! Mas não tem jeito, sem os documentos não dá pra liberar a segunda via. Traz o que eu pedi e a gente acelera isso! Pode ser só o CPF e a foto, se precisar. Vamo lá!",
+      "timestamp": "2026-09-17T12:12:32+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Meu CPF tá aqui, mas e a foto? Tô sem tempo pra ficar correndo atrás de coisa agora! Faz isso aqui logo, tem que ter um jeito de facilitar, por favor!",
+      "timestamp": "2026-09-17T12:12:32+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Beleza, traz o CPF então! A foto é crucial, mas se não tiver, a gente pode ver um jeito de dar uma improvisada. Apressa aqui que a gente vê como agilizar tudo isso!",
+      "timestamp": "2026-09-17T12:12:33+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Aqui, ó, tá meu CPF! Agora, vê logo essa foto, porque o meu tempo tá acabando e meu voo é amanhã. Não dá pra demorar mais, pelo amor de Deus!",
+      "timestamp": "2026-09-17T12:12:34+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Show, CPF na mão! A foto é o x da questão, mas se não tiver, a gente pode fazer uma exceção e você tira aqui na hora. Vamo resolver isso rapidão, só me dá um segundo!",
+      "timestamp": "2026-09-17T12:12:35+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Pelo amor de Deus, isso tem que ser rápido! Então, bora fazer essa foto aqui, porque eu não tenho nem mais um minuto pra perder! Meu voo é amanhã e eu não posso ficar aqui parado!",
+      "timestamp": "2026-09-17T12:12:36+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Calma lá, vou dar um jeito! Vamos fazer essa foto aqui rapidinho, fica tranquilo! Depois disso, a gente já tá quase lá. Segura firme que eu resolvo isso pra você!",
+      "timestamp": "2026-09-17T12:12:37+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Faz logo essa foto então, porque eu não posso perder mais tempo! Assim que acabar, já quero saber o que mais falta pra sair com a segunda via nas mãos.",
+      "timestamp": "2026-09-17T12:12:37+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Beleza, vamos lá! Já peguei seu CPF, agora só preciso que você fique aqui enquanto a gente tira a foto rapidão. Pronto, clic! Já foi! Agora vou dar uma olhada nos dados e se tiver tudo certo, já emito a sua segunda via, relaxa!",
+      "timestamp": "2026-09-17T12:12:38+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Clic? Já foi? Faz mais rápido que eu tô quase sem ar aqui! E depois, me diz logo o que falta pra eu sair com essa segunda via. Eu não posso ficar aqui muito mais tempo, viu?",
+      "timestamp": "2026-09-17T12:12:39+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Relaxa, já tô quase lá! Deixa eu dar uma olhada nos dados... Pronto, tá tudo certo! Agora só falta você assinar aqui e depois é só esperar um pouquinho até a emissão sair. Vamo que vamo, não vai demorar, prometo!",
+      "timestamp": "2026-09-17T12:12:40+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Assinar? Tem que ser agora? Faz logo isso então, eu não posso perder mais tempo. Me dá essa folha pra eu assinar, porque eu só quero sair daqui com a segunda via na mão!",
+      "timestamp": "2026-09-17T12:12:41+00:00"
+    }
+  ]
+}

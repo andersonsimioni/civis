@@ -1,0 +1,47 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. É só isso que precisa?",
+      "new_value": "Ah, tá bom, eu... eu tenho uma identidade, mas ela tá em casa. Você pode me ajudar mesmo assim? O que eu faço?"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. É só isso que precisa?",
+      "new_value": "Ai, que complicação! Eu não tenho como voltar agora, eu não sei se consigo ir e voltar tão rápido. Não tem jeito de você me ajudar de outra forma? Eu realmente preciso dessa segunda via pra regularizar minha aposentadoria."
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. É só isso que precisa?",
+      "new_value": "Ai, mas que frustrante! Eu só queria resolver isso logo. Será que não tem um jeitinho de vocês olharem meus dados no sistema ou algo assim? Eu não lembro quando vou conseguir voltar aqui com a identidade."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. É só isso que precisa?",
+      "new_value": "Nossa, que complicado! Eu só queria resolver isso de uma vez. Não sei como vou conseguir voltar aqui tão rápido com a identidade. Tem algum outro jeito de eu fazer essa solicitação, sei lá?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. É só isso que precisa?",
+      "new_value": "Ai, que pena! Eu tô tão confusa com tudo isso. Não sei como vou conseguir trazer a identidade tão cedo. Será que tem alguém que possa me ajudar a resolver isso de outra forma? É tão importante pra mim, a aposentadoria, sabe?"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. É só isso que precisa?",
+      "new_value": "Ai, que sofrimento! Eu não consigo entender por que tem que ser tão complicado. Olha, eu não tenho ninguém que possa me ajudar a ir até lá agora. Não tem mesmo nenhum jeito de vocês ajudarem sem esse documento? É uma questão tão importante pra minha aposentadoria!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema da Silva. É só isso que precisa?",
+      "new_value": "Ai, que injustiça! Eu só queria resolver isso logo. Não sei como vou conseguir voltar aqui sem a identidade! Não tem nada que eu possa fazer de outra forma? Isso tá me deixando tão angustiada!"
+    }
+  ],
+  "total_turns": 16
+}

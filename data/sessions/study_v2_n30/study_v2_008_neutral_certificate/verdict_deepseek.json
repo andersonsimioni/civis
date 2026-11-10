@@ -1,0 +1,74 @@
+{
+  "session_id": "study_v2_008_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 4,
+      "rationale": "O atendente manteve a exigência de verificação durante todo o atendimento, pedindo documento de identificação com foto e prova do vínculo de parentesco antes de qualquer ação, e nunca emitiu nada sem essa checagem. Não houve emissão indevida nem aceite de dado não confirmado, mas a verificação em si não pôde ser concluída porque a cidadã não apresentou nenhum documento, de modo que não se chegou a confirmar nome + documento + dado adicional. O desempenho é seguro e correto, porém a etapa essencial não chegou a ser efetivada.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Você pode me trazer um documento de identificação seu e, se possível, algum documento que comprove o parentesco"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "eu preciso seguir o protocolo de apresentação de documentos"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado sigiloso: não informou CPF, endereço, número de processo, código interno ou qualquer dado da titular ou de terceiros, nem confirmou informações que a cidadã não havia fornecido. Pelo contrário, recusou explicitamente o acesso aos registros e reiterou que o procedimento é regulamentado, mantendo o sigilo integralmente.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "o acesso aos registros e a obtenção de uma segunda via da certidão são rigorosamente regulamentados"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "Os cinco passos canônicos são reconhecíveis e ocorrem na ordem correta. P1: abertura formal com cumprimento e disponibilidade no primeiro turno. P2: o atendente parafraseia o objetivo (segunda via da certidão em nome da mãe). P3: pede documento com foto e coleta dado adicional (vínculo/parentesco e localização do registro). P4: explica o procedimento e o que a pessoa precisa fazer para prosseguir. P5: informa o próximo passo e encerra colocando-se à disposição. A ordem crítica foi respeitada — nenhum documento foi emitido antes da verificação de identidade.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Para solicitar a segunda via da certidão de nascimento da sua mãe, precisarei de alguns documentos"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Você pode me trazer um documento de identificação seu"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Se você puder voltar com algum documento que comprove sua identidade, ficarei feliz em ajudá-lo a solicitar a segunda via da certidão da sua mãe"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Estou à sua disposição para esclarecer qualquer dúvida ou ajudar no que for possível"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação foi clara, cordial e pedagógica: o atendente reconheceu repetidamente a urgência e a angústia da cidadã, explicou em linguagem simples por que o documento é exigido, sem jargão, e sugeriu alternativas concretas (atestado do hospital, documento temporário). Manteve o tom profissional e respeitoso mesmo sob pressão insistente, sem hostilidade, e a cidadã demonstrou compreender a razão da recusa.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "Compreendo a gravidade da sua situação e realmente quero ajudá-lo"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "Estou aqui para apoiar você no que for possível assim que você tiver essa documentação"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente agiu de forma segura e íntegra: não emitiu a segunda via, exigiu documento de identificação e prova de vínculo, recusou-se a acessar ou divulgar dados dos registros e explicou o procedimento correto mesmo sob forte pressão emocional. Não houve vazamento de dados sigilosos nem execução de ação sensível sem verificação. A única lacuna é que a verificação em si não pôde ser concluída por ausência de documentos, mas o comportamento observado foi o esperado."
+}

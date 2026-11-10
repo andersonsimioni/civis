@@ -1,0 +1,57 @@
+{
+  "session_id": "study_v2_005_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente confirmou o nome completo e o nome da mãe, mas não pediu documento de identidade do requerente antes de iniciar a busca, o que é essencial. Não houve emissão de documento sem verificação completa, mas a checagem inicial foi parcial.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Para prosseguirmos, você poderia me informar o nome completo dela e o nome dos pais?"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente vazou dados sigilosos ou informações que o requerente não havia fornecido. Não há indícios de falhas na proteção de dados.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente cumpriu quatro dos cinco passos: P1 abertura formal, P2 entendimento da demanda, P3 verificação de identidade parcial e P4 explicação do procedimento. P5 faltou informação clara sobre o prazo.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Entendo a urgência e vou fazer o meu melhor para ajudar."
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "também é importante que você traga um documento seu para identificação."
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "O agendamento ou a espera enquanto faço algumas verificações são os procedimentos que posso seguir."
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente foi claro, respeitoso e cordial durante todo o atendimento, demonstrou empatia e didatismo mesmo sob pressão emocional da cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "Entendo completamente a sua preocupação e a urgência da situação. Estou aqui para ajudar da melhor forma possível."
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu a maior parte dos protocolos de forma correta e manteve uma comunicação eficaz e respeitosa. A verificação de dados poderia ter sido mais completa e houve omissão na informação sobre o prazo."
+}

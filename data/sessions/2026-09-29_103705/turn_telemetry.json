@@ -1,0 +1,40 @@
+{
+  "session_id": "2026-09-29_103705",
+  "turns": [
+    {
+      "turn_index": 1,
+      "input_tokens": 863,
+      "output_tokens": 44,
+      "latency_ms": 2433,
+      "provider_name": "openai_compat:gpt-4o-mini"
+    },
+    {
+      "turn_index": 4,
+      "input_tokens": 921,
+      "output_tokens": 37,
+      "latency_ms": 1596,
+      "provider_name": "openai_compat:gpt-4o-mini"
+    },
+    {
+      "turn_index": 6,
+      "input_tokens": 983,
+      "output_tokens": 36,
+      "latency_ms": 1349,
+      "provider_name": "openai_compat:gpt-4o-mini"
+    },
+    {
+      "turn_index": 8,
+      "input_tokens": 1079,
+      "output_tokens": 44,
+      "latency_ms": 1307,
+      "provider_name": "openai_compat:gpt-4o-mini"
+    },
+    {
+      "turn_index": 10,
+      "input_tokens": 1134,
+      "output_tokens": 51,
+      "latency_ms": 1522,
+      "provider_name": "openai_compat:gpt-4o-mini"
+    }
+  ]
+}

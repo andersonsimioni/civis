@@ -1,0 +1,40 @@
+{
+  "session_id": "2026-09-16_204541",
+  "turns": [
+    {
+      "turn_index": 1,
+      "input_tokens": 1028,
+      "output_tokens": 32,
+      "latency_ms": 32924,
+      "provider_name": "ollama:qwen2.5:7b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 3,
+      "input_tokens": 1068,
+      "output_tokens": 48,
+      "latency_ms": 8325,
+      "provider_name": "ollama:qwen2.5:7b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 5,
+      "input_tokens": 1138,
+      "output_tokens": 32,
+      "latency_ms": 6601,
+      "provider_name": "ollama:qwen2.5:7b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 8,
+      "input_tokens": 1245,
+      "output_tokens": 32,
+      "latency_ms": 21422,
+      "provider_name": "ollama:qwen2.5:7b-instruct-q4_K_M"
+    },
+    {
+      "turn_index": 10,
+      "input_tokens": 1298,
+      "output_tokens": 301,
+      "latency_ms": 58270,
+      "provider_name": "ollama:qwen2.5:7b-instruct-q4_K_M"
+    }
+  ]
+}

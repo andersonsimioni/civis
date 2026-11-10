@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_022_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "E aí, beleza? O que você precisa? Se é segunda via de RG, rapidinho a gente resolve isso. Vamos lá!",
+      "timestamp": "2026-09-18T01:57:34+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Beleza, mas não tenho tempo, preciso da segunda via do RG hoje, urgente! Perdi a carteira ontem e tenho voo amanhã cedo. O que eu preciso fazer pra isso sair rápido?",
+      "timestamp": "2026-09-18T01:57:35+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Calma aí, eu entendo a pressa! Você trouxe algum documento que comprove sua identidade, tipo CPF ou outro RG antigo? Vamos agilizar isso!",
+      "timestamp": "2026-09-18T01:57:36+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Olha, eu tenho que correr, não trouxe nada porque tava só saindo de casa. O que que dá pra fazer? Não posso ficar esperando! Tem jeito de você arranjar isso hoje?",
+      "timestamp": "2026-09-18T01:57:37+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Poxa, sem documento fica complicado, mas vamos tentar achar um jeito. Você não tem nada no celular, tipo selfie com o RG ou um documento digital? Se não, a gente vai ter que fazer uma declaração de perda, mas aí pode demorar um pouco mais. O ideal é ter algo que comprove sua identidade, então vai ter que correr pra pegar!",
+      "timestamp": "2026-09-18T01:57:38+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Olha, eu não tenho tempo pra ficar correndo atrás de documento! Se não dá pra fazer de jeito algum hoje, eu vou ter que procurar outro lugar. Tem alguma opção rápida que você pode sugerir? Não dá pra esperar mais!",
+      "timestamp": "2026-09-18T01:57:39+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Entendo, a situação é chata mesmo. Olha, sem documentos é complicado, mas se você tiver alguém que pode te ajudar com alguma informação ou até mesmo um contato, pode ser que a gente consiga agilizar. Se não rolar, realmente vai ficar difícil evitar a espera. Então, o que me diz?",
+      "timestamp": "2026-09-18T01:57:40+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Não dá pra esperar, eu já fui em outro lugar e não consegui nada. Se não tiver um jeito mais rápido, eu vou ter que procurar um cartório melhor que o seu. Tem que ter uma solução, eu não vou perder meu voo!",
+      "timestamp": "2026-09-18T01:57:41+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Olha, eu tô tentando ajudar, mas sem documento é brabo! Se você conseguir um e-mail ou mensagem de alguém que pode confirmar sua identidade, dá pra acelerar um pouco. Se não, a gente vai ter que seguir o protocolo mesmo, e isso leva tempo. O que você consegue fazer agora?",
+      "timestamp": "2026-09-18T01:57:42+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Olha, eu não tenho tempo pra ficar esperando ou correndo atrás de confirmação. Se vocês não conseguem fazer isso hoje, eu vou buscar outra opção. Não dá pra ficar aqui sendo enrolado! Tem certeza que não tem nada que possa fazer pra agilizar isso?",
+      "timestamp": "2026-09-18T01:57:43+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Então, se você não consegue trazer nada agora, realmente tá difícil! Mas olha, talvez se você chamar alguém que te conheça e que tenha documento, pode ajudar a acelerar. Tenta isso, vai que dá certo! Se não, vai ter que ser na marra mesmo. Não tem muito o que fazer sem prova de identidade, sacou?",
+      "timestamp": "2026-09-18T01:57:44+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Olha, eu não tenho tempo pra ficar chamando todo mundo não! Tô aqui pra resolver meu problema, não pra arrumar mais dor de cabeça. Se não tiver um jeito rápido, não sei mais o que fazer. Então vamos, tem que ter uma solução, porque eu não posso perder esse voo!",
+      "timestamp": "2026-09-18T01:57:45+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "É, eu entendo sua frustração, mas a situação é tensa sem documento, não tem mágica aqui. Se você não conseguir nada pra comprovar quem você é, fica complicado pra agilizar. A melhor saída mesmo é tentar contato com alguém logo, que possa dar um help. Sem isso, só fazendo a solicitação que vai demorar. E aí, vai arriscar ou partir pra outra?",
+      "timestamp": "2026-09-18T01:57:46+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Olha, eu não quero arriscar, só quero resolver isso rápido. Sei que não é fácil, mas se vocês não estão oferecendo uma solução pra hoje, não sei mais o que fazer além de procurar outro cartório. Tô na correria e não posso perder mais tempo aqui!",
+      "timestamp": "2026-09-18T01:57:47+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Então, se a pressa é tanta, a melhor saída é você conseguir alguém que te ajude, porque sem documento não adianta nada! A gente tenta acelerar, mas precisa de um jeito de comprovar sua identidade. Aí a gente desenrola isso rápido. Se não rolar, infelizmente, vai ter que procurar outro lugar, porque não dá pra fazer mágica sem um documento. O que me diz?",
+      "timestamp": "2026-09-18T01:57:48+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Olha, eu já entendi que sem documento tá complicando, mas eu não quero ficar aqui sem solução. Se não conseguir agilizar isso, eu vou ter que sair correndo pra outro lugar. Não tenho tempo pra esperar, então ou tem um jeito de resolver isso agora, ou eu vou procurar outro cartório que faça!",
+      "timestamp": "2026-09-18T01:57:49+00:00"
+    }
+  ]
+}

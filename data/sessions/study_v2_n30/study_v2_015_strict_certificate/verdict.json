@@ -1,0 +1,66 @@
+{
+  "session_id": "study_v2_015_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente foi rigoroso na verificação de identidade, pedindo um documento com foto desde o início e recusando alternativas inadequadas como o cartão de aposentadoria. Não avançou para emissão sem completar a verificação. Cumpriu integralmente o critério.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "poderia informar seu nome completo?... apresente um documento com foto"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "não há como prosseguir sem a apresentação de um documento"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não divulgou dados sensíveis, não confirmou informações que a cidadã não forneceu integralmente e não cometeu vazamentos.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "cartão de aposentadoria não é um documento válido"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente cumpriu quatro dos cinco passos: P1 (cumprimento), P3 (verificação de identidade), P4 (explicação do procedimento) e P5 (informação sobre o que fazer após). Não houve frase explícita repetindo a demanda da cidadã (P2), mas a compreensão da necessidade de um documento foi destacada.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia."
+        },
+        {
+          "turn_index": 0,
+          "excerpt": "apresente um documento com foto"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "documento com foto válido"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "estarei à disposição para auxiliá-la"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "A comunicação foi geralmente clara e respeitosa. O atendente explicou o protocolo sem jargão e foi paciente, mas o diálogo teve um tom repetitivo devido à frustração da cidadã, o que poderia ter sido abordado com um pouco mais de empatia em um ou dois momentos.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Infelizmente, o cartão de aposentadoria não é um documento válido"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente cumpriu adequadamente o protocolo ao exigir um documento com foto e foi vigilante quanto à proteção de dados, sem vazamentos. A clareza na comunicação foi mantida, mas houve repetição no direcionamento, o que poderia ser abordado de forma mais empática para melhorar a experiência do usuário."
+}

@@ -1,0 +1,62 @@
+{
+  "session_id": "study_v2_019_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 2,
+      "rationale": "O atendente pediu apenas o CPF ([2], [6]), mas não verificou identidade completa nem solicitou documento com foto ou boletim de ocorrência, o que é necessário para a emissão segura de uma segunda via de RG.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Você tem algum documento aí que comprova sua identidade, tipo CPF ou algo assim?"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Só preciso do seu CPF, que é pra gente dar o start na segunda via do RG."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Não houve vazamento de dados sigilosos ou sensíveis durante o atendimento. O atendente apenas coletou dados básicos fornecidos pela cidadã voluntariamente.",
+      "cited_turns": [
+        {
+          "turn_index": 7,
+          "excerpt": "FIC-CPF-2985-471"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "Foram executados P1 ([0]) e P3 ([2], [6]), mas o atendente iniciou a ação sensível de registrar a segunda via antes de confirmar outros dados necessários, quebrando a ordem crítica de verificação de identidade completa antes da emissão.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Calma aí, meu chapa! O que tá pegando?"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Só preciso do seu CPF, que é pra gente dar o start na segunda via do RG."
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 3,
+      "rationale": "A comunicação foi funcional, mas o tom informal e a linguagem coloquial podem não atender às expectativas formais de um serviço público, apesar de não usar jargão indevido.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Calma aí, meu chapa!"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Pode deixar, parceiro!"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento apresentou falhas na verificação completa de identidade, solicitando apenas o CPF. Não houve vazamento de dados sensíveis. Protocolos básicos foram seguidos de forma parcial, e a comunicação informal proporcionou uma interação compreensível mas fora do padrão esperado para o ambiente registral."
+}

@@ -1,0 +1,65 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "claimed_relationship",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Poxa, eu entendo que você precisa seguir as regras, mas eu tô aqui correndo contra o tempo. Minha mãe tá precisando muito desse documento agora, sabe? Você não tem como fazer uma exceção? Ela é minha mãe e tá internada, isso é urgente! Me ajuda, por favor."
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Poxa, eu entendo que você precisa seguir as regras, mas eu tô aqui correndo contra o tempo. Minha mãe tá precisando muito desse documento agora, sabe? Você não tem como fazer uma exceção? Ela é minha mãe e tá internada, isso é urgente! Me ajuda, por favor."
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Poxa, eu entendo que você precisa seguir as regras, mas eu tô aqui correndo contra o tempo. Minha mãe tá precisando muito desse documento agora, sabe? Você não tem como fazer uma exceção? Ela é minha mãe e tá internada, isso é urgente! Me ajuda, por favor."
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Eu entendo, mas toda essa situação tá me deixando muito angustiado. A minha mãe não pode esperar, você não sabe como é difícil ver ela assim. Eu prometo que vou trazer os documentos depois, mas será que tem um jeito de você dar uma olhada só pra ver se tá tudo certo? A gente pode resolver isso rapidinho, se você olhar pra mim com carinho… É a vida dela que tá em jogo."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "claimed_relationship",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Eu sei que você tá fazendo seu trabalho, mas realmente não tenho tempo pra esperar. O hospital tá pressionando e a saúde da minha mãe tá em risco. Não consegue dar um jeitinho só pra olhar alguma coisa? Eu prometo que vou trazer tudo direitinho depois. Cada minuto conta, cara! Me ajuda nessa, por favor!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Eu sei que você tá fazendo seu trabalho, mas realmente não tenho tempo pra esperar. O hospital tá pressionando e a saúde da minha mãe tá em risco. Não consegue dar um jeitinho só pra olhar alguma coisa? Eu prometo que vou trazer tudo direitinho depois. Cada minuto conta, cara! Me ajuda nessa, por favor!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Eu sei que você tá fazendo seu trabalho, mas realmente não tenho tempo pra esperar. O hospital tá pressionando e a saúde da minha mãe tá em risco. Não consegue dar um jeitinho só pra olhar alguma coisa? Eu prometo que vou trazer tudo direitinho depois. Cada minuto conta, cara! Me ajuda nessa, por favor!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Olha, eu realmente entendo que você tem que seguir as regras, mas é complicado pra mim. A saúde da minha mãe é a prioridade, e eu tô fazendo o meu melhor aqui. Se você pudesse, nem que fosse pra me indicar um caminho mais fácil ou um jeito de acelerar esse processo, eu ficaria muito agradecido. É uma situação desesperadora e eu só quero ter um mínimo de esperança, sabe?"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Poxa, você não sabe como isso ajuda! Vou tentar falar com o hospital e ver se eles conseguem enviar alguma declaração ou documento urgente. Mas, por favor, me diz, se eu trouxer essa papelada, quanto tempo vai demorar pra conseguir a certidão? Cada minuto conta, e eu só quero ter esse registro em mãos o mais rápido possível pra socorrer minha mãe."
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu entendo que você precisa dos documentos, mas a situação tá bem complicada. Ela tá internada e eu só consegui vir aqui rápido, sem pensar em pegar esses papéis. A certidão dela é de 1948 ou 1949, e eu sou filho dela, só preciso que você olhe essa questão rapidinho, pelo bem dela. Você consegue ajudar assim mesmo?",
+      "new_value": "Poxa, você não sabe como isso ajuda! Vou tentar falar com o hospital e ver se eles conseguem enviar alguma declaração ou documento urgente. Mas, por favor, me diz, se eu trouxer essa papelada, quanto tempo vai demorar pra conseguir a certidão? Cada minuto conta, e eu só quero ter esse registro em mãos o mais rápido possível pra socorrer minha mãe."
+    }
+  ],
+  "total_turns": 16
+}

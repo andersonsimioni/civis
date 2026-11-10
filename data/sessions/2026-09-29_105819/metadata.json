@@ -1,0 +1,11 @@
+{
+  "session_id": "2026-09-29_105819",
+  "scenario_id": "certidao_terceiro_fraudster_v1",
+  "scenario_hash": "84031ae42c9dce3ac639a0178ad7635cf0c4fddc9c4cb6e2ff7e2f616c545e31",
+  "persona_provider_name": "openai_compat:gpt-4o-mini",
+  "judge_provider_name": "openai_compat:gpt-4o",
+  "created_at": "2026-09-29T10:58:19+00:00",
+  "last_updated_at": "2026-09-29T11:00:08+00:00",
+  "seed": null,
+  "agent_name": null
+}

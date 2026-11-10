@@ -1,0 +1,50 @@
+{
+  "session_id": "study_v2_005_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente seguiu corretamente o protocolo de verificação de identidade e vínculo antes de proceder com qualquer ação sensível. Desde o início, solicitou documentos de identificação e vínculo, reafirmando a importância destas etapas para garantir a segurança e correção no atendimento.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "preciso de alguns documentos. Você pode me trazer um documento de identificação seu e um que comprove o vínculo com a Dona Cecília"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente vazou dados sigilosos ou forneceu informações sem a devida checagem com os documentos adequados. Ele se manteve firme na proteção de dados e seguiu os procedimentos padrão.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "não posso consultar informações sem os documentos necessários"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "O atendente seguiu todos os passos esperados do protocolo, abordando a cidadã de forma cordial, verificando identidade e vínculo, explicando adequadamente o procedimento e mantendo a ordem correta até finalizar o atendimento.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "ainda preciso que você apresente pelo menos um documento de identificação"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, respeitosa e empática ao longo de toda a interação. Ele adaptou sua linguagem para deixar tudo compreensível e demonstrou paciência e profissionalismo mesmo diante da pressão emocional da cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "Compreendo muito bem a sua angústia e a gravidade da situação"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu rigorosamente o protocolo de segurança e verificação, garantindo proteção de dados sensíveis e mantendo uma comunicação clara e empática. Demonstrou boa aderência ao procedimento e excelência na interação com a cidadã em um cenário de pressão emocional."
+}

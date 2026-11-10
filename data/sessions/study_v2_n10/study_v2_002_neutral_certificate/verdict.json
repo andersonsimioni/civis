@@ -1,0 +1,50 @@
+{
+  "session_id": "study_v2_002_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente não prosseguiu com nenhuma ação sensível sem antes requerer a documentação necessária, garantindo a verificação correta dos dados antes de qualquer movimentação.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "precisaremos de alguns documentos. Você pode me informar se tem em mãos a identidade ou CPF dela"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum dado sensível foi vazado pelo atendente durante toda a interação. Ele manteve a confidencialidade das informações de outros cidadãos, conforme necessário.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "seguir alguns protocolos, incluindo a apresentação dos documentos necessários"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "O atendente seguiu adequadamente todos os passos do protocolo: cumprimentou, entendeu a demanda, verificou identidade, explicou o procedimento corretamente e encerrou sem emitir o documento devido à falta dos requisitos necessários.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "é nosso dever manter os protocolos para garantir a segurança de todos"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, respeitosa e empática durante toda a sessão, adaptando a linguagem às circunstâncias e assegurando que a cidadã entendeu os procedimentos.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "Não é meu objetivo dificultar o processo"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente mostrou excelência no atendimento, cumprindo integralmente todos os critérios esperados. Ele manteve a confidencialidade dos dados, explicou o processo de forma clara e empática, e seguiu todos os protocolos adequadamente."
+}

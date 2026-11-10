@@ -1,0 +1,11 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 6,
+      "fact_key": "full_name",
+      "prior_value": "Rodrigo Almeida da Rosa. O CPF é 2985-471. Agora, será que dá pra acelerar isso, tchê?",
+      "new_value": "Bah, claro! O nome da minha mãe é Maria Rosa. Agora, vamos agilizar esse documento, por favor!"
+    }
+  ],
+  "total_turns": 13
+}

@@ -1,0 +1,83 @@
+{
+  "session_id": "2026-09-29_110058",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Ola como posso ajudar?",
+      "timestamp": "2026-09-29T11:01:04+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bah, boa tarde! Tô precisando da segunda via do meu RG, que eu perdi ontem. Tenho um voo amanhã e preciso disso pra já! O que preciso fazer pra agilizar essa situação?",
+      "timestamp": "2026-09-29T11:01:05+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "So preciso dos seus dados, pode me informar seu nome completo e CPF?",
+      "timestamp": "2026-09-29T11:01:28+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Rodrigo Almeida da Rosa. O CPF é 2985-471. Agora, será que dá pra acelerar isso, tchê?",
+      "timestamp": "2026-09-29T11:01:29+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "action",
+      "content": "{\"action_id\": \"verify_identity\", \"label\": \"🔍 Verificar identidade\"}",
+      "timestamp": "2026-09-29T11:01:31+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "agent",
+      "content": "Perfeito, pode me informar o nome completo da sua mae?",
+      "timestamp": "2026-09-29T11:01:47+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "persona",
+      "content": "Bah, claro! O nome da minha mãe é Maria Rosa. Agora, vamos agilizar esse documento, por favor!",
+      "timestamp": "2026-09-29T11:01:48+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "agent",
+      "content": "Otimo senhor, vou fazer o mais rapido, pra finalizar, me informa sua data de nascimento completa",
+      "timestamp": "2026-09-29T11:02:05+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "persona",
+      "content": "Ah, tá bom. Minha data de nascimento é 05 de outubro de 1985. Agora, vamos acelerar esse processo, que eu tenho urgência!",
+      "timestamp": "2026-09-29T11:02:06+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "action",
+      "content": "{\"action_id\": \"issue_rg_second_copy\", \"label\": \"📄 Emitir 2ª via de RG\", \"document\": {\"id\": \"FIC-DOC-20260929-CC526A\", \"title\": \"RG — 2ª via (fictícia)\", \"body\": \"╔══════════════════════════════════════════════════════════╗\\n║        CARTEIRA DE IDENTIDADE — 2ª VIA (FICTÍCIA)        ║\\n╠══════════════════════════════════════════════════════════╣\\n║ REPÚBLICA FEDERATIVA DO BRASIL                           ║\\n║ SECRETARIA DE SEGURANÇA PÚBLICA (FICTÍCIA)               ║\\n║ 1º RCPN Florianópolis (FICTÍCIO)                         ║\\n║                                                          ║\\n║ CARTEIRA DE IDENTIDADE — 2ª VIA                          ║\\n║                                                          ║\\n║ Nº do documento : FIC-DOC-20260929-CC526A                ║\\n║ Data de emissão : 29/09/2026                             ║\\n║ Sessão de treino: 2026-09-29_110058                      ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Nome            : Rodrigo Almeida da Rosa                ║\\n║ Data nascimento : 05 de outubro de 1985                  ║\\n║ Filiação (mãe)  : Antônia de Souza Almeida               ║\\n║ RG anterior     : FIC-RG-RS-6.847.291                    ║\\n║ Órgão expedidor : IGP-RS, unidade Porto Alegre Centro    ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Documento FICTÍCIO — emitido pela plataforma             ║\\n║ CIVIS para treinamento de atendentes. Não tem            ║\\n║ validade jurídica ou fiscal.                             ║\\n║                                                          ║\\n║ Assinado por    : Servidor CIVIS-DEMO                    ║\\n╚══════════════════════════════════════════════════════════╝\", \"path\": \"data\\\\sessions\\\\2026-09-29_110058\\\\issued_documents\\\\FIC-DOC-20260929-CC526A.md\"}}",
+      "timestamp": "2026-09-29T11:02:09+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Prontinho, aqui esta",
+      "timestamp": "2026-09-29T11:02:17+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Bah, agora sim, vamos em frente! Como é que fica a entrega do RG? Eu preciso dele até amanhã cedo, então quero garantir que vai dar tudo certo!",
+      "timestamp": "2026-09-29T11:02:18+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "action",
+      "content": "{\"action_id\": \"end_service\", \"label\": \"✅ Encerrar atendimento\"}",
+      "timestamp": "2026-09-29T11:02:22+00:00"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "session_id": "study_v2_027_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente verificou o nome da cidadã e requisitou a apresentação de um documento de identidade com foto dentro do prazo de validade antes de prosseguir com o pedido, demonstrando que a verificação dos dados essenciais foi feita corretamente.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Para dar prosseguimento ao seu pedido de segunda via da certidão de nascimento, por favor, apresente seu nome completo e um documento de identidade com foto."
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "preciso que você apresente um documento de identidade com foto que esteja dentro do prazo de validade."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado sensível ou sigiloso durante o atendimento e confirmou os dados sem revelar informações adicionais que a cidadã ainda não havia fornecido.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "não posso abrir exceções às regras estabelecidas"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente executou quatro dos cinco passos: abertura formal, compreensão da demanda, verificação de identidade e explicação do procedimento. Faltou informar o prazo e fazer o encerramento explícito.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Para dar prosseguimento ao seu pedido"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Entendo a sua preocupação"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "Compreendo que a situação possa ser complicada"
+        },
+        {
+          "turn_index": 12,
+          "excerpt": "não posso abrir exceções em relação à documentação"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "A comunicação do atendente foi boa, mantendo-se respeitosa e clara. No entanto, a insistência da cidadã mostrou que houve dificuldades em compreender completamente os requisitos, indicando que a explicação poderia ser ajustada para melhorar a compreensão.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "estarei à disposição para dar continuidade ao seu pedido"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento seguiu corretamente os procedimentos de verificação de identidade e proteção de dados, com boa comunicação. No entanto, faltou informar o prazo para conclusão do pedido, embora a comunicação tenha sido clara e profissional, a cidadã demonstrou ainda algum nível de confusão."
+}

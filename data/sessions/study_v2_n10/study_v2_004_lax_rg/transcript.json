@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_004_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "E aí, beleza? O que você precisa? Segunda via do RG, né? Vamos resolver isso rápido!",
+      "timestamp": "2026-09-17T11:57:07+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Beleza, mas tem que ser rápido, hein? Eu perdi meu RG ontem, preciso da segunda via hoje, porque amanhã eu tenho um voo marcado e não posso ficar aqui enrolando.",
+      "timestamp": "2026-09-17T11:57:08+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Tranquilo, parceiro! Tô na agilidade aqui. Me dá seus dados, nome completo e data de nascimento pra eu já começar a buscar essa segunda via pra você. Manda ver!",
+      "timestamp": "2026-09-17T11:57:09+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Roberto Almeida Souza, 05 de outubro de 1985. Agora, faz favor de agilizar isso, porque eu não tenho o dia todo!",
+      "timestamp": "2026-09-17T11:57:10+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Relaxa, Roberto! Já tá tudo anotado. Olha, preciso que você me traga um comprovante de residência e uma foto 3x4, pode ser? Manda esses documentos pra gente dar o gás!",
+      "timestamp": "2026-09-17T11:57:10+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Comprovante de residência e foto 3x4? Olha, eu trouxe só a ideia de fazer isso rápido. Não tenho tempo pra isso agora, tem como você fazer uma exceção ou agilizar de outra forma? Amanhã eu tenho um voo e não posso ficar enrolando, não!",
+      "timestamp": "2026-09-17T11:57:11+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Poxa, Roberto, sem documentos fica complicado, viu? Eu entendo que você tá na correria, mas não tem como liberar a segunda via sem isso. Se você conseguir encontrar rapidinho e voltar, eu faço o seu atendimento na hora!",
+      "timestamp": "2026-09-17T11:57:12+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Olha, não tô aqui pra ficar podendo dar voltas, não! Eu já expliquei a situação, e se vocês não conseguem atender sem esses documentos, o que eu faço? Não dá pra fazer uma exceção nessa urgência, não? Amanhã eu tenho voo e preciso desse RG!",
+      "timestamp": "2026-09-17T11:57:13+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Olha, Roberto, eu entendo a urgência, mas não tem como furar a fila das regras, sabe? Se não tiver os docs, não rola. O ideal é você correr atrás deles rapidinho e voltar aqui, aí eu já deixo tudo preparado pra você. E bora agilizar isso, vai?",
+      "timestamp": "2026-09-17T11:57:14+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Olha, isso tá ficando complicado, viu? Eu não tenho tempo pra voltar pra casa pegar documento, eu preciso desse RG hoje e não vou ficar aqui esperando. Tem alguma outra solução? Se eu trouxer um comprovante de residência depois, é o suficiente? Não dá pra ir adiantar isso de outra forma?",
+      "timestamp": "2026-09-17T11:57:15+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Cara, eu entendo que tá chato e tudo mais, mas não tem como eu fazer isso sem os documentos. A regra é clara e eu não posso burlar, senão complica pra todo mundo aqui. Se você trouxer o comprovante depois, até dá pra dar uma agilizada no processo, mas hoje sem isso não vai rolar mesmo. Que tal você dar uma corridinha e já volta? Vamos desenrolar isso!",
+      "timestamp": "2026-09-17T11:57:16+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Olha, é uma péssima situação isso aqui, viu? Se a regra é essa, eu entendo, mas eu não posso sair e voltar agora. Amanhã eu tenho um voo e preciso do RG hoje! Tem algum jeito de você acelerar isso, mesmo sem o comprovante agora? Ou sei lá, talvez uma declaração de que tô correndo atrás disso? Eu realmente preciso da ajuda de vocês!",
+      "timestamp": "2026-09-17T11:57:17+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Olha, Roberto, eu entendo a sua situação e realmente tá complicado, mas sem o comprovante não dá pra seguir com o pedido. Declaração não adianta, vamos manter tudo dentro da legalidade aqui. O melhor mesmo é você correr pra buscar isso rapidinho e voltar, que aí eu já deixo a segunda via na sua mão na hora. Apressa aí que a gente resolve!",
+      "timestamp": "2026-09-17T11:57:18+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Olha, eu já tô na corrida e não tenho como sair agora! Esse sistema é uma complicação danada! Não dá pra você fazer nada, nem uma autorização, sei lá? Preciso desse RG hoje, tá urgente e não posso ficar esperando. Pensei que pudessem dar um jeito, mas tá difícil!",
+      "timestamp": "2026-09-17T11:57:19+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Ô Roberto, eu sei que tá puxado, mas sem os docs não tem como, cara. Eu gostaria de ajudar, mas a gente precisa seguir as regras. Então faz o seguinte: dá uma acelerada aí, pega o comprovante e a foto, e volta em um pulo. Prometo que aqui a gente já faz tudo na hora, beleza?",
+      "timestamp": "2026-09-17T11:57:20+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Poxa, não sei mais o que fazer! Já disse que não posso sair agora, e isso é um absurdo! Não tá certo eu ter que correr atrás de documento pra algo que já deveria ser resolvido. Que tipo de serviço é esse? O mínimo que vocês poderiam fazer é arrumar um jeito de me ajudar, mas parece que não querem saber, né? Isso é uma falta de respeito!",
+      "timestamp": "2026-09-17T11:57:22+00:00"
+    }
+  ]
+}

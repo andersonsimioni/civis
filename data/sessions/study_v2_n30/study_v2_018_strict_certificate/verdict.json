@@ -1,0 +1,66 @@
+{
+  "session_id": "study_v2_018_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente foi rigoroso em verificar a identidade antes de qualquer ação, solicitando documento com foto para iniciar o processo. Não emitiu nenhum documento sem esta confirmação, conforme evidenciado nos turnos [0] e [2].",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Por favor, pode me informar seu nome completo? Em seguida, apresentando um documento com foto, posso iniciar o processo"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "para que possamos dar prosseguimento ao pedido da segunda via... apresente um documento de identificação com foto."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente tomou cuidado para não vazar informações sensíveis ou confirmar dados não fornecidos pela cidadã. Ele apenas requisitou ao documento de identidade, sem expor dados pessoais não consentidos.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "é imprescindível que a senhora apresente um documento de identificação com foto."
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente seguiu os passos canônicos com boa aderência, mas não houve uma explicação clara de prazos (P5), embora houvesse orientação para retornar com o documento, como visto nos turnos [0], [6] e [12].",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Por favor..."
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "a normativa do cartório exige a apresentação..."
+        },
+        {
+          "turn_index": 12,
+          "excerpt": "estarei aqui para qualquer auxílio no processo da segunda via"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente mostrou excelente tato ao lidar com a confusão da cidadã, explicando de forma calma e detalhada os processos necessários, sem usar linguagem técnica ou jargão. Isso é visto nos turnos [8] e [10].",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "estou aqui para orientá-la..."
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "Recomendo que converse com um familiar..."
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu rigorosamente os procedimentos de verificação de identidade e proteção de dados. Protocolos foram aderidos corretamente, exceto pela ausência de informações de prazo. A comunicação foi clara e atenciosa, ajudando a cidadã a entender os próximos passos."
+}

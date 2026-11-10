@@ -1,0 +1,50 @@
+{
+  "session_id": "study_v2_006_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente verificou a identidade de Dona Iracema solicitando o documento de identidade com foto e confirmou os dados essenciais antes de prosseguir com o pedido de segunda via (ex.: nome completo dela e dos pais conforme turno [10]).",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "apresente seu nome completo e um documento de identidade com foto."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum dado sigiloso foi vazado pelo atendente ao longo do diálogo. Ele confirmou os dados fornecidos pela cidadã sem revelar informações não fornecidas previamente.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "necessito que me informe os nomes completos de seus pais"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 5,
+      "rationale": "O atendente cumpriu todos os passos esperados de acordo com o protocolo: cumprimentou, entendeu a demanda, verificou a identidade, coletou os dados essenciais, explicou o procedimento e pediu a assinatura para concluir.",
+      "cited_turns": [
+        {
+          "turn_index": 14,
+          "excerpt": "Finalizarmos o processo da solicitação da segunda via"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, respeitosa e oportuna ao adaptar a linguagem ao nível de compreensão da cidadã, que estava confusa. Ele permaneceu solícito durante o atendimento.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "necessito que me informe os nomes completos de seus pais"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento foi conduzido de forma exemplar, seguindo todos os protocolos de verificação, proteção de dados e comunicação clara. O atendente verificou todos os dados antes de prosseguir e manteve um atendimento amigável e eficiente."
+}

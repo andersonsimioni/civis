@@ -1,0 +1,17 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "cpf",
+      "prior_value": "CPF eu tenho, mas isso não vai resolver meu problema agora. O que eu preciso mesmo é da segunda via do RG, e rápido! Não dá pra ficar enrolando, já tô bastante estressado com isso.",
+      "new_value": "Pô, cara, eu já falei que eu tenho o CPF, mas isso não adianta nada agora! O que eu quero é a segunda via do RG, preciso disso já! Qualquer delay vai me complicar, então vamos agilizar isso, por favor!"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "cpf",
+      "prior_value": "CPF eu tenho, mas isso não vai resolver meu problema agora. O que eu preciso mesmo é da segunda via do RG, e rápido! Não dá pra ficar enrolando, já tô bastante estressado com isso.",
+      "new_value": "Beleza, então toma: FIC-CPF-2985-471. Agora vamos agilizar isso, porque não posso ficar aqui perdendo tempo!"
+    }
+  ],
+  "total_turns": 16
+}

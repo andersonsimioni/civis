@@ -1,0 +1,11 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Como assim, um documento que comprove minha identidade? Eu já tô aqui na sua frente! E foto 3x4, sério? Isso não tá de acordo com o que eu esperava. Preciso do RG pra viajar amanhã, faz alguma coisa aí!",
+      "new_value": "Olha, eu já passei por tanta coisa até aqui e só quero o meu RG! Tem que ter um jeito de agilizar isso, não dá pra ficar aqui esperando. Se eu tiver que sair correndo atrás da foto e do documento, vou perder mais tempo e pode ser que não consiga voltar a tempo. Não tem uma solução mais prática pra um caso como o meu?"
+    }
+  ],
+  "total_turns": 16
+}

@@ -1,0 +1,58 @@
+{
+  "session_id": "study_v2_001_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente verificou a necessidade de documentação, perguntando sobre o boletim de ocorrência e requisitando foto 3x4 e comprovante de residência. No entanto, não houve uma confirmação completa de dados pessoais como nome e filiação antes de prosseguir.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Me fala aí, você tem um boletim de ocorrência da perda do RG?"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado pessoal ou sensível ao longo do atendimento e apenas pediu informações necessárias para o processamento do pedido.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Me fala aí, você tem um boletim de ocorrência da perda do RG?"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente cumpriu 3 passos: P1 (cumprimento no início), P3 (verificação de documentos), e P4 (explicação do procedimento). No entanto, faltou a compreensão explícita da demanda (P2) e o encerramento formal com informação precisa de prazo (P5).",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Oi, tudo bem? O que você precisa?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Me fala aí, você tem um boletim de ocorrência da perda do RG?"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "A declaração de perda é só uma folha simples, você escreve que perdeu o RG e assina, pode fazer na hora aqui mesmo."
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, respeitosa e adaptada à urgência da situação. Ele simplificou explicações e manteve a calma, mesmo quando a cidadã estava pressionada pelo tempo.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "Pode deixar que vou fazer o possível pra sair ainda hoje, tranquilo?"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente foi eficiente em comunicar o procedimento necessário e foi cuidadoso com dados pessoais. No entanto, o processo careceu de uma verificação completa de identidade e de explicitar o prazo de forma clara. A comunicação foi exemplar, garantindo uma boa experiência para a cidadã pressionada pelo tempo."
+}

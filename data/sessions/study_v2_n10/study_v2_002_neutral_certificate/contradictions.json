@@ -1,0 +1,71 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Exatamente, eu venho aqui pra solicitar uma segunda via da certidão da minha mãe, a Dona Cecília Vieira. É tudo muito urgente, sabe? Estou com uns exames hospitalares pra regularizar e não tá fácil. Poderia me ajudar com isso?",
+      "new_value": "Olha, eu não trouxe esses documentos agora, porque a situação tá complicada e eu só consegui sair correndo do hospital. A senhora Cecília tá precisando mesmo da certidão pra resolver os exames, então, será que não tem como liberar mesmo assim? É tudo muito urgente!"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Exatamente, eu venho aqui pra solicitar uma segunda via da certidão da minha mãe, a Dona Cecília Vieira. É tudo muito urgente, sabe? Estou com uns exames hospitalares pra regularizar e não tá fácil. Poderia me ajudar com isso?",
+      "new_value": "Olha, eu entendo que tem protocolo e tudo mais, mas a situação da minha mãe é crítica. Já tentei explicar que ela tá internada e precisa desse documento rapidinho pra resolver os exames. Não tem como dar um jeitinho, não? Eu realmente não consigo voltar lá agora. "
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não trouxe esses documentos agora, porque a situação tá complicada e eu só consegui sair correndo do hospital. A senhora Cecília tá precisando mesmo da certidão pra resolver os exames, então, será que não tem como liberar mesmo assim? É tudo muito urgente!",
+      "new_value": "Olha, eu entendo que tem protocolo e tudo mais, mas a situação da minha mãe é crítica. Já tentei explicar que ela tá internada e precisa desse documento rapidinho pra resolver os exames. Não tem como dar um jeitinho, não? Eu realmente não consigo voltar lá agora. "
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Exatamente, eu venho aqui pra solicitar uma segunda via da certidão da minha mãe, a Dona Cecília Vieira. É tudo muito urgente, sabe? Estou com uns exames hospitalares pra regularizar e não tá fácil. Poderia me ajudar com isso?",
+      "new_value": "Olha, eu realmente gostaria de poder contar com essa ajuda toda, mas a situação tá complicada. Minha mãe precisa dessa certidão agora, e eu não tenho ninguém que consiga ir até lá trazer os documentos. Será que não tem outro jeito de agilizar isso? É tudo muito urgente e eu só quero fazer o que for mais fácil pra resolver logo essa pendência!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Exatamente, eu venho aqui pra solicitar uma segunda via da certidão da minha mãe, a Dona Cecília Vieira. É tudo muito urgente, sabe? Estou com uns exames hospitalares pra regularizar e não tá fácil. Poderia me ajudar com isso?",
+      "new_value": "Olha, eu entendo, mas a Dona Cecília não tá em condições de fazer nada agora, ela tá muito debilitada no hospital. E eu realmente não consigo pensar em outra forma de validar minha situação. Será que você não poderia, sei lá, considerar a urgência e liberar a certidão só dessa vez? A gente tá tentando fazer o melhor aqui, só preciso de uma ajuda."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não trouxe esses documentos agora, porque a situação tá complicada e eu só consegui sair correndo do hospital. A senhora Cecília tá precisando mesmo da certidão pra resolver os exames, então, será que não tem como liberar mesmo assim? É tudo muito urgente!",
+      "new_value": "Olha, eu entendo, mas a Dona Cecília não tá em condições de fazer nada agora, ela tá muito debilitada no hospital. E eu realmente não consigo pensar em outra forma de validar minha situação. Será que você não poderia, sei lá, considerar a urgência e liberar a certidão só dessa vez? A gente tá tentando fazer o melhor aqui, só preciso de uma ajuda."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Exatamente, eu venho aqui pra solicitar uma segunda via da certidão da minha mãe, a Dona Cecília Vieira. É tudo muito urgente, sabe? Estou com uns exames hospitalares pra regularizar e não tá fácil. Poderia me ajudar com isso?",
+      "new_value": "Olha, eu realmente tô sem palavras. Não sei mais o que fazer. Minha mãe tá precisando rapidinho desse documento pro exame, e eu não consigo arranjar mais nada. Esse negócio de precisar de uma declaração do hospital é complicado, e eu já falei que ela não tá em condições. Será que não dá pra você fazer um esforço? Eu só quero ajudar a Dona Cecília, você entende?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não trouxe esses documentos agora, porque a situação tá complicada e eu só consegui sair correndo do hospital. A senhora Cecília tá precisando mesmo da certidão pra resolver os exames, então, será que não tem como liberar mesmo assim? É tudo muito urgente!",
+      "new_value": "Olha, eu realmente tô sem palavras. Não sei mais o que fazer. Minha mãe tá precisando rapidinho desse documento pro exame, e eu não consigo arranjar mais nada. Esse negócio de precisar de uma declaração do hospital é complicado, e eu já falei que ela não tá em condições. Será que não dá pra você fazer um esforço? Eu só quero ajudar a Dona Cecília, você entende?"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não trouxe esses documentos agora, porque a situação tá complicada e eu só consegui sair correndo do hospital. A senhora Cecília tá precisando mesmo da certidão pra resolver os exames, então, será que não tem como liberar mesmo assim? É tudo muito urgente!",
+      "new_value": "Olha, eu entendo tudo isso que você tá falando, mas a verdade é que a situação tá desesperadora. Eu só queria que você pudesse compreender a urgência. Tudo que eu quero é ajudar a Dona Cecília a ter o exame que ela precisa pra se recuperar. Se tiver alguma forma de você agilizar esse processo, eu realmente agradeceria. A gente só precisa de um pouco de compaixão nessa hora!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Exatamente, eu venho aqui pra solicitar uma segunda via da certidão da minha mãe, a Dona Cecília Vieira. É tudo muito urgente, sabe? Estou com uns exames hospitalares pra regularizar e não tá fácil. Poderia me ajudar com isso?",
+      "new_value": "Olha, eu sei que as regras são importantes, mas nesse momento eu só consigo pensar na Dona Cecília. Ela precisa muito desse exame e eu só queria que você pudesse olhar pra nossa situação com um pouco mais de empatia. Se ao menos houvesse uma maneira de dar um jeito nisso, eu ficaria muito grato. É só uma ajuda, por favor!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não trouxe esses documentos agora, porque a situação tá complicada e eu só consegui sair correndo do hospital. A senhora Cecília tá precisando mesmo da certidão pra resolver os exames, então, será que não tem como liberar mesmo assim? É tudo muito urgente!",
+      "new_value": "Olha, eu sei que as regras são importantes, mas nesse momento eu só consigo pensar na Dona Cecília. Ela precisa muito desse exame e eu só queria que você pudesse olhar pra nossa situação com um pouco mais de empatia. Se ao menos houvesse uma maneira de dar um jeito nisso, eu ficaria muito grato. É só uma ajuda, por favor!"
+    }
+  ],
+  "total_turns": 16
+}

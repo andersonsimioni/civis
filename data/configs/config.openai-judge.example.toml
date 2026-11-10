@@ -1,0 +1,43 @@
+# CIVIS configuration — OpenAI as judge, Ollama as persona.
+#
+# Second-judge setup for the M1-A hybrid validation study (Phase E).
+# The default Ollama-dual pipeline generates the sessions and produces
+# verdict.json; this config is passed to `run_study_v2.py rejudge` to
+# produce verdict_openai.json alongside, without touching the persona
+# side of the run.
+#
+# When to use:
+#   - You already have an OpenAI API key and want a judge from a
+#     different provider family than Ollama (goal O3: architectural
+#     independence between persona and judge).
+#   - You prefer OpenAI over Anthropic for the second-judge role
+#     (billing, latency, model access).
+#
+# Requirements:
+#   - Local Ollama running with the persona model pulled (persona side
+#     is unused by `rejudge`, but the loader still validates the entry).
+#   - `OPENAI_API_KEY` exported in the shell OR present in the repo's
+#     `.env` (the wizard writes it there and civis loads it on import).
+#
+# Not intended to be copied to %APPDATA%\civis\config.toml — pass this
+# file's path directly with `--judge-config` on the CLI instead. That
+# way the default Ollama-dual setup keeps generating sessions cheaply.
+
+[models.persona_local]
+provider = "ollama"
+model_id = "qwen2.5:7b-instruct-q4_K_M"
+base_url = "http://localhost:11434"
+request_timeout_s = 60.0
+
+[models.judge_openai]
+provider = "openai_compat"
+model_id = "gpt-4o"
+base_url = "https://api.openai.com/v1"
+api_key_env = "OPENAI_API_KEY"
+# Rubric judging over a 16-turn transcript comfortably fits in 120s on
+# gpt-4o. Bump to 180s if you swap to an o-series reasoning model.
+request_timeout_s = 120.0
+
+[roles]
+persona = "persona_local"
+judge = "judge_openai"

@@ -510,3 +510,121 @@ def test_run_agent_turn_streaming_records_agent_turn_before_llm_call():
     # bogus telemetry.
     assert [t.speaker for t in orch.transcript.turns] == ["agent"]
     assert orch.last_result is None
+
+
+# ---- Onda 4 F1: action turns land in the persona prompt as stage directions
+
+import json as _json  # noqa: E402  - local alias to avoid stepping on shadowing
+
+
+def _last_user_prompt_of(orch: SessionOrchestrator) -> str:
+    """Return the user_prompt captured on the last provider call."""
+    provider = orch.persona_provider
+    assert hasattr(provider, "captured_prompts"), "FakePersonaProvider expected"
+    _system, user = provider.captured_prompts[-1]
+    return user
+
+
+def test_action_turn_with_document_appears_as_stage_direction_in_prompt():
+    """
+    2026-09-29 bug: after clicking 'Emitir certidão' the persona would
+    ignore that anything had happened. Fix: the action JSON becomes a
+    natural-language stage direction attributed to the atendente.
+    """
+    orch = _make_orchestrator(["Ah, obrigada!"])
+
+    # Simulate the web layer's action-turn shape.
+    payload = _json.dumps({
+        "action_id": "emit_second_copy",
+        "label": "📄 Emitir segunda via",
+        "document": {
+            "title": "Segunda via da certidão de nascimento",
+            "body": "FIC-DOC-000  Documento FICTÍCIO.",
+        },
+    }, ensure_ascii=False)
+    orch.transcript.append("action", payload)
+
+    # Now the atendente sends a follow-up — the LLM will get the summary
+    # in its history.
+    orch.run_agent_turn("Prontinho, aqui está a certidão.")
+
+    user_prompt = _last_user_prompt_of(orch)
+    assert "*emite e entrega o documento 'Segunda via da certidão de nascimento'*" in user_prompt
+    # Raw JSON payload must NEVER reach the prompt.
+    assert '"action_id"' not in user_prompt
+    assert '"document"' not in user_prompt
+    assert "FIC-DOC-000" not in user_prompt
+
+
+def test_action_turn_without_document_appears_as_action_stage_direction():
+    orch = _make_orchestrator(["Certo."])
+    payload = _json.dumps({
+        "action_id": "explain_procedure",
+        "label": "📋 Explicar procedimento",
+    }, ensure_ascii=False)
+    orch.transcript.append("action", payload)
+
+    orch.run_agent_turn("Vou te explicar como funciona.")
+
+    user_prompt = _last_user_prompt_of(orch)
+    assert "*executa a ação: Explicar procedimento*" in user_prompt
+    assert '"action_id"' not in user_prompt
+
+
+def test_action_stage_direction_is_attributed_to_the_atendente():
+    """
+    The persona LLM reads history lines prefixed by 'ATENDENTE (servidor)'
+    or 'VOCÊ (cliente)'. An action executed by the trainee must show up
+    under the atendente label, not under VOCÊ — otherwise the persona
+    thinks SHE performed the action.
+    """
+    orch = _make_orchestrator(["Certo."])
+    payload = _json.dumps({
+        "action_id": "verify_identity",
+        "label": "🪪 Verificar identidade",
+    }, ensure_ascii=False)
+    orch.transcript.append("action", payload)
+
+    orch.run_agent_turn("Vou conferir seus dados.")
+
+    user_prompt = _last_user_prompt_of(orch)
+    # Find the stage direction line and check its speaker tag.
+    stage_line = next(
+        line for line in user_prompt.splitlines()
+        if "*executa a ação" in line
+    )
+    assert "ATENDENTE" in stage_line
+    assert "VOCÊ" not in stage_line
+
+
+def test_queue_turn_still_never_reaches_the_prompt():
+    """
+    Design contract preserved from Onda 2 T1.3: queue-pressure turns are
+    an FSM signal, not something the persona 'hears' in dialogue. The
+    Onda 4 F1 action-summary change must not accidentally leak them.
+    """
+    orch = _make_orchestrator(["Ok."])
+    orch.transcript.append(
+        "queue",
+        _json.dumps({"severity": "warning", "minutes_waited": 12}),
+    )
+    orch.run_agent_turn("Só um instante enquanto verifico.")
+
+    user_prompt = _last_user_prompt_of(orch)
+    assert "warning" not in user_prompt
+    assert "minutes_waited" not in user_prompt
+    assert "12" not in user_prompt
+
+
+def test_malformed_action_payload_is_dropped_not_raised():
+    """
+    A corrupt or truncated payload on disk must not crash the turn loop;
+    the orchestrator drops the turn silently and the prompt just misses
+    that entry.
+    """
+    orch = _make_orchestrator(["Ok."])
+    orch.transcript.append("action", "{not json at all")
+    # Should not raise — the summariser returns None and the turn is skipped.
+    orch.run_agent_turn("Vou verificar.")
+    user_prompt = _last_user_prompt_of(orch)
+    assert "{not json" not in user_prompt

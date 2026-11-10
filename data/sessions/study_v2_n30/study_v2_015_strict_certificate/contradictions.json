@@ -1,0 +1,35 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas eu não sei se trouxe um documento com foto. Eu tenho um cartão de aposentadoria, pode ser esse?",
+      "new_value": "Ai, meu Deus! Eu não sei se tenho isso tudo. O meu RG... ahn... eu acho que eu deixei com a minha filha. E a carteira de motorista também, não sei onde tá. Será que não tem como fazer de outro jeito?"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas eu não sei se trouxe um documento com foto. Eu tenho um cartão de aposentadoria, pode ser esse?",
+      "new_value": "Ai, que complicação! Eu vou tentar ver se encontro alguma coisa em casa, mas eu realmente não sei onde deixei esses documentos. Será que não tem algum jeito de vocês me ajudarem, mesmo sem essa identificação agora?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "certificate_id",
+      "prior_value": "Poxa, que chato isso! Eu entendo, mas é muito difícil pra mim achar esses documentos. Se eu não conseguir até amanhã, o que eu faço? Não tem outro jeito, não?",
+      "new_value": "Mas como é que eu vou conseguir tudo isso? Não sei nem por onde começar. Eu tô tão perdida, se eu soubesse que era assim eu tinha me preparado melhor. Será que não tem ninguém que possa me ajudar a resolver isso? É muito difícil pra mim, viu!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "certificate_id",
+      "prior_value": "Poxa, que chato isso! Eu entendo, mas é muito difícil pra mim achar esses documentos. Se eu não conseguir até amanhã, o que eu faço? Não tem outro jeito, não?",
+      "new_value": "Eu entendo, mas tá tudo muito complicado pra mim. Eu só queria resolver isso logo! Será que não tem um jeito de conversarem aqui, ou me ajudarem a agilizar esse processo? Eu só quero a minha certidão pra regularizar a aposentadoria, não é pra complicar mais a minha vida!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas eu não sei se trouxe um documento com foto. Eu tenho um cartão de aposentadoria, pode ser esse?",
+      "new_value": "Mas isso tudo é tão difícil! Eu não sei como vou conseguir arrumar um documento com foto assim, tô muito perdida. Eu só quero a minha certidão logo, por favor! Não tem como vocês ajudarem de alguma maneira? É tudo muito mais complicado do que eu pensei!"
+    }
+  ],
+  "total_turns": 16
+}

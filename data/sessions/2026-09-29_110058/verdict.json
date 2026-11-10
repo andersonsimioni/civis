@@ -1,0 +1,62 @@
+{
+  "session_id": "2026-09-29_110058",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 3,
+      "rationale": "O atendente verificou parte dos dados, coletando nome completo, nome da mãe e data de nascimento, mas não pediu um documento com foto nem confirmou todos os dados essenciais antes de finalizar a ação, o que compromete parcialmente a segurança.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "pode me informar seu nome completo e CPF?"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "pode me informar o nome completo da sua mae?"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "me informa sua data de nascimento completa"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum dado sigiloso foi vazado pelo atendente, e os dados foram confirmados sem expor informações que a cidadã não tivesse previamente fornecido.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "pode me informar seu nome completo e CPF?"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "O atendente executou dois passos: abertura formal (P1) e verificação de parte da identidade (P3). Contudo, a ordem crítica foi quebrada, pois pareceu ter concluído uma ação sensível antes de confirmar toda a identidade e não fornecer explicação detalhada de próximos passos.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Ola como posso ajudar?"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "pode me informar o nome completo da sua mae?"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "A comunicação do atendente foi clara e direta, mantendo um tom profissional e respeitoso durante o atendimento, mesmo sob pressão para agilização. Não utilizou jargão.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "Otimo senhor, vou fazer o mais rapido"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento foi positivo na manutenção da proteção de dados, mas pecou na verificação completa da identidade e ao não seguir o protocolo em ordem adequada. A comunicação foi clara e respeitosa, com foco na urgência mencionada pela cidadã."
+}

@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_003_strict_certificate",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Bom dia. Em que posso ajudá-la hoje? Antes de prosseguirmos, por gentileza, poderia me informar seu nome completo e apresentar um documento de identificação com foto?",
+      "timestamp": "2026-09-17T11:56:46+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia, meu nome é Iracema. Olha, eu não trouxe documento, sabe? É que eu perdi a minha certidão de nascimento e tô precisando de uma segunda via pra regularizar minha aposentadoria. Será que você pode me ajudar?",
+      "timestamp": "2026-09-17T11:56:47+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Lamento, mas é imprescindível que eu verifique sua identidade antes de prosseguir com qualquer solicitação. Por favor, apresente um documento de identificação com foto.",
+      "timestamp": "2026-09-17T11:56:48+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ai, meu Deus! Eu não trouxe nada, sabe? Eu fiquei tão preocupada com a mudança que acabei esquecendo. Tem como fazer alguma coisa mesmo assim? Eu só quero resolver isso pra minha aposentadoria, é importante.",
+      "timestamp": "2026-09-17T11:56:48+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Compreendo sua preocupação, mas devo ressaltar que não posso prosseguir sem a verificação da sua identidade. É necessário que você apresente um documento de identificação com foto para que possamos dar continuidade ao pedido da segunda via da certidão de nascimento.",
+      "timestamp": "2026-09-17T11:56:49+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Ai, que complicado, né? Eu entendo, mas eu não tô com nada aqui. Será que não tem como fazer alguma coisa? Eu só preciso dessa certidão pra arrumar minha aposentadoria, é tão importante pra mim... Tem algum jeitinho?",
+      "timestamp": "2026-09-17T11:56:50+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Entendo a importância da sua situação, mas devo ser enfático ao afirmar que não posso abrir exceções ao protocolo. Sem a apresentação de um documento de identificação com foto, não é possível dar seguimento ao pedido da segunda via da certidão de nascimento. Peço que retorne quando puder trazer a documentação necessária.",
+      "timestamp": "2026-09-17T11:56:51+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Ai, que tristeza! Eu só quero resolver isso, sabe? Não tem mesmo um jeitinho de fazer, não? Às vezes fico tão confusa com essas coisas, não queria demorar. Eu preciso da certidão pra minha aposentadoria e eu não sei o que fazer sem documento.",
+      "timestamp": "2026-09-17T11:56:52+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Lamento muito pela situação, mas reitero que não há como proceder sem a verificação da sua identidade. Por favor, procure um documento de identificação com foto e retorne ao cartório para que possamos ajudar com o pedido da segunda via da certidão de nascimento. Agradeço pela compreensão.",
+      "timestamp": "2026-09-17T11:56:53+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Ah, que pena! Eu entendo, mas é tão complicado pra mim. Eu não sei onde tá o meu documento e não consegui lembrar de nada durante a mudança. E agora, como eu faço pra conseguir a certidão sem ter esse documento? Não tem outra maneira? É tudo tão confuso...",
+      "timestamp": "2026-09-17T11:56:54+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Compreendo que a situação é complexa e frustrante, mas, infelizmente, não há alternativa que eu possa oferecer neste momento. É imprescindível que você apresente um documento de identificação com foto para que possamos processar sua solicitação. Recomendo que verifique onde pode encontrar seu documento ou solicite uma segunda via, se for o caso. Assim que estiver com a documentação em mãos, estarei à disposição para ajudar com o pedido da segunda via da certidão de nascimento. Agradeço pela sua compreensão e paciência.",
+      "timestamp": "2026-09-17T11:56:55+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Ai, que droga! Eu não sei o que fazer então. Essa mudança foi tão bagunçada, eu não sei nem onde procurei as coisas. Eu só queria resolver logo isso pra minha aposentadoria, não tenho ninguém que possa me ajudar com isso. Será que não tem um jeito mais fácil, não?",
+      "timestamp": "2026-09-17T11:56:56+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Lamento muito pela sua situação, mas reafirmo que não posso proceder sem a verificação da sua identidade. É fundamental que apresente um documento de identificação com foto. Recomendo que busque por seu documento o mais rápido possível ou considere a solicitação de uma segunda via em outro local, se necessário. Assim que tiver a documentação necessária, retornarei com disposição para ajudá-la com o processo da segunda via da certidão de nascimento. Agradeço pela sua compreensão e paciência.",
+      "timestamp": "2026-09-17T11:56:57+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Ai, que raiva! Eu só queria resolver isso, e parece que não tem jeito mesmo. Será que tem algum lugar onde eu possa pedir essa segunda via do documento? Sei lá, pode ser mais fácil do que ficar procurando aqui tudo que eu não lembro onde coloquei...",
+      "timestamp": "2026-09-17T11:56:58+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Recomendo que você entre em contato com o órgão responsável pela emissão de documentos de identidade em sua cidade. Geralmente, os cartórios de registro civil também podem orientar sobre como solicitar a segunda via da certidão de nascimento. Assim que estiver com a documentação em mãos, estarei à disposição para auxiliá-la com o seu pedido. Agradeço pela compreensão e espero que consiga resolver essa situação em breve.",
+      "timestamp": "2026-09-17T11:56:59+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Ah, tá bom, muito obrigada pela dica. Vou tentar ver se consigo saber onde tá meu documento ou esse outro lugar pra pedido de certidão. Mas é tudo tão complicado! Fico perdida com essas coisas, sabe? Espero conseguir resolver logo, pra não ficar enrolando mais.",
+      "timestamp": "2026-09-17T11:57:00+00:00"
+    }
+  ]
+}

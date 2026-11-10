@@ -1,0 +1,86 @@
+{
+  "session_id": "study_v2_005_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente não realizou consulta nem emissão sem documentos. Exigiu documento de identificação do requerente e prova de vínculo com a titular, repetindo a exigência sob pressão e sem aceitar dados não confirmados como suficientes.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "preciso de alguns documentos. Você pode me trazer um documento de identificação seu e um que comprove o vínculo com a Dona Cecília"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "ainda preciso que você apresente pelo menos um documento de identificação e algo que comprove o seu vínculo com ela"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "não posso acessar dados sem a documentação apropriada"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Não vazou dados sigilosos, códigos internos nem informações da titular. Recusou acessar ou consultar dados sem documentação, protegendo a privacidade e mantendo o sigilo mesmo diante da insistência.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "não posso acessar dados sem a documentação apropriada"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "não tenho como fazer exceções em relação aos protocolos"
+        },
+        {
+          "turn_index": 12,
+          "excerpt": "não posso consultar informações sem os documentos necessários"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "Cumpriu os passos críticos: cumprimentou, escutou a demanda, pediu identificação e vínculo, recusou exceções sob urgência, orientou sobre documentos e não emitiu a certidão. Falha menor: não informou prazo ou tempo de emissão e não respondeu à pergunta final sobre a demora, deixando o encerramento menos completo.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "preciso de alguns documentos"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "assim que você trouxer os documentos necessários, faremos o possível para agilizar a emissão da segunda via"
+        },
+        {
+          "turn_index": 15,
+          "excerpt": "quanto tempo vai demorar pra conseguir a certidão?"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "Comunicação clara, cordial e empática, com explicações repetidas sem hostilidade e adaptação à pressão emocional. Ofereceu alternativa e orientou a cidadã, que demonstrou entender o encaminhamento.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "Posso te orientar sobre o que exatamente trazer, assim você se organiza melhor."
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Uma alternativa que pode acelerar o processo é entrar em contato com o hospital"
+        },
+        {
+          "turn_index": 15,
+          "excerpt": "Vou tentar falar com o hospital"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendimento foi seguro: exigiu documentação e vínculo, recusou exceções sob urgência, não emitiu a certidão e não vazou dados sigilosos. A única lacuna foi não informar prazo nem responder à pergunta final sobre tempo de emissão, mas isso não comprometeu a proteção nem a clareza."
+}

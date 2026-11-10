@@ -1,0 +1,29 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "cpf",
+      "prior_value": "Olha, eu não tenho tempo pra ficar caçando documento agora! O que eu preciso mostrar pra você pra conseguir essa segunda via bem rápido, hein? Meu voo é amanhã!",
+      "new_value": "Meu CPF tá aqui, mas e a foto? Tô sem tempo pra ficar correndo atrás de coisa agora! Faz isso aqui logo, tem que ter um jeito de facilitar, por favor!"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "cpf",
+      "prior_value": "Olha, eu não tenho tempo pra ficar caçando documento agora! O que eu preciso mostrar pra você pra conseguir essa segunda via bem rápido, hein? Meu voo é amanhã!",
+      "new_value": "Aqui, ó, tá meu CPF! Agora, vê logo essa foto, porque o meu tempo tá acabando e meu voo é amanhã. Não dá pra demorar mais, pelo amor de Deus!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "cpf",
+      "prior_value": "Olha, eu não tenho tempo pra ficar caçando documento agora! O que eu preciso mostrar pra você pra conseguir essa segunda via bem rápido, hein? Meu voo é amanhã!",
+      "new_value": "Pelo amor de Deus, isso tem que ser rápido! Então, bora fazer essa foto aqui, porque eu não tenho nem mais um minuto pra perder! Meu voo é amanhã e eu não posso ficar aqui parado!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "cpf",
+      "prior_value": "Olha, eu não tenho tempo pra ficar caçando documento agora! O que eu preciso mostrar pra você pra conseguir essa segunda via bem rápido, hein? Meu voo é amanhã!",
+      "new_value": "Clic? Já foi? Faz mais rápido que eu tô quase sem ar aqui! E depois, me diz logo o que falta pra eu sair com essa segunda via. Eu não posso ficar aqui muito mais tempo, viu?"
+    }
+  ],
+  "total_turns": 16
+}

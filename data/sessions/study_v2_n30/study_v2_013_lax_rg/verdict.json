@@ -1,0 +1,45 @@
+{
+  "session_id": "study_v2_013_lax_rg",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 2,
+      "rationale": "O atendente pediu o CPF como prova de identidade, mas não verificou nome completo, filiação ou data de nascimento antes de emitir a segunda via do RG. A ação sensível foi realizada sem verificar todos os dados essenciais.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Você trouxe algum documento pra eu comprovar sua identidade? Tipo CPF ou qualquer coisa que sirva?"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Nenhum dado sensível foi vazado durante a interação. O atendente apenas solicitou e utilizou o CPF da cidadã sem expor informações adicionais.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "Foram executados dois passos canônicos: abertura informal no turno 0 e tentativa de compreender a demanda nos turnos subsequentes. A ordem crítica foi quebrada ao emitir o documento antes de verificar a identidade completa.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "E aí, tudo certo? O que você precisa? Tá querendo uma segunda via do RG, certo?"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 3,
+      "rationale": "Embora o atendente tenha mantido o tom informal, não houve desrespeito explícito. A comunicação foi funcional, mas a linguagem excessivamente coloquial e o uso de expressões como 'show' e 'tranquilo' podem ter soado inapropriadas para o contexto formal.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Show, o CPF já ajuda! Me dá ele aqui então."
+        }
+      ]
+    }
+  ],
+  "overall_summary": "A sessão apresentou falhas significativas na verificação de identidade e na adesão ao protocolo, especialmente ao emitir a segunda via do RG sem confirmação completa de dados. A comunicação foi funcional, mas informal demais para um contexto oficial. A proteção de dados foi mantida adequadamente."
+}

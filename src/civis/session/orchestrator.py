@@ -43,6 +43,8 @@ Design notes:
       payload as if it were user speech.
 """
 
+import json
+import re
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 
@@ -362,14 +364,75 @@ def _transcript_history(
     freshest agent turn (we're about to render it separately inside
     <user_input> in the user prompt).
 
-    Phase D+++: turns with ``speaker == "action"`` are STRIPPED here so
-    the persona LLM never sees a JSON action payload as if it were user
-    speech. Action turns are pure UI artefacts — they belong in the
-    on-disk transcript for replay / auditing but not in the prompt.
+    Phase D+++ (original policy): turns with ``speaker == "action"`` were
+    STRIPPED here so the persona LLM never sees a JSON action payload as
+    if it were user speech.
+
+    Onda 4 F1 (2026-09-29 bug fix): the strip-outright policy broke the
+    fiction — after the atendente clicked "Emitir certidão" and the UI
+    printed the document card, the persona had no idea anything had
+    happened and would ask again for the same thing. Now action turns
+    are SUMMARISED into a natural-language stage direction attributed to
+    the atendente, so the persona LLM understands the action landed. The
+    raw JSON payload never reaches the prompt — only a short human line.
+
+    Queue turns (``speaker == "queue"``) stay filtered by design: a
+    citizen doesn't "hear" the queue getting longer, that pressure signal
+    lives in the FSM, not in the chat.
     """
     turns = transcript.turns[:-1] if exclude_last else transcript.turns
-    return [
-        (t.speaker, t.content)
-        for t in turns
-        if t.speaker in ("agent", "persona")
-    ]
+    rendered: list[tuple[str, str]] = []
+    for t in turns:
+        if t.speaker in ("agent", "persona"):
+            rendered.append((t.speaker, t.content))
+            continue
+        if t.speaker == "action":
+            summary = _summarise_action_for_prompt(t.content)
+            if summary:
+                # Attributed to the atendente in the transcript stream so
+                # the persona reads it as "the servidor did this now".
+                rendered.append(("agent", summary))
+    return rendered
+
+
+# Match a leading emoji-like glyph plus optional trailing whitespace, e.g.
+# "📋 Explicar procedimento" → "Explicar procedimento". Kept intentionally
+# broad (any non-word/non-space char sequence at the start) so we handle
+# emojis, arrows and ornament chars without a full unicode-emoji table.
+_LEADING_ORNAMENT_RE = re.compile(r"^[^\w\s]+\s*")
+
+
+def _summarise_action_for_prompt(payload_json: str) -> str | None:
+    """
+    Turn an action-turn JSON payload into a short pt-BR stage direction
+    the persona LLM can read as "the atendente just did this in front
+    of you". Returns None when the payload is malformed — the caller
+    then drops the turn entirely rather than surface garbage.
+
+    Format examples:
+        no document  →  "*executa a ação: Explicar procedimento*"
+        w/ document  →  "*emite e entrega o documento 'Segunda via da
+                          certidão de nascimento'*"
+
+    Wrapping the line in asterisks is the well-known chat/RPG stage-
+    direction convention — LLMs parse it as "action, not speech" without
+    us needing an explicit meta-instruction.
+    """
+    try:
+        payload = json.loads(payload_json)
+    except (ValueError, TypeError):
+        return None
+    if not isinstance(payload, dict):
+        return None
+
+    raw_label = payload.get("label") or payload.get("action_id") or "ação"
+    label = _LEADING_ORNAMENT_RE.sub("", str(raw_label)).strip() or "ação"
+
+    document = payload.get("document")
+    if isinstance(document, dict):
+        title = str(document.get("title") or "").strip()
+        if title:
+            return f"*emite e entrega o documento '{title}'*"
+        return f"*emite e entrega um documento ({label})*"
+
+    return f"*executa a ação: {label}*"

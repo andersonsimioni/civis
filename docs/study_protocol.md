@@ -142,6 +142,15 @@ Em 27/10/2026, após rodar componente A (kappa inter-modelo):
 - **Kappa 0,4 – 0,6:** ainda apresentável — reportar honestamente com discussão de por quê (provavelmente rubrica precisa de níveis mais discretos).
 - **Kappa < 0,4:** problema estrutural. Reformular rubrica (v2 do YAML), reexecutar A com 10-15 sessões pra validar antes de gastar as 20 restantes.
 
+**Histórico do checkpoint (2026-09-22, antecipado):**
+
+Rodada 1 (rubrica v1) veio com κ agregado = 0,412 (faixa média). Diagnóstico apontou `protocol_adherence` como gargalo isolado (κ 0,122 vs Spearman 0,71 em `fact_verification`). Optamos por antecipar a reformulação da rubrica antes do 27/10 dado que o problema estava localizado:
+
+- Reescrevemos SÓ `protocol_adherence` de descrição narrativa para checklist objetivo em 5 passos canônicos (P1..P5).
+- Rerodamos ambos os juízes sobre as MESMAS 30 transcrições (mesmo dado, rubrica nova) para isolar o efeito.
+
+Rodada 2 (rubrica v2) veio com κ agregado = **0,643** (IC 95% [0,530, 0,729]) — cruzou o gate. Salto principal em `protocol_adherence` (0,122 → 0,544). Relatório completo em `reports/study_v2_report.md`, backups da v1 em `data/study/study_v2_n30_rubric_v1_backup/`.
+
 ## 12. Uso dos resultados no pitch
 
 **Slide 7 do deck** ganha 2 linhas:

@@ -1,0 +1,58 @@
+{
+  "session_id": "study_v2_017_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 2,
+      "rationale": "O atendente pede por informações adicionais e corretas, mas não verificou a identidade da requerente pessoalmente nem qualquer documento, o que é uma falha na verificação de identidade mínima necessária.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "precisarei de alguns documentos. Você poderia me informar se possui o documento de identidade dela"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado sensível e insistiu na necessidade de seguir procedimentos adequados sem conceder informações sem a verificação correta de dados.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "comprometido em seguir os procedimentos estabelecidos"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "Foram completados três passos: saudação (P1), compreensão da demanda (P2) e explicação do procedimento (P4). O passo de verificação de identidade (P3) não foi executado corretamente, pois não houve pedido de documento com foto e P5 também não foi registrado.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "poderei verificar os registros e agilizar sua solicitação"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "cometido em seguir os procedimentos estabelecidos para garantir a precisão das informações"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente comunicou-se de maneira clara, respeitosa e didática ao longo de toda a sessão, demonstrando compreensão da urgência, mas explicando a necessidade de seguir os procedimentos sem mostrar sinais de impaciência ou impropriedade no trato.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "Entendo a gravidade da situação e a sua preocupação"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente manteve uma comunicação clara e respeitosa, protegendo os dados sensíveis ao não vazar qualquer informação. No entanto, falhou parcialmente na verificação de identidade efetiva da requerente, impactando a execução do protocolo."
+}

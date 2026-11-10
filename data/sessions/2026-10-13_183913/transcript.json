@@ -1,0 +1,71 @@
+{
+  "session_id": "2026-10-13_183913",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Ola como posso ajudar?",
+      "timestamp": "2026-10-13T18:39:28+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia. Olha, eu perdi minha carteira com o RG ontem e preciso da segunda via bem rapidinho. Tenho passagem marcada pra amanhã de manhã, então não dá pra enrolar, tchê. O que eu preciso fazer pra resolver isso logo?",
+      "timestamp": "2026-10-13T18:39:30+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Claro, pode me passar sua identidade?",
+      "timestamp": "2026-10-13T18:40:20+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Bah, eu não tenho a identidade, né? Eu perdi tudo! Mas eu posso te passar meu nome, que é Rodrigo Almeida da Rosa. O que mais tu precisa pra agilizar isso?",
+      "timestamp": "2026-10-13T18:40:22+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Certo, me passa sua data de nascimento?",
+      "timestamp": "2026-10-13T18:40:43+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Olha, não lembro de cabeça, mas nasci em 05 de outubro de 1985. Podes ver isso rápido, né? Não dá pra perder mais tempo!",
+      "timestamp": "2026-10-13T18:40:44+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "action",
+      "content": "{\"action_id\": \"verify_identity\", \"label\": \"🔍 Verificar identidade\"}",
+      "timestamp": "2026-10-13T18:40:49+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "action",
+      "content": "{\"action_id\": \"issue_rg_second_copy\", \"label\": \"📄 Emitir 2ª via de RG\", \"document\": {\"id\": \"FIC-DOC-20261013-803944\", \"title\": \"RG — 2ª via (fictícia)\", \"body\": \"╔══════════════════════════════════════════════════════════╗\\n║        CARTEIRA DE IDENTIDADE — 2ª VIA (FICTÍCIA)        ║\\n╠══════════════════════════════════════════════════════════╣\\n║ REPÚBLICA FEDERATIVA DO BRASIL                           ║\\n║ SECRETARIA DE SEGURANÇA PÚBLICA (FICTÍCIA)               ║\\n║ 1º RCPN Florianópolis (FICTÍCIO)                         ║\\n║                                                          ║\\n║ CARTEIRA DE IDENTIDADE — 2ª VIA                          ║\\n║                                                          ║\\n║ Nº do documento : FIC-DOC-20261013-803944                ║\\n║ Data de emissão : 13/10/2026                             ║\\n║ Sessão de treino: 2026-10-13_183913                      ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Nome            : Rodrigo Almeida da Rosa                ║\\n║ Data nascimento : 05 de outubro de 1985                  ║\\n║ Filiação (mãe)  : Antônia de Souza Almeida               ║\\n║ RG anterior     : FIC-RG-RS-6.847.291                    ║\\n║ Órgão expedidor : IGP-RS, unidade Porto Alegre Centro    ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Documento FICTÍCIO — emitido pela plataforma             ║\\n║ CIVIS para treinamento de atendentes. Não tem            ║\\n║ validade jurídica ou fiscal.                             ║\\n║                                                          ║\\n║ Assinado por    : Servidor CIVIS-DEMO                    ║\\n╚══════════════════════════════════════════════════════════╝\", \"path\": \"data\\\\sessions\\\\2026-10-13_183913\\\\issued_documents\\\\FIC-DOC-20261013-803944.md\"}}",
+      "timestamp": "2026-10-13T18:41:09+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "prontinho, aqui esta, ajudo em algo a mais?",
+      "timestamp": "2026-10-13T18:41:23+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Bah, finalmente! Era só isso que eu precisava, tchê. Agora, será que vem com validade pra amanhã de manhã? Não posso perder mais tempo!",
+      "timestamp": "2026-10-13T18:41:25+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "action",
+      "content": "{\"action_id\": \"end_service\", \"label\": \"✅ Encerrar atendimento\"}",
+      "timestamp": "2026-10-13T18:41:29+00:00"
+    }
+  ]
+}

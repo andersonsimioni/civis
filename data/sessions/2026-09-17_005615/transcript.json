@@ -1,0 +1,101 @@
+{
+  "session_id": "2026-09-17_005615",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "olá como posso ajudar?",
+      "timestamp": "2026-09-17T00:56:26+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Olá, preciso urgentemente de segunda via de RG. Perdi a carteira com o documento ontem e tenho vôo de manhã. Preciso sair hoje!",
+      "timestamp": "2026-09-17T00:56:47+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "certo, pode me passar seu nome completo por gentileza?",
+      "timestamp": "2026-09-17T00:57:36+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Roberto Almeida Souza. E não me deixe esperando, preciso disso agora!",
+      "timestamp": "2026-09-17T00:57:44+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "action",
+      "content": "{\"action_id\": \"de_escalate\", \"label\": \"🧊 Manter calma / desescalar\"}",
+      "timestamp": "2026-09-17T00:57:50+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "action",
+      "content": "{\"action_id\": \"verify_identity\", \"label\": \"🔍 Verificar identidade\"}",
+      "timestamp": "2026-09-17T00:57:59+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "certo me informa sua data de nascimento ",
+      "timestamp": "2026-09-17T00:59:41+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "05 de outubro de 1985. E me dê uma previsão de quanto tempo isso vai levar, senão estou perdido de novo!",
+      "timestamp": "2026-09-17T00:59:51+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "action",
+      "content": "{\"action_id\": \"issue_rg_second_copy\", \"label\": \"📄 Emitir 2ª via de RG\", \"document\": {\"id\": \"FIC-DOC-20260917-A0D417\", \"title\": \"RG — 2ª via (fictícia)\", \"body\": \"╔══════════════════════════════════════════════════════════╗\\n║        CARTEIRA DE IDENTIDADE — 2ª VIA (FICTÍCIA)        ║\\n╠══════════════════════════════════════════════════════════╣\\n║ REPÚBLICA FEDERATIVA DO BRASIL                           ║\\n║ SECRETARIA DE SEGURANÇA PÚBLICA (FICTÍCIA)               ║\\n║ 1º RCPN Florianópolis (FICTÍCIO)                         ║\\n║                                                          ║\\n║ CARTEIRA DE IDENTIDADE — 2ª VIA                          ║\\n║                                                          ║\\n║ Nº do documento : FIC-DOC-20260917-A0D417                ║\\n║ Data de emissão : 17/09/2026                             ║\\n║ Sessão de treino: 2026-09-17_005615                      ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Nome            : Roberto Almeida Souza                  ║\\n║ Data nascimento : 05 de outubro de 1985                  ║\\n║ Filiação (mãe)  : Antônia de Souza Almeida               ║\\n║ RG anterior     : FIC-RG-SC-6.847.291                    ║\\n║ Órgão expedidor : SSP-SC, unidade Florianópolis Centro   ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Documento FICTÍCIO — emitido pela plataforma             ║\\n║ CIVIS para treinamento de atendentes. Não tem            ║\\n║ validade jurídica ou fiscal.                             ║\\n║                                                          ║\\n║ Assinado por    : Servidor CIVIS-DEMO                    ║\\n╚══════════════════════════════════════════════════════════╝\", \"path\": \"data\\\\sessions\\\\2026-09-17_005615\\\\issued_documents\\\\FIC-DOC-20260917-A0D417.md\"}}",
+      "timestamp": "2026-09-17T00:59:56+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "agent",
+      "content": "prontinho aqui está",
+      "timestamp": "2026-09-17T01:00:01+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "persona",
+      "content": "Ei, você está me prendendo de novo? Eu preciso do RG agora, não daqui a uma hora ou mais! Isso é urgente, entendeu?",
+      "timestamp": "2026-09-17T01:00:11+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "agent",
+      "content": "já está pronto senhor, aqui está, ajudo em algo a mais?",
+      "timestamp": "2026-09-17T01:00:33+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "persona",
+      "content": "Ótimo, então me empresta esse documento agora! Não me deixe aqui enrolando, preciso desse RG imediatamente para o meu voo amanhã.",
+      "timestamp": "2026-09-17T01:00:38+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "agent",
+      "content": "tenha um ótimo dia!",
+      "timestamp": "2026-09-17T01:00:46+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "persona",
+      "content": "Ei, seu dia pode esperar enquanto eu resolvo minha merda aqui! Eu preciso desse RG agora mesmo, não posso ficar de fora desse voo.",
+      "timestamp": "2026-09-17T01:00:52+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "action",
+      "content": "{\"action_id\": \"end_service\", \"label\": \"✅ Encerrar atendimento\"}",
+      "timestamp": "2026-09-17T01:00:59+00:00"
+    }
+  ]
+}

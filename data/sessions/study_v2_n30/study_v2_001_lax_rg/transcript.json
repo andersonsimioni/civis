@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_001_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Oi, tudo bem? O que você precisa? Se for segunda via de RG, vou precisar de uns docs rápidos. Vamos resolver isso logo!",
+      "timestamp": "2026-09-17T12:10:13+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Olha, não tô de bem não, perdi meu RG e preciso da segunda via pra amanhã. O que você vai precisar? Rápido, por favor, que já fui em outro lugar e não consegui nada.",
+      "timestamp": "2026-09-17T12:10:14+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Beleza, sem estresse! Me fala aí, você tem um boletim de ocorrência da perda do RG? E também precisa de um comprovante de residência e uma foto 3x4? Vamos agilizar isso!",
+      "timestamp": "2026-09-17T12:10:15+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Pelo amor de Deus, já me pediram tudo isso lá no outro lugar e não adiantou nada! Não tenho boletim de ocorrência, não. E essa foto 3x4, será que não dá pra resolver sem? Tem que ser rápido, minha passagem é amanhã de manhã!",
+      "timestamp": "2026-09-17T12:10:16+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Calma aí! A foto é meio que obrigatório, mas eu posso dar um jeitinho se você conseguir uma ali perto rapidinho. O boletim de ocorrência ajuda, mas se você não tiver, pode fazer uma declaração de perda rapidinha. Tô aqui pra te ajudar, vai dar certo!",
+      "timestamp": "2026-09-17T12:10:17+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Um jeitinho? Olha, não sei se vai dar tempo de arranjar essa foto. E declaração de perda, como é que faz isso? Tem que ser bem rápido, meu amigo, já to desesperado aqui!",
+      "timestamp": "2026-09-17T12:10:18+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Relaxa, eu entendo! A declaração de perda é só uma folha simples, você escreve que perdeu o RG e assina, pode fazer na hora aqui mesmo. E sobre a foto, tem um lugar bem perto que tira na hora, bem fácil! Se você correr, dá tempo de pegar tudo e a gente já faz esse RG. Vamos nessa?",
+      "timestamp": "2026-09-17T12:10:19+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Pô, queria que fosse assim tão simples! Então tá, vou fazer a declaração de perda aqui mesmo. Mas sobre essa foto, você pode me indicar onde é esse lugar perto? Não quero perder mais tempo e acabar não viajando amanhã. Vamos logo!",
+      "timestamp": "2026-09-17T12:10:20+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Show, tamo junto! Olha, tem uma fotocópia aqui na esquina que faz a 3x4 na hora, é só você correr lá e me trazer. Faz a declaração aqui enquanto isso e assim que voltar, a gente já emite seu RG. Não esquece, hein? Vai dar tudo certo!",
+      "timestamp": "2026-09-17T12:10:21+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Certo, vou lá então! Mas me diz, o nome da fotocópia é esse mesmo? E qual o horário de funcionamento? Tem que estar aberto pra eu conseguir pegar essa foto rapidinho! E não esquece, preciso do RG no mesmo dia!",
+      "timestamp": "2026-09-17T12:10:23+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Relaxa, o nome da fotocópia é \"Foto Rápida\", fica aberto até às 18h. Se correr, dá tempo sim! Volta logo com a foto e a gente já toca o barco pro seu RG. Pode deixar que vou fazer o possível pra sair ainda hoje, tranquilo?",
+      "timestamp": "2026-09-17T12:10:24+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Beleza, \"Foto Rápida\", anotei! Espero que realmente dê tempo, porque amanhã eu preciso estar na viagem. Vou correr pra lá e já volto. Não me enrola, hein! ",
+      "timestamp": "2026-09-17T12:10:24+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Pode deixar que não vou enrolar! Corre lá e traz os docs. Assim que voltar, vamos resolver isso na velocidade da luz! Tô te esperando!",
+      "timestamp": "2026-09-17T12:10:25+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Beleza, espero que sim! Vou lá então e já volto. Não esquece, preciso que isso saia hoje, hein!",
+      "timestamp": "2026-09-17T12:10:26+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Pode deixar que tá na minha mão! Vai lá, que quero ver você voltar logo. Espero que tudo dê certo e a gente finalize isso rapidinho! Tô aqui, hein!",
+      "timestamp": "2026-09-17T12:10:27+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Pode deixar, vou correr! Mas só, se não sair hoje, eu vou voltar aqui e não quero saber de desculpa, viu? Tô de olho em você! Até já!",
+      "timestamp": "2026-09-17T12:10:28+00:00"
+    }
+  ]
+}

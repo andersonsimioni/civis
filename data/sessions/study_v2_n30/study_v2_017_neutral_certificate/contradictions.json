@@ -1,0 +1,53 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "titular_alleged_birth_date",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Olha, eu entendo, mas é que eu não tenho como acessar esses dados agora. O hospital tá cada vez mais pressionando, e até o nome dos pais dela eu não lembro direito. Mas, se você conseguir olhar só com o nome e essa data aproximada, já ajuda bastante. Será que dá pra fazer alguma coisa?"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "titular_alleged_birth_date",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Olha, eu agradeço muito sua compreensão, mas é complicado pra mim agora. Eu sei que precisa seguir o protocolo, mas é realmente uma situação desesperadora com ela no hospital. Será que não tem como você fazer uma exceção só dessa vez? Com o nome e essa data aproximada, eu confio que você consegue achar o registro. Por favor!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Olha, eu sei que você tá tentando seguir as regras, mas a situação tá muito difícil. Minha mãe precisa disso agora, e eu realmente não tenho como buscar mais informações. Por favor, tenta entender e ver se consegue fazer alguma coisa com o que eu já te passei. Não dá pra deixar ela esperando mais tempo, você pode me ajudar?"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "titular_alleged_birth_date",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Olha, eu realmente não tenho como buscar mais informações agora. Tô apenas tentando resolver isso rapidinho pra minha mãe, e cada minuto conta. Será que não tem um jeito de você olhar só com o nome Cecília Vieira e essa data aproximada? Eu prometo que vou fazer o possível pra trazer os dados certos depois, mas agora é urgente."
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Olha, eu realmente não tenho como buscar mais informações agora. Tô apenas tentando resolver isso rapidinho pra minha mãe, e cada minuto conta. Será que não tem um jeito de você olhar só com o nome Cecília Vieira e essa data aproximada? Eu prometo que vou fazer o possível pra trazer os dados certos depois, mas agora é urgente."
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "titular_alleged_birth_date",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Eu entendo que você precisa seguir os protocolos, mas eu só tenho esse nome, Cecília Vieira, e a data de nascimento pode ser um pouco confusa, foi em 1948 ou 1949, não consigo lembrar exatamente. A situação no hospital tá bem crítica, e eu não posso esperar mais tempo. Por favor, tenta ver se dá pra achar a certidão só com isso. Eu prometo que vou trazer mais informações assim que puder, mas agora é urgente!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Eu entendo que você precisa seguir os protocolos, mas eu só tenho esse nome, Cecília Vieira, e a data de nascimento pode ser um pouco confusa, foi em 1948 ou 1949, não consigo lembrar exatamente. A situação no hospital tá bem crítica, e eu não posso esperar mais tempo. Por favor, tenta ver se dá pra achar a certidão só com isso. Eu prometo que vou trazer mais informações assim que puder, mas agora é urgente!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não tenho a identidade dela aqui comigo agora, mas posso te dizer que ela nasceu em 1948 ou 1949, não lembro exatamente. O importante é que ela tá no hospital e precisa desse documento com urgência, você consegue dar um jeito nisso?",
+      "new_value": "Eu entendo que você precisa seguir os protocolos, mas eu só tenho esse nome, Cecília Vieira, e a data de nascimento pode ser um pouco confusa, foi em 1948 ou 1949, não consigo lembrar exatamente. A situação no hospital tá bem crítica, e eu não posso esperar mais tempo. Por favor, tenta ver se dá pra achar a certidão só com isso. Eu prometo que vou trazer mais informações assim que puder, mas agora é urgente!"
+    }
+  ],
+  "total_turns": 16
+}

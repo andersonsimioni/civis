@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_019_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Calma aí, meu chapa! O que tá pegando? Precisando da segunda via do RG na correria, né? Vamos agilizar isso!",
+      "timestamp": "2026-09-17T12:17:56+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Isso mesmo, cara! Ontem eu perdi minha carteira com o RG e preciso da segunda via hoje, porque tenho um voo amanhã de manhã. Não dá pra ficar esperando, preciso que isso seja resolvido rápido!",
+      "timestamp": "2026-09-17T12:17:57+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Beleza, entendi! Deixa eu só pegar umas informações rapidinho. Você tem algum documento aí que comprova sua identidade, tipo CPF ou algo assim?",
+      "timestamp": "2026-09-17T12:17:58+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "CPF eu tenho, mas isso não vai resolver meu problema agora. O que eu preciso mesmo é da segunda via do RG, e rápido! Não dá pra ficar enrolando, já tô bastante estressado com isso.",
+      "timestamp": "2026-09-17T12:17:59+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Relaxa, parceiro! Vamos resolver isso rapidinho. Traz o CPF aqui pra mim, e já vou iniciar o processo da segunda via. Não precisa ficar estressado, só na boa que a gente consegue!",
+      "timestamp": "2026-09-17T12:17:59+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Pô, cara, eu já falei que eu tenho o CPF, mas isso não adianta nada agora! O que eu quero é a segunda via do RG, preciso disso já! Qualquer delay vai me complicar, então vamos agilizar isso, por favor!",
+      "timestamp": "2026-09-17T12:18:00+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Calma, calma! Tô entendendo o seu lado. Só preciso do seu CPF, que é pra gente dar o start na segunda via do RG. Não tem como fugir desse passo, mas prometo que vou acelerar o processo! Manda o CPF pra cá!",
+      "timestamp": "2026-09-17T12:18:01+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Beleza, então toma: FIC-CPF-2985-471. Agora vamos agilizar isso, porque não posso ficar aqui perdendo tempo!",
+      "timestamp": "2026-09-17T12:18:02+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Ótimo, já anotei. Agora só mais um detalhe: preciso da sua assinatura aqui e do seu telefone pra contato. Aí já vou mandar ver no pedido da segunda via! Pode ser?",
+      "timestamp": "2026-09-17T12:18:03+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Assinatura? Olha, isso eu posso fazer rápido, mas o telefone eu vou ter que passar depois. A prioridade agora é a segunda via do RG, não dá pra enrolar com assinatura e essas coisas. Vamos logo com isso!",
+      "timestamp": "2026-09-17T12:18:04+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Tranquilo, faz a assinatura rapidinho então. O telefone é só pra quando eu tiver que te chamar pra pegar o RG, mas se não rolar agora, depois a gente se vira. Agora, só falta isso e já parto pra resolver seu pedido! Vamo que vamo!",
+      "timestamp": "2026-09-17T12:18:05+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Beleza, então deixa eu assinar logo isso aqui. Mas, por favor, não esquece de agilizar, porque eu realmente não posso esperar muito, tá?",
+      "timestamp": "2026-09-17T12:18:05+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Show, assinou! Agora vou dar um gás aqui no processo e já já vejo o que posso fazer pra você pegar essa segunda via rapidamente. Fica tranquilo que vou fazer o possível pra não demorar!",
+      "timestamp": "2026-09-17T12:18:06+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Beleza, mas eu quero ver agilidade mesmo! Amanhã tenho um voo e não posso ficar aqui emperrado. Então, por favor, se vira pra acelerar isso aí!",
+      "timestamp": "2026-09-17T12:18:07+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Pode deixar, parceiro! Tô dando o máximo pra agilizar. Vou correr aqui com o meu sistema e já volto com notícias. Fica na boa que vou fazer o possível pra você sair daqui com a sua segunda via do RG hoje ainda! Segura aí!",
+      "timestamp": "2026-09-17T12:18:08+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Beleza, espero que você se vire mesmo! Não dá pra demorar, já tô contando os minutos aqui. Amanhã é dia de viajar e preciso desse RG hoje! Vou ficar aqui aguardando.",
+      "timestamp": "2026-09-17T12:18:09+00:00"
+    }
+  ]
+}

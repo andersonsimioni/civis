@@ -1,0 +1,83 @@
+{
+  "session_id": "2026-09-29_105627",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Ola em que posso ajudar?",
+      "timestamp": "2026-09-29T10:56:33+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Oi, bom dia! Então, eu perdi minha certidão de nascimento, sabe? Preciso fazer a segunda via pra regularizar minha aposentadoria, mas não sei bem como fazer isso. Você pode me ajudar?",
+      "timestamp": "2026-09-29T10:56:35+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Certo preciso do nome completo da sua mae",
+      "timestamp": "2026-09-29T10:56:58+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ah, é... O nome da minha mãe? Deixa eu ver... É Maria, isso, Maria... mas eu não lembro o sobrenome dela muito bem, só sei que era um que começava com \"S\". Ai, meu Deus, eu fico tão confusa com essas coisas!",
+      "timestamp": "2026-09-29T10:57:00+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "E sua data de nascimento completa",
+      "timestamp": "2026-09-29T10:57:06+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Ai, minha filha, data de nascimento... deixa eu ver se eu lembro… É, eu nasci em 12 de março de 1954! Espero que isso ajude... O que mais você precisa?",
+      "timestamp": "2026-09-29T10:57:07+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Preciso saber o sobrenome da sua mae",
+      "timestamp": "2026-09-29T10:57:24+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Ai, meu Deus, como eu sou esquecida! Eu não consigo lembrar o sobrenome dela, desculpe! Mas começava com \"S\", isso eu sei. Tem alguma outra coisa que eu possa ajudar?",
+      "timestamp": "2026-09-29T10:57:26+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Sim qual o sobrenome dela? sem isso nao consigo emitir..",
+      "timestamp": "2026-09-29T10:57:38+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Olha, eu tô tão perdida! Não consigo lembrar do sobrenome dela, só lembro que começava com \"S\". Será que não dá pra fazer sem? Eu realmente não sei mais o que fazer!",
+      "timestamp": "2026-09-29T10:57:40+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Nao tem como",
+      "timestamp": "2026-09-29T10:57:47+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Ai, que complicação! Eu não sei mais o que fazer, se eu pelo menos pudesse lembrar, mas só fica \"S\" na minha cabeça! Tem certeza que não dá pra ajudar de outra forma?",
+      "timestamp": "2026-09-29T10:57:48+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "action",
+      "content": "{\"action_id\": \"end_service\", \"label\": \"✅ Encerrar atendimento\"}",
+      "timestamp": "2026-09-29T10:57:51+00:00"
+    }
+  ]
+}

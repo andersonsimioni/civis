@@ -1,0 +1,70 @@
+{
+  "session_id": "study_v2_023_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente verificou adequadamente a necessidade de documentos comprobatórios antes de qualquer ação sensível, como visto nos turnos [2] e [4], onde foi solicitado um documento de identidade e comprovação de vínculo.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Poderia me informar se você tem em mãos algum documento que comprove seu vínculo"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "Isso inclui um documento que comprove seu vínculo"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente vazou informações sensíveis ou confidenciais. Ele seguiu as políticas de segurança, como destacado no turno [10].",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "devido à nossa política de segurança, não conseguimos acessar os registros sem a documentação apropriada"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente cumpriu quatro dos cinco passos, omitindo uma informação de prazo para o encerramento da conversa. Ele cumpriu a abertura formal [0], compreensão da demanda [2], verificação de identidade [2], e explicação do procedimento [4] e [6].",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Para solicitar a segunda via da certidão, vou precisar de alguns documentos."
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "preciso da documentação apropriada"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Contudo, precisamos garantir que a solicitação seja feita de forma correta"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, respeitosa e adaptativa ao longo do atendimento, mantendo um tom cordial mesmo frente à insistência da cidadã, como observado nos turnos [6] e [10].",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "Compreendo totalmente a sua situação"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "Compreendo perfeitamente a sua urgência"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente manteve um atendimento exemplar ao seguir rigorosamente os protocolos de segurança e verificação, sem vazar quaisquer dados sensíveis. Apesar de a jornada não ter sido finalizada com um prazo específico, os passos críticos foram respeitados e a comunicação foi mantida de forma clara e empática."
+}

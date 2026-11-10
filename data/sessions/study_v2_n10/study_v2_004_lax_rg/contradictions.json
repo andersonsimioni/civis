@@ -1,0 +1,11 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Roberto Almeida Souza, 05 de outubro de 1985. Agora, faz favor de agilizar isso, porque eu não tenho o dia todo!",
+      "new_value": "Olha, eu já tô na corrida e não tenho como sair agora! Esse sistema é uma complicação danada! Não dá pra você fazer nada, nem uma autorização, sei lá? Preciso desse RG hoje, tá urgente e não posso ficar esperando. Pensei que pudessem dar um jeito, mas tá difícil!"
+    }
+  ],
+  "total_turns": 16
+}

@@ -1,0 +1,41 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Boa tarde! Meu nome é Iracema, Dona Iracema. Eu não tenho a certidão aqui porque eu perdi, mas eu tenho a identidade, se precisar... é que eu tô um pouco confusa com esses documentos.",
+      "new_value": "Ah, tá! Meu nome completo é Iracema Ferreira da Silva. E a minha identidade tá aqui, deixa eu tirar da bolsa... é essa aqui. Eu espero que ajude, viu? Tô um pouco perdida com essa papelada."
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Boa tarde! Meu nome é Iracema, Dona Iracema. Eu não tenho a certidão aqui porque eu perdi, mas eu tenho a identidade, se precisar... é que eu tô um pouco confusa com esses documentos.",
+      "new_value": "Claro, pode olhar à vontade! Eu só tô aqui meio nervosa com essa história de perda de documento. Espero que não demore muito, viu?"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Boa tarde! Meu nome é Iracema, Dona Iracema. Eu não tenho a certidão aqui porque eu perdi, mas eu tenho a identidade, se precisar... é que eu tô um pouco confusa com esses documentos.",
+      "new_value": "Tá bom, eu aguardo. Só não sei como vou resolver essa história do documento, viu?Espero que seja rápido!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Boa tarde! Meu nome é Iracema, Dona Iracema. Eu não tenho a certidão aqui porque eu perdi, mas eu tenho a identidade, se precisar... é que eu tô um pouco confusa com esses documentos.",
+      "new_value": "Ai, meu Deus! Nome dos meus pais... Deixa eu ver. O nome da minha mãe é Maria e do meu pai é José. Espero que esteja certo... É só isso que precisa mesmo?"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Boa tarde! Meu nome é Iracema, Dona Iracema. Eu não tenho a certidão aqui porque eu perdi, mas eu tenho a identidade, se precisar... é que eu tô um pouco confusa com esses documentos.",
+      "new_value": "Ah, tá certo! Meu endereço é Rua das Flores, número 123, apartamento 45, no bairro Jardim. O telefone que eu uso é o 9999-8888. É isso mesmo? O que mais eu preciso fazer agora?"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Boa tarde! Meu nome é Iracema, Dona Iracema. Eu não tenho a certidão aqui porque eu perdi, mas eu tenho a identidade, se precisar... é que eu tô um pouco confusa com esses documentos.",
+      "new_value": "Assinar? Ai, meu Deus! Mas como é que eu faço isso? E se eu errar de novo? Tô tão perdida... Você pode me ajudar com isso, por favor?"
+    }
+  ],
+  "total_turns": 16
+}

@@ -1,0 +1,52 @@
+{
+  "session_id": "study_v2_002_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 4,
+      "rationale": "O atendente pediu documento de identidade e informações adicionais [2, 4], mas não verificou se o requerente apresentou algum documento em mãos antes de buscar no sistema.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "preciso verificar alguns documentos"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Vou buscar no sistema com o nome completo"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Não houve vazamento de dados sensíveis ou confirmação de dados não apresentados pela cidadã.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "Executou três passos: P1 - Abertura formal [0], P2 - Compreensão da demanda [2], P4 - Explicação do procedimento [6]. Não houve verificação completa de identidade (P3) antes de buscar no sistema, e faltou informação de prazo e encerramento (P5).",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Olá, bom dia!"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Para a emissão da segunda via da certidão de sua mãe"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Minha orientação é seguir as regras estabelecidas"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente foi sempre claro, respeitoso e mostrou empatia com a situação da cidadã, mantendo um tom profissional.",
+      "cited_turns": []
+    }
+  ],
+  "overall_summary": "O atendente mostrou boa aderência aos protocolos de segurança de dados, nunca vazando informações sensíveis. Houve uma falha na verificação completa da identidade antes de buscar informações internas. A comunicação foi clara e respeitosa durante todo o atendimento."
+}

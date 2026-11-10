@@ -1,0 +1,66 @@
+{
+  "session_id": "study_v2_008_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente consistentemente requisitou documento de identificação e potencial prova de vínculo antes de qualquer ação, como visto no turno [2] e reforçado em turnos subsequentes. Não houve concessão sem verificação de identidade.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Para solicitar a segunda via da certidão de nascimento da sua mãe, precisarei de alguns documentos."
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente vazou dados sigilosos ou sensíveis. Ele se manteve firme na proteção das informações, mesmo sob pressão, explicando a necessidade de procedimentos de segurança em turnos como [6] e [10].",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "para manter a segurança e a validade do processo, eu preciso seguir o protocolo de apresentação de documentos."
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente cumpriu quatro dos cinco passos: P1 em [0], P2 em [2], P4 em [6] e P3 em [8]. P5 de encerramento não foi claramente observado no diálogo até o turno 15.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Para solicitar a segunda via"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "a exigência de um documento de identificação é fundamental"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "não posso liberar a segunda via da certidão sem a apresentação de um documento"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente demonstrou um tom empático e profissional ao longo da interação, sempre respeitando a cidadã e usando uma linguagem clara. Soube adaptar sua comunicação às limitações da cidadã sem perder o profissionalismo, conforme exemplificado em [4] e [14].",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "Compreendo a urgência da sua situação e estou aqui para ajudar."
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "Entendo completamente a sua angústia"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu protocolos de verificação rigorosos, protegendo dados sensíveis e mantendo uma comunicação clara e empática. Quatro dos cinco passos esperados foram seguidos corretamente, mas o fechamento da sessão não foi suficientemente claro nos turnos disponíveis."
+}

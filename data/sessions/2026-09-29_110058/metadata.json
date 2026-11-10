@@ -1,0 +1,11 @@
+{
+  "session_id": "2026-09-29_110058",
+  "scenario_id": "rg_urgent_sul_v1",
+  "scenario_hash": "04968f2995a62388f67b5b5f7eb99e4a524c3378c9a36fe532a0fc41abaf8003",
+  "persona_provider_name": "openai_compat:gpt-4o-mini",
+  "judge_provider_name": "openai_compat:gpt-4o",
+  "created_at": "2026-09-29T11:00:58+00:00",
+  "last_updated_at": "2026-09-29T11:02:22+00:00",
+  "seed": null,
+  "agent_name": null
+}

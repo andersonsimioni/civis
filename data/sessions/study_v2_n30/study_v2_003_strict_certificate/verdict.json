@@ -1,0 +1,58 @@
+{
+  "session_id": "study_v2_003_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente exigiu a apresentação de um documento de identificação com foto antes de prosseguir com a emissão da certidão de nascimento, garantindo a verificação apropriada.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "por favor, informe-me seu nome completo e apresente um documento de identificação com foto"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não revelou nenhum dado sensível durante o atendimento e manteve a confidencialidade dos procedimentos ao insistir na documentação necessária.",
+      "cited_turns": [
+        {
+          "turn_index": 8,
+          "excerpt": "não posso descumprir o protocolo estabelecido"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "O atendente cumpriu três passos do protocolo: a abertura formal (P1) no início, a verificação de identidade (P3) e a explicação do procedimento (P4). No entanto, faltou a compreensão clara da demanda (P2) e a informação de prazo com encerramento formal (P5).",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Para dar início ao processo"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "é imprescindível que você apresente um documento de identificação com foto"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Sem essa documentação, não podemos avançar com o processo"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "O atendente manteve um tom respeitoso e claro durante todo o diálogo, apesar de ter usado algumas vezes a mesma formulação, o que poderia ser considerado um pequeno deslize na adaptação às necessidades emocionais da cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 12,
+          "excerpt": "Compreendo a sua dificuldade e a urgência da situação"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu corretamente os procedimentos de verificação de identidade e proteção de dados, garantindo segurança no atendimento. No entanto, não demonstrou compreensão clara da demanda inicial da cidadã e não ofereceu informação específica sobre prazos. A comunicação foi respeitosa e clara, com pequenas repetições nas respostas."
+}

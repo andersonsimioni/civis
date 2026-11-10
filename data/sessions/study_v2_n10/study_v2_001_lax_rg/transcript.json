@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_001_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Oi, tranquilo? O que precisa? Tô aqui pra ajudar com a segunda via do RG, é isso? Pode me falar o que rolou?",
+      "timestamp": "2026-09-17T11:55:55+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "É isso mesmo, cara. Perdi minha carteira com o RG ontem e preciso da segunda via hoje. Tenho um voo amanhã de manhã e não posso ficar esperando. O que você pode fazer pra me ajudar rápido?",
+      "timestamp": "2026-09-17T11:55:56+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Beleza, relaxa! Vou fazer o possível pra agilizar isso pra você. Você trouxe os documentos que precisam? Tipo, um CPF ou comprovante de residência? Manda ver!",
+      "timestamp": "2026-09-17T11:55:57+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Olha, eu não trouxe nada disso porque não sabia que ia precisar. Eu só tenho urgência, então faz alguma coisa pra me ajudar! Meu CPF é 2985-471, mas eu preciso do RG hoje, o resto é detalhe.",
+      "timestamp": "2026-09-17T11:55:58+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Ah, entendi, brother! Mas olha, sem os docs fica complicado. Preciso de pelo menos um comprovante, tipo conta ou algo assim. Se não tiver, vai ser chatão pra fazer tudo na pressa. Tenta dar um jeito nisso pra eu poder te ajudar, beleza?",
+      "timestamp": "2026-09-17T11:55:59+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Complicado, né? Olha, eu já passei em outro cartório e não consegui nada. Tô falando que preciso do RG hoje, não posso ficar buscando documento agora. Tem como você me ajudar de alguma forma? Não dá pra ficar enrolando!",
+      "timestamp": "2026-09-17T11:56:00+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Então, cara, eu entendo a urgência, mas não tem como escapar dos docs. Se você não tiver nada, vai ser impossível liberar tua segunda via aqui na pressa. Tenta dar uma ligada em alguém pra trazer um comprovante ou qualquer papel que ajude. Assim consigo liberar mais rápido, beleza?",
+      "timestamp": "2026-09-17T11:56:00+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Pô, sério? Não dá pra fazer nada sem comprovante? Tô te avisando que passei em outro lugar e não consegui, e agora você fala que precisa de documento? Que sistema é esse? Não tô pedindo nada de outro mundo! Se não der pra acelerar isso, vou perder meu voo! Tem que ter um jeito, cara!",
+      "timestamp": "2026-09-17T11:56:01+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Pô, eu sei que a situação tá complicada, mas realmente não tem como liberar sem pelo menos um comprovante, é regra. O jeito é tentar resolver isso rápido, chamar alguém pra trazer um documento ou, sei lá, se tiver uma foto do comprovante no celular, pode ser uma boa. Se conseguir isso, aí sim consigo dar um gás na sua segunda via! Vamos lá, dá um jeito aí!",
+      "timestamp": "2026-09-17T11:56:03+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Poxa, que complicado esse negócio! Eu não tô com tempo pra ficar correndo atrás de comprovante agora. Uma foto do documento ainda ia demorar pra eu achar. Por favor, vê se consegue dar um jeito nisso, eu realmente preciso desse RG hoje! Não aguento mais essa situação, não posso perder meu voo!",
+      "timestamp": "2026-09-17T11:56:04+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Cara, eu entendo a frustração, mas é assim que funciona. Se eu não seguir as regras, depois sou eu quem dou ruim. Tenta ver se consegue alguém pra mandar o comprovante ou uma foto rapidão. Sem isso, realmente não consigo liberar nada. Vamos dar um jeito nisso, manda ver!",
+      "timestamp": "2026-09-17T11:56:04+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Ah, cara, tá complicado! Eu não tenho tempo pra isso, já tô correndo, e não dá pra ficar esperando alguém aparecer com papel! Olha, se não tiver outro jeito, nem sei como vou fazer pra conseguir meu RG ainda hoje. Você não pode fazer nada? É só um documento, não é o fim do mundo!",
+      "timestamp": "2026-09-17T11:56:05+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Eu entendo, mas sério, não dá pra pular essa parte. Se você não conseguir um comprovante, a gente vai ficar parados aqui. Então, o que você vai fazer? Se precisar de ajuda pra ligar ou achar alguém só me avisa. Vamos resolver isso, mas só assim!",
+      "timestamp": "2026-09-17T11:56:06+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Pô, que situação chata, viu? Olha, eu entendo que tem regra, mas só preciso do meu RG, não dá pra fazer nada mais rápido? Se ao menos tivesse um jeito de você confirmar minha identidade sem esse comprovante. Se eu ficar aqui, vou perder meu voo e ferrou tudo!",
+      "timestamp": "2026-09-17T11:56:07+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Entendo, tá difícil mesmo, mas não tem como eu fazer milagre sem o comprovante. Se tu tiver um jeito de confirmar quem é, como uma foto ou algo assim, talvez ajude, mas só com isso não rola. Então, qual a boa? Consegue achar alguém pra trazer o papel, ou tem uma solução que dá pra gente fazer? Vamos lá!",
+      "timestamp": "2026-09-17T11:56:08+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Sério, cara, tá complicado! Não tô achando que ter uma foto vai mudar muito as coisas. Eu só quero meu RG pra poder embarcar amanhã. Se não tem outro jeito, não sei como vou sair dessa. Tem que ter um jeito de fazer isso rápido, não dá pra ficar aqui sem fazer nada!",
+      "timestamp": "2026-09-17T11:56:09+00:00"
+    }
+  ]
+}

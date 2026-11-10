@@ -1,0 +1,74 @@
+{
+  "session_id": "study_v2_011_neutral_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente exigiu documento do requerente para comprovar parentesco e se recusou a proceder sem o CPF e a documentação necessária, garantindo que os dados fossem devidamente verificados antes de qualquer ação sensível.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "precisarei de um documento seu que comprove seu parentesco"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "é necessário ter o CPF da sua mãe e um documento que comprove seu parentesco"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado pessoal e se recusou a proceder sem a apresentação dos documentos apropriados. Nenhum dado sensível foi divulgado durante a conversa.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "não conseguiremos proceder com o pedido"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "Quatro passos foram executados corretamente: abertura formal, compreensão da demanda, verificação de identidade e explicação do procedimento. Informação de prazo e encerramento formal não foram realizados.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia! Como posso ajudá-lo hoje?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Entendo a urgência da situação e vou fazer o possível para ajudá-lo."
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "precisarei de um documento seu que comprove seu parentesco"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "é necessário ter o CPF da sua mãe e um documento que comprove seu parentesco"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "O atendente manteve um tom respeitoso, claro e profissional durante toda a interação, explicando pacientemente os procedimentos e regras, mesmo sob pressão emocional significativa da requerente.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Entendo a urgência da situação e vou fazer o possível para ajudá-lo."
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Compreendo totalmente a sua preocupação e a situação delicada"
+        },
+        {
+          "turn_index": 14,
+          "excerpt": "eu entendo completamente a pressão e a preocupação que você está sentindo"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente foi exemplar em verificar dados e proteger informações sensíveis, seguindo os protocolos sem abrir exceções. A comunicação foi clara e empática, sempre mantendo um tom cordial, mesmo diante da urgência expressa pela cidadã."
+}

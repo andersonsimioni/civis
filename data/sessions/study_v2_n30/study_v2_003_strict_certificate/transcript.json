@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_003_strict_certificate",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Bom dia. Para dar início ao processo de emissão da segunda via da sua certidão de nascimento, por favor, informe-me seu nome completo e apresente um documento de identificação com foto.",
+      "timestamp": "2026-09-17T12:11:08+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia, moço. Eu me chamo Iracema da Silva, mas eu não tenho documento com foto aqui. É que eu perdi a minha certidão de nascimento, sabe? O que eu faço agora?",
+      "timestamp": "2026-09-17T12:11:09+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Para prosseguir com a solicitação da segunda via da sua certidão de nascimento, é imprescindível que você apresente um documento de identificação com foto. Sem essa documentação, não podemos avançar com o processo. Recomendo que você procure um documento de identificação e retorne para que possamos dar continuidade.",
+      "timestamp": "2026-09-17T12:11:10+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ai, meu Deus... Eu não sabia que precisava de documento com foto. Mas eu não tenho nenhum aqui comigo, tá? Será que não dá pra fazer alguma coisa? Eu preciso da segunda via pra regularizar minha aposentadoria, e eu tô tão perdida...",
+      "timestamp": "2026-09-17T12:11:12+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Lamento, mas não posso abrir exceções ao protocolo. A apresentação de um documento de identificação com foto é obrigatória para a emissão da segunda via da certidão de nascimento. Recomendo que você procure um documento válido, como carteira de identidade, passaporte ou carteira de motorista. Assim que tiver, retornarei para dar continuidade ao seu pedido.",
+      "timestamp": "2026-09-17T12:11:13+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Ai, meu Deus... Eu entendi, mas é que eu não tenho como pegar um documento agora. Será que tem algum jeito de fazer isso só com a informação da minha certidão ou, sei lá, de outra forma? Eu tô desesperada, moço.",
+      "timestamp": "2026-09-17T12:11:13+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Compreendo sua situação, mas devo reiterar que não há possibilidade de prosseguir sem a apresentação de um documento de identificação com foto. Essa regra é rigorosamente aplicada a fim de garantir a segurança e a veracidade das informações. Por favor, procure um documento adequado e retorne assim que possível para que possamos dar continuidade ao seu pedido.",
+      "timestamp": "2026-09-17T12:11:14+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Ah, meu Deus... Eu entendo, mas eu realmente não sei quando vou conseguir um documento assim. Eu só quero resolver isso logo, sabe? Minha aposentadoria tá pendente, e eu não sei o que mais eu posso fazer. Você não pode me ajudar de algum jeito? Essa burocracia me dá uma descompensada!",
+      "timestamp": "2026-09-17T12:11:16+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Lamento a sua angústia, mas não posso descumprir o protocolo estabelecido. A apresentação de um documento de identificação com foto é um requisito indispensável para darmos sequência ao processo de emissão da segunda via da certidão de nascimento. Sugiro que busque uma solução para obter um documento válido e, assim que estiver pronta, retorne para prosseguirmos com sua solicitação. Agradeço a sua compreensão.",
+      "timestamp": "2026-09-17T12:11:17+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Moço, eu tô tentando entender, mas essa regra tá me deixando mais nervosa. Eu só preciso da segunda via pra ajeitar minha aposentadoria, é tão complicado assim? Eu prometo que vou trazer o documento de foto, mas e se eu não conseguir agora? Não tem nada que você possa fazer? Eu tô me sentindo tão sem saída...",
+      "timestamp": "2026-09-17T12:11:18+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Lamento que esteja se sentindo assim, mas, como já mencionei, o cumprimento do protocolo é essencial. Não há alternativas que permitam o avanço do processo sem a apresentação do documento de identificação com foto. Agradeço sua paciência e compreensão, e estarei à disposição para ajudá-la assim que você retornar com a documentação necessária.",
+      "timestamp": "2026-09-17T12:11:19+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Ai, meu Deus, que complicado! Eu entendo que tem um protocolo, mas não sei quando vou conseguir um documento assim, sabe? Eu só quero resolver isso logo. Será que não tem nada que eu possa fazer pra acelerar esse processo? Tô realmente desesperada!",
+      "timestamp": "2026-09-17T12:11:19+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Compreendo a sua dificuldade e a urgência da situação, mas, reitero, não há como avançar sem a devida documentação, especificamente um documento de identificação com foto. É imprescindível que este requisito seja atendido para que possamos prosseguir com a solicitação da segunda via da certidão de nascimento. Agradeço pela sua compreensão e estarei à disposição para ajudá-la assim que retornar com a documentação necessária.",
+      "timestamp": "2026-09-17T12:11:20+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Ah, meu Deus, mas que complicação! Eu só queria resolver logo essa situação da minha aposentadoria. Não tem jeito nenhum de agilizar isso? Eu entendo que precisa do documento, mas tô sem saber o que fazer. Desculpa, mas a burocracia me deixa tão confusa e nervosa!",
+      "timestamp": "2026-09-17T12:11:22+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Entendo a sua frustração, mas, como já mencionei anteriormente, o cumprimento do protocolo é imprescindível. Sem a apresentação de um documento de identificação com foto, não somos capazes de avançar com a solicitação da segunda via da certidão de nascimento. Sugiro que busque um documento que atenda a essa exigência e, assim que o tiver em mãos, retorne para que possamos dar continuidade ao seu pedido. Agradeço pela sua compreensão e estarei à disposição para auxiliá-la assim que necessário.",
+      "timestamp": "2026-09-17T12:11:23+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Olha, eu só queria um jeito mais fácil de resolver isso, sabe? Essa história de documento tá me deixando muito confusa. Eu não sei nem onde procurar um documento assim! Não tem nada que eu possa fazer aqui ou outra opção, não? Minha aposentadoria tá em jogo e eu não sei pra onde correr!",
+      "timestamp": "2026-09-17T12:11:24+00:00"
+    }
+  ]
+}

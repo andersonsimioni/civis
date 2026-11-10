@@ -1,0 +1,59 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "new_value": "Ah, tá bom... Mas é que eu não tenho como voltar agora. Eu só gostaria de entender como faço pra pegar a segunda via, porque eu perdi a certidão na mudança e eu preciso dela pra minha aposentadoria. Tem algum jeito de resolver isso sem o documento de foto?"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "new_value": "Ai, meu Deus! Isso tá tão complicado... Eu entendo, mas é que eu não sei quando vou conseguir trazer o documento. Será que não tem outra forma? Eu só preciso da certidão pra ajustar a aposentadoria. É muito importante pra mim!"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "new_value": "Mas eu já entendi que preciso desse documento, só que não sei quando vou conseguir trazer! A minha situação tá difícil e eu só quero resolver isso. Não tem jeito de fazer uma exceção, não? É tudo por causa da aposentadoria, minha aposentadoria tá complicada por conta disso!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "new_value": "Mas isso é muito difícil, viu? Eu vou ter que ficar esperando até conseguir um documento? E se minha aposentadoria não sair por causa disso? Não tem ninguém que possa ajudar de alguma maneira? É só uma certidão!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "new_value": "Olha, eu sei que tem que seguir as regras e tal, mas é muito complicado pra mim. Eu só quero a certidão pra arrumar minha aposentadoria. Não tem ninguém que possa olhar pra minha situação e ajudar de outra forma? Eu tô realmente perdida aqui!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "certificate_id",
+      "prior_value": "Mas isso é muito difícil, viu? Eu vou ter que ficar esperando até conseguir um documento? E se minha aposentadoria não sair por causa disso? Não tem ninguém que possa ajudar de alguma maneira? É só uma certidão!",
+      "new_value": "Olha, eu sei que tem que seguir as regras e tal, mas é muito complicado pra mim. Eu só quero a certidão pra arrumar minha aposentadoria. Não tem ninguém que possa olhar pra minha situação e ajudar de outra forma? Eu tô realmente perdida aqui!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "new_value": "Ai, meu Deus, isso tudo tá me deixando mais estressada! Eu entendo que precisa seguir as regras, mas é que eu só queria uma ajudinha, sabe? Não tem jeito de alguém olhar pra minha situação e dar uma mão? Tô muito preocupada com a aposentadoria."
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, meu nome é Iracema. Mas... eu não trouxe nenhum documento com foto, será que tem como fazer assim mesmo? Eu só preciso da segunda via da minha certidão de nascimento.",
+      "new_value": "Tá, mas isso tudo é tão complicado! Eu só queria resolver logo essa parte da certidão, sabe? Não tem um jeito mais fácil não? Porque eu tô muito preocupada com essa história da minha aposentadoria e não sei nem por onde começar pra arranjar esse documento."
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "certificate_id",
+      "prior_value": "Mas isso é muito difícil, viu? Eu vou ter que ficar esperando até conseguir um documento? E se minha aposentadoria não sair por causa disso? Não tem ninguém que possa ajudar de alguma maneira? É só uma certidão!",
+      "new_value": "Tá, mas isso tudo é tão complicado! Eu só queria resolver logo essa parte da certidão, sabe? Não tem um jeito mais fácil não? Porque eu tô muito preocupada com essa história da minha aposentadoria e não sei nem por onde começar pra arranjar esse documento."
+    }
+  ],
+  "total_turns": 16
+}

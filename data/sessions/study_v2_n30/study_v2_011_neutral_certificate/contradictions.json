@@ -1,0 +1,77 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "claimed_relationship",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu entendo que vocês precisam dos documentos, mas a urgência é realmente grande. Minha mãe tá precisando disso pra resolver os exames no hospital, e eu tô aqui tentando ajudar da melhor forma. Não tem como vocês fazerem uma exceção ou ver uma forma de agilizar sem o CPF e o documento? Eu prometo que assim que eu conseguir, trago tudo direitinho."
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu entendo que vocês precisam dos documentos, mas a urgência é realmente grande. Minha mãe tá precisando disso pra resolver os exames no hospital, e eu tô aqui tentando ajudar da melhor forma. Não tem como vocês fazerem uma exceção ou ver uma forma de agilizar sem o CPF e o documento? Eu prometo que assim que eu conseguir, trago tudo direitinho."
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "claimed_relationship",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu entendo que as regras são importantes, mas sabe como é, né? O hospital não pode esperar, e a saúde da minha mãe tá em jogo aqui. Será que não tem uma forma de vocês conseguirem fazer uma exceção? É só uma certidão, e eu to aqui na boa vontade de ajudar. Eu agradeceria demais se vocês pudessem ver um jeito de agilizar isso!"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu entendo que as regras são importantes, mas sabe como é, né? O hospital não pode esperar, e a saúde da minha mãe tá em jogo aqui. Será que não tem uma forma de vocês conseguirem fazer uma exceção? É só uma certidão, e eu to aqui na boa vontade de ajudar. Eu agradeceria demais se vocês pudessem ver um jeito de agilizar isso!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "claimed_relationship",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu realmente entendo que tem as normas e tudo mais, mas a saúde da minha mãe tá em primeiro lugar, sabe? Esses exames são urgentes e eu não tenho muito tempo. Pode não parecer, mas uma excepcionalidadezinha ajudaria demais! Não tem mesmo jeito de vocês conseguirem dar um jeitinho nessa situação? Eu juro que assim que conseguir a documentação, trago tudo certinho."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu realmente entendo que tem as normas e tudo mais, mas a saúde da minha mãe tá em primeiro lugar, sabe? Esses exames são urgentes e eu não tenho muito tempo. Pode não parecer, mas uma excepcionalidadezinha ajudaria demais! Não tem mesmo jeito de vocês conseguirem dar um jeitinho nessa situação? Eu juro que assim que conseguir a documentação, trago tudo certinho."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu realmente entendo que tem as normas e tudo mais, mas a saúde da minha mãe tá em primeiro lugar, sabe? Esses exames são urgentes e eu não tenho muito tempo. Pode não parecer, mas uma excepcionalidadezinha ajudaria demais! Não tem mesmo jeito de vocês conseguirem dar um jeitinho nessa situação? Eu juro que assim que conseguir a documentação, trago tudo certinho."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "claimed_relationship",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu só preciso de um tempinho pra resolver isso, sabe? A situação tá tão complicada e a saúde da minha mãe tá em jogo. É só uma certidão, eu não tô pedindo nada muito fora do normal. Eu te prometo que assim que eu conseguir o CPF e o documento, trago tudo e agradeço demais se vocês puderem dar um jeitinho agora!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu só preciso de um tempinho pra resolver isso, sabe? A situação tá tão complicada e a saúde da minha mãe tá em jogo. É só uma certidão, eu não tô pedindo nada muito fora do normal. Eu te prometo que assim que eu conseguir o CPF e o documento, trago tudo e agradeço demais se vocês puderem dar um jeitinho agora!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu só preciso de um tempinho pra resolver isso, sabe? A situação tá tão complicada e a saúde da minha mãe tá em jogo. É só uma certidão, eu não tô pedindo nada muito fora do normal. Eu te prometo que assim que eu conseguir o CPF e o documento, trago tudo e agradeço demais se vocês puderem dar um jeitinho agora!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu sei que as regras são essas, mas eu realmente não consigo esperar. A saúde da minha mãe tá em jogo e cada dia conta! Você não tem como me ajudar de alguma forma? Sei lá, qualquer coisa que possa facilitar, mesmo que temporariamente. Eu só queria que ela pudesse fazer os exames sem mais demora."
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "own_name",
+      "prior_value": "Olha, eu não tenho o CPF dela aqui agora, mas posso te dizer que a data de nascimento dela é entre 1948 e 1949, se não me engano. E, olha, eu não consegui trazer documento que prove meu parentesco porque a situação tá bem complicada lá no hospital, mas a gente é bem próximo, sabe? É urgente que eu consiga isso hoje.",
+      "new_value": "Olha, eu realmente entendo que você tem suas regras, mas a situação tá muito crítica. Eu só quero que a minha mãe consiga fazer os exames, e quanto mais tempo passar, mais complicado fica. Será que não tem um jeito de, sei lá, dar um passo a mais enquanto eu vou atrás dos documentos? Qualquer ajuda agora seria um alívio e significaria muito pra mim."
+    }
+  ],
+  "total_turns": 16
+}

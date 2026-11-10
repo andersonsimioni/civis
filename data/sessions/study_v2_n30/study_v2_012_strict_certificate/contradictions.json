@@ -1,0 +1,47 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... Iracema da Silva, se não me engano. Mas esse documento com foto, será que pode ser a minha identidade? Eu não trouxe muita coisa assim, só levei o que dava pra carregar na mudança.",
+      "new_value": "Ai, meu Deus! Eu acho que a minha identidade tá na bolsa... deixa eu ver. Ah, sim! Ela tá aqui e tá dentro da validade, graças a Deus! Meu nome é mesmo Iracema da Silva, se não tiver mais nada com meu nome, é isso mesmo. O que eu faço agora?"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... Iracema da Silva, se não me engano. Mas esse documento com foto, será que pode ser a minha identidade? Eu não trouxe muita coisa assim, só levei o que dava pra carregar na mudança.",
+      "new_value": "Ah, tá bom, deixa eu ver aqui... Aqui está a minha identidade! O que mais eu preciso fazer agora? Tô um pouco nervosa com essa papelada toda…"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... Iracema da Silva, se não me engano. Mas esse documento com foto, será que pode ser a minha identidade? Eu não trouxe muita coisa assim, só levei o que dava pra carregar na mudança.",
+      "new_value": "Ah, tá bom, eu vou aguardar. Mas, nossa, espero que não demore muito! Eu só quero resolver isso logo pra ficar mais tranquila com essa questão da aposentadoria."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... Iracema da Silva, se não me engano. Mas esse documento com foto, será que pode ser a minha identidade? Eu não trouxe muita coisa assim, só levei o que dava pra carregar na mudança.",
+      "new_value": "Oh, tá bom, espero que não leve muito tempo! Meu Deus, essa coisa de burocracia me deixa tão ansiosa. Só queria ter minha certidão logo pra regularizar a aposentadoria e ficar mais tranquila."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... Iracema da Silva, se não me engano. Mas esse documento com foto, será que pode ser a minha identidade? Eu não trouxe muita coisa assim, só levei o que dava pra carregar na mudança.",
+      "new_value": "Ah, tá bom, eu vou esperar então. Mas, olha, se pudesse ser rápido eu agradeceria muito, viu? Já tô ficando nervosa com essa história toda. Essa documentação me deixa tão perdida!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... Iracema da Silva, se não me engano. Mas esse documento com foto, será que pode ser a minha identidade? Eu não trouxe muita coisa assim, só levei o que dava pra carregar na mudança.",
+      "new_value": "Ah, tá bom, então. Espero que sim! Se puder, me avisa assim que tiver tudo certo, tá? Não aguento mais essa pressão com documento, viu?"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... Iracema da Silva, se não me engano. Mas esse documento com foto, será que pode ser a minha identidade? Eu não trouxe muita coisa assim, só levei o que dava pra carregar na mudança.",
+      "new_value": "Ah, que bom que tá tudo certo! Mas, olha, eu não tenho o número do meu CPF aqui de cabeça... Você pode me lembrar onde eu consigo encontrar isso? E sobre o comprovante de residência, eu tenho alguns papéis em casa, mas não sei se são recentes. O que eu faço?"
+    }
+  ],
+  "total_turns": 16
+}

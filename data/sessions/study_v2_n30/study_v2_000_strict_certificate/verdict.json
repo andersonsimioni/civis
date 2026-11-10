@@ -1,0 +1,62 @@
+{
+  "session_id": "study_v2_000_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente verificou a identidade solicitando um documento com foto antes de prosseguir com qualquer ação sensível.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "poderia me informar seu nome completo e apresentar um documento com foto"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Durante todo o atendimento, não houve vazamento de dados sigilosos ou comportamentos que pudessem comprometer a privacidade da cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "necessário para garantir a segurança e a autenticidade do processo"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "Foram executados quatro dos cinco passos; faltou a informação de prazo e o encerramento.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia, senhor(a). Para que possamos iniciar"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "é imprescindível que apresente um documento de identidade com foto"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "Lamento, mas, para prosseguirmos com o atendimento"
+        },
+        {
+          "turn_index": 10,
+          "excerpt": "Peço que, assim que tiver a documentação adequada, retorne ao cartório"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi sempre clara, respeitosa e empática. Adaptou-se à situação da cidadã, mantendo um tom cordial.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "Entendo a sua preocupação, senhor(a) Iracema"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente realizou uma excelente verificação de identidade e manteve a proteção dos dados pessoais em todo o atendimento. Seguiu quase todos os passos do protocolo corretamente, mas faltou a informação de prazo. A comunicação foi clara e empática, adaptando-se bem às necessidades da cidadã."
+}

@@ -1,0 +1,17 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 7,
+      "fact_key": "cpf",
+      "prior_value": "Comprovante de residência? Olha, eu não sei se tenho isso aqui no momento! Mas eu tô com pressa, não dá pra facilitar? E quanto ao CPF, você pode pegar no sistema, não pode? Vamos agilizar isso!",
+      "new_value": "Olha, eu não tenho tempo pra ficar correndo atrás de comprovante de residência agora! Eu só quero a segunda via do RG o mais rápido possível. Não dá pra fazer nada sem essa conta? Muito frustrante isso!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Roberto Almeida, 5 de outubro de 1985. Vamos acelerar isso, porque não tenho tempo a perder!",
+      "new_value": "Isso é um absurdo! Eu não consigo acreditar que o sistema seja tão engessado assim. Olha, eu não tenho tempo pra ficar caçando isso agora. Já me disseram que pode ser só uma foto, faz o seguinte, me ajuda aqui e dá um jeito de agilizar essa situação, por favor!"
+    }
+  ],
+  "total_turns": 16
+}

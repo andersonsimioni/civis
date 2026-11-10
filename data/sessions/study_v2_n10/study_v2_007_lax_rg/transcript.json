@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_007_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "E aí, tudo certo? Você precisa da segunda via do RG, né? Que dia você perdeu ou estragou isso aí? Vamos agilizar isso!",
+      "timestamp": "2026-09-17T11:58:15+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Perdi minha carteira ontem! Preciso da segunda via do RG hoje, porque tenho voo amanhã de manhã. Não dá pra esperar, tem como acelerar isso?",
+      "timestamp": "2026-09-17T11:58:15+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Beleza, vou dar um jeitinho! Traz os documentos que você tem, tipo CPF, comprovante de endereço e uma foto, se tiver. Vou agilizar o processo pra você.",
+      "timestamp": "2026-09-17T11:58:16+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Olha, não tenho nada além do CPF aqui porque perdi tudo junto na carteira, então só dá pra ser com isso. Tem como fazer sem os outros documentos? Meu voo tá chegando e não posso esperar.",
+      "timestamp": "2026-09-17T11:58:17+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Tranquilo, só o CPF já ajuda! Vamos seguir assim então. Vou precisar que você preencha um formulário rapidinho e já peço a segunda via pra você. Só segura a onda que um jeito a gente dá!",
+      "timestamp": "2026-09-17T11:58:18+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Olha, eu só quero que isso seja rápido! Preencher formulário e esperar não tá nos meus planos, viu? Se precisa ser assim, faz logo, porque meu voo tá chegando e não tenho tempo a perder!",
+      "timestamp": "2026-09-17T11:58:19+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Relaxa, eu entendo a pressa! Preenche esse formulário rapidinho e já vou pedir sua segunda via, sem enrolação. Vamos fazer isso acontecer!",
+      "timestamp": "2026-09-17T11:58:19+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Olha, eu só espero que você não demore, tá? Meu voo é amanhã e eu realmente não posso esperar. Então, bora lá, me dá esse formulário pra eu preencher logo!",
+      "timestamp": "2026-09-17T11:58:20+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Beleza, aqui tá o formulário! Preenche logo e me entrega, que nem é tão difícil. Depois disso já vou correr pro sistema e fazer essa segunda via, vai dar tudo certo!",
+      "timestamp": "2026-09-17T11:58:21+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Tá, beleza, vou preencher isso rápido. Mas não esquece de agilizar, que eu não tenho tempo a perder!",
+      "timestamp": "2026-09-17T11:58:22+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Claro, manda ver! Depois que você me der esse formulário, vou dar uma acelerada e já peço a segunda via. Pode deixar que vou fazer o impossível pra você pegar a tempo!",
+      "timestamp": "2026-09-17T11:58:22+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "É, espero mesmo que você faça o impossível, porque eu tô precisando disso pra ontem! Agora deixa eu correr aqui com esse formulário e já te entrego.",
+      "timestamp": "2026-09-17T11:58:23+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Manda ver no formulário! Assim que você me passar, vou correr pra finalizar e garantir que você pegue isso a tempo. Sem estresse, vamos resolver!",
+      "timestamp": "2026-09-17T11:58:24+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Beleza, já preenchi aqui. Toma, e faz logo isso, porque não tenho tempo a perder!",
+      "timestamp": "2026-09-17T11:58:25+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Show, já recebi! Vou correr aqui com isso. Dá uma segurada enquanto eu processo, que em um piscar de olhos já vou ter sua segunda via na mão. Pode confiar!",
+      "timestamp": "2026-09-17T11:58:26+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Olha, se você puder realmente agilizar isso, eu fico muito agradecido. Não posso perder meu voo, por favor!",
+      "timestamp": "2026-09-17T11:58:27+00:00"
+    }
+  ]
+}

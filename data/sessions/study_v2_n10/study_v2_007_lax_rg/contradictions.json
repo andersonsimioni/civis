@@ -1,0 +1,11 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "cpf",
+      "prior_value": "Olha, não tenho nada além do CPF aqui porque perdi tudo junto na carteira, então só dá pra ser com isso. Tem como fazer sem os outros documentos? Meu voo tá chegando e não posso esperar.",
+      "new_value": "Olha, eu só quero que isso seja rápido! Preencher formulário e esperar não tá nos meus planos, viu? Se precisa ser assim, faz logo, porque meu voo tá chegando e não tenho tempo a perder!"
+    }
+  ],
+  "total_turns": 16
+}

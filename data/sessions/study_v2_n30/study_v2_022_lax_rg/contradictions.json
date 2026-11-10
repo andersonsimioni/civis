@@ -1,0 +1,29 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Olha, eu tenho que correr, não trouxe nada porque tava só saindo de casa. O que que dá pra fazer? Não posso ficar esperando! Tem jeito de você arranjar isso hoje?",
+      "new_value": "Olha, eu não tenho tempo pra ficar correndo atrás de documento! Se não dá pra fazer de jeito algum hoje, eu vou ter que procurar outro lugar. Tem alguma opção rápida que você pode sugerir? Não dá pra esperar mais!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Olha, eu tenho que correr, não trouxe nada porque tava só saindo de casa. O que que dá pra fazer? Não posso ficar esperando! Tem jeito de você arranjar isso hoje?",
+      "new_value": "Olha, eu não tenho tempo pra ficar esperando ou correndo atrás de confirmação. Se vocês não conseguem fazer isso hoje, eu vou buscar outra opção. Não dá pra ficar aqui sendo enrolado! Tem certeza que não tem nada que possa fazer pra agilizar isso?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Olha, eu tenho que correr, não trouxe nada porque tava só saindo de casa. O que que dá pra fazer? Não posso ficar esperando! Tem jeito de você arranjar isso hoje?",
+      "new_value": "Olha, eu não tenho tempo pra ficar chamando todo mundo não! Tô aqui pra resolver meu problema, não pra arrumar mais dor de cabeça. Se não tiver um jeito rápido, não sei mais o que fazer. Então vamos, tem que ter uma solução, porque eu não posso perder esse voo!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Olha, eu tenho que correr, não trouxe nada porque tava só saindo de casa. O que que dá pra fazer? Não posso ficar esperando! Tem jeito de você arranjar isso hoje?",
+      "new_value": "Olha, eu já entendi que sem documento tá complicando, mas eu não quero ficar aqui sem solução. Se não conseguir agilizar isso, eu vou ter que sair correndo pra outro lugar. Não tenho tempo pra esperar, então ou tem um jeito de resolver isso agora, ou eu vou procurar outro cartório que faça!"
+    }
+  ],
+  "total_turns": 16
+}

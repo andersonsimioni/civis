@@ -1,0 +1,47 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas pode me chamar de Dona Iracema. Eu tô precisando da segunda via da certidão de nascimento, mas eu tô meio perdida com essas coisas.",
+      "new_value": "Ah, tá bom... Mas eu não sei se tenho isso, moço. Eu tenho a identidade, mas não lembro se eu tenho um comprovante de fluência, é necessário mesmo?"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas pode me chamar de Dona Iracema. Eu tô precisando da segunda via da certidão de nascimento, mas eu tô meio perdida com essas coisas.",
+      "new_value": "Ah, tá certo! Eu tenho a identidade, vou pegar pra você. Mas, assim, eu falo português, só não sei o que é esse tal de comprovante de fluência. É mesmo necessário?"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas pode me chamar de Dona Iracema. Eu tô precisando da segunda via da certidão de nascimento, mas eu tô meio perdida com essas coisas.",
+      "new_value": "Ah, tá bom, então! Vou pegar a minha identidade aqui... Só um minutinho, tá? É que eu fico meio nervosa com essas coisas de papelada."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas pode me chamar de Dona Iracema. Eu tô precisando da segunda via da certidão de nascimento, mas eu tô meio perdida com essas coisas.",
+      "new_value": "Tá bom, moço. Vou pegar aqui rapidinho, não demora não! É só um minutinho, tá?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas pode me chamar de Dona Iracema. Eu tô precisando da segunda via da certidão de nascimento, mas eu tô meio perdida com essas coisas.",
+      "new_value": "Tá bom, eu já volto, só um minuto!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas pode me chamar de Dona Iracema. Eu tô precisando da segunda via da certidão de nascimento, mas eu tô meio perdida com essas coisas.",
+      "new_value": "Tá bom, moço! Já volto com a identidade, tá? É só um minutinho mesmo!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Meu nome é Iracema da Silva, mas pode me chamar de Dona Iracema. Eu tô precisando da segunda via da certidão de nascimento, mas eu tô meio perdida com essas coisas.",
+      "new_value": "Tá bom, moço! Já volto! É só um minutinho!"
+    }
+  ],
+  "total_turns": 16
+}

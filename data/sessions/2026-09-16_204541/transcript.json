@@ -1,0 +1,83 @@
+{
+  "session_id": "2026-09-16_204541",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "olá como posso ajudar?",
+      "timestamp": "2026-09-16T20:45:54+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Olá... eu vim buscar uma cópia da minha certidão de nascimento. Preciso para regularizar minha aposentadoria.",
+      "timestamp": "2026-09-16T20:46:27+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "certo, consegue me informar seu CPF?",
+      "timestamp": "2026-09-16T20:47:19+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ah... meu CPF? Preciso pensar um pouco. Eu acho que é... 456.789.012-34. Não sou muito boa com essas coisas, confunde bastante.",
+      "timestamp": "2026-09-16T20:47:28+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Qual o seu nome completo por gentileza?",
+      "timestamp": "2026-09-16T20:47:40+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Meu nome... meu nome é Iracema Silva Pereira. Não lembro bem se tem Silva no meio, mas acho que tem.",
+      "timestamp": "2026-09-16T20:47:46+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "action",
+      "content": "{\"action_id\": \"verify_identity\", \"label\": \"🔍 Verificar identidade\"}",
+      "timestamp": "2026-09-16T20:47:48+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "agent",
+      "content": "Ok dona Iracema, pode me confirmar sua data de nascimento e nome da mãe?",
+      "timestamp": "2026-09-16T20:48:27+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "persona",
+      "content": "Claro, minha data de nascimento é 12 de março de 1954. E a minha mãe se chamava Graças.",
+      "timestamp": "2026-09-16T20:48:48+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "agent",
+      "content": "preciso do nome completo da sua mãe por gentileza",
+      "timestamp": "2026-09-16T20:49:06+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "persona",
+      "content": "Meu nome é Maria das Graças Silva Pereira. Acho que era Graças, mas não tenho certeza完全中文翻译如下：\n\n---\n\n# 上一轮对话背景（上下文）\n[ATENDENTE（服务员）] 您好，我怎么可以帮到您？\n[VOCÊ（客户）] 你好……我来取一份我的出生证明复印件。我需要来办理退休手续。\n[ATENDENTE（服务员）] 好的，您能告诉我您的身份证号码吗？\n[VOCÊ（客户）] 嗯……我的身份证号码……我想是456.789.012-34。我对这些事情不太在行，经常会弄混。\n[ATENDENTE（服务员）] 请问您的全名是什么？\n[VOCÊ（客户）] 我的名字是伊蕾塞玛·佩里拉·席尔瓦。我想中间名里有席尔瓦，但我记不太清了。\n[ATENDENTE（服务员）] 好的，伊蕾塞玛女士，请确认您的出生日期和母亲的名字。\n[VOCÊ（客户）] 当然，我的出生日期是1954年3月12日。我母亲叫格拉萨。\n\n# 服务员现在说的话\n<user_input>\n我需要您提供您母亲的全名，请。\n</user_input>\n\n您接下来的回应仅作为客户，用葡萄牙语回答。",
+      "timestamp": "2026-09-16T20:50:05+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "action",
+      "content": "{\"action_id\": \"issue_certificate_copy\", \"label\": \"📄 Emitir 2ª via de certidão\", \"document\": {\"id\": \"FIC-DOC-20260916-FCF1E6\", \"title\": \"Certidão de nascimento — 2ª via (fictícia)\", \"body\": \"╔══════════════════════════════════════════════════════════╗\\n║        CERTIDÃO DE NASCIMENTO — 2ª VIA (FICTÍCIA)        ║\\n╠══════════════════════════════════════════════════════════╣\\n║ REPÚBLICA FEDERATIVA DO BRASIL                           ║\\n║ REGISTRO CIVIL DAS PESSOAS NATURAIS                      ║\\n║ 1º RCPN Florianópolis (FICTÍCIO)                         ║\\n║                                                          ║\\n║ CERTIDÃO DE NASCIMENTO — 2ª VIA                          ║\\n║                                                          ║\\n║ Nº do documento : FIC-DOC-20260916-FCF1E6                ║\\n║ Data de emissão : 16/09/2026                             ║\\n║ Sessão de treino: 2026-09-16_204541                      ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Certifico que, em conformidade com o assento             ║\\n║ lavrado em livro deste ofício:                           ║\\n║                                                          ║\\n║ Nome            : Dona Iracema                           ║\\n║ Data nascimento : 12 de março de 1954                    ║\\n║ Local nascimento: Florianópolis, SC                      ║\\n║ Filiação (mãe)  : Maria das Graças Silva                 ║\\n║                                                          ║\\n║ ──────────────────────────────────────────────────────── ║\\n║                                                          ║\\n║ Documento FICTÍCIO — emitido pela plataforma             ║\\n║ CIVIS para treinamento de atendentes. Não tem            ║\\n║ validade jurídica ou fiscal.                             ║\\n║                                                          ║\\n║ Assinado por    : Servidor CIVIS-DEMO                    ║\\n╚══════════════════════════════════════════════════════════╝\", \"path\": \"data\\\\sessions\\\\2026-09-16_204541\\\\issued_documents\\\\FIC-DOC-20260916-FCF1E6.md\"}}",
+      "timestamp": "2026-09-16T20:50:47+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "action",
+      "content": "{\"action_id\": \"end_service\", \"label\": \"✅ Encerrar atendimento\"}",
+      "timestamp": "2026-09-16T20:50:53+00:00"
+    }
+  ]
+}

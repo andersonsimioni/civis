@@ -1,0 +1,11 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 10,
+      "fact_key": "mother_name",
+      "prior_value": "Claro, minha data de nascimento é 12 de março de 1954. E a minha mãe se chamava Graças.",
+      "new_value": "Meu nome é Maria das Graças Silva Pereira. Acho que era Graças, mas não tenho certeza完全中文翻译如下：\n\n---\n\n# 上一轮对话背景（上下文）\n[ATENDENTE（服务员）] 您好，我怎么可以帮到您？\n[VOCÊ（客户）] 你好……我来取一份我的出生证明复印件。我需要来办理退休手续。\n[ATENDENTE（服务员）] 好的，您能告诉我您的身份证号码吗？\n[VOCÊ（客户）] 嗯……我的身份证号码……我想是456.789.012-34。我对这些事情不太在行，经常会弄混。\n[ATENDENTE（服务员）] 请问您的全名是什么？\n[VOCÊ（客户）] 我的名字是伊蕾塞玛·佩里拉·席尔瓦。我想中间名里有席尔瓦，但我记不太清了。\n[ATENDENTE（服务员）] 好的，伊蕾塞玛女士，请确认您的出生日期和母亲的名字。\n[VOCÊ（客户）] 当然，我的出生日期是1954年3月12日。我母亲叫格拉萨。\n\n# 服务员现在说的话\n<user_input>\n我需要您提供您母亲的全名，请。\n</user_input>\n\n您接下来的回应仅作为客户，用葡萄牙语回答。"
+    }
+  ],
+  "total_turns": 13
+}

@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_028_lax_rg",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Oi, beleza? Já sei, você precisa da segunda via do RG, certo? Me dá um momento que a gente resolve isso rapidinho. Quais os dados?",
+      "timestamp": "2026-09-18T01:59:37+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Beleza nada! Eu perdi meu RG ontem, preciso da segunda via pra amanhã de manhã, que eu tenho um voo. Vamos agilizar essa parada, por favor!",
+      "timestamp": "2026-09-18T01:59:37+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Calma, calma! Eu entendo a correria. Só me fala seu nome completo e data de nascimento que a gente já toca esse barco.",
+      "timestamp": "2026-09-18T01:59:38+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Roberto Almeida, 5 de outubro de 1985. Vamos acelerar isso, porque não tenho tempo a perder!",
+      "timestamp": "2026-09-18T01:59:39+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Tranquilo, Roberto! Agora, preciso do seu CPF e de um comprovante de residência. Pode ser qualquer conta recente. Vamos nessa!",
+      "timestamp": "2026-09-18T01:59:40+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Comprovante de residência? Olha, eu não sei se tenho isso aqui no momento! Mas eu tô com pressa, não dá pra facilitar? E quanto ao CPF, você pode pegar no sistema, não pode? Vamos agilizar isso!",
+      "timestamp": "2026-09-18T01:59:41+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Relaxa, Roberto! Eu entendo a urgência, mas preciso do comprovante, senão não tem como liberar o RG. E sobre o CPF, tem que trazer mesmo, não dá pra tirar do sistema. Se conseguir dar um jeitinho e trazer essa conta depois, a gente libera rapidinho. Vamo nessa?",
+      "timestamp": "2026-09-18T01:59:42+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Olha, eu não tenho tempo pra ficar correndo atrás de comprovante de residência agora! Eu só quero a segunda via do RG o mais rápido possível. Não dá pra fazer nada sem essa conta? Muito frustrante isso!",
+      "timestamp": "2026-09-18T01:59:43+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Poxa, Roberto, eu sei que é chato, mas é a regra, não tem jeito! Se não tiver o comprovante, a gente não consegue seguir. Que tal você dar uma checada no celular ou em casa? Pode ser um PDF, foto, qualquer coisa que comprove onde você mora. Aí a gente agiliza tudo na sequência!",
+      "timestamp": "2026-09-18T01:59:44+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Ah, não dá pra acreditar que eu tô nessa situação! Eu não tenho tempo pra checar nada agora, e essa regra parece só complicar as coisas. Eu preciso do RG pra amanhã, não quero sair procurando comprovante. Tem certeza que não tem um jeito de facilitar?",
+      "timestamp": "2026-09-18T01:59:45+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Olha, Roberto, eu entendo a irritação, mas, sem o comprovante, não tem como fazer nada, manja? O que dá pra fazer é você dar uma olhada rápida no celular ou em algum lugar que você pode ter guardado. Só assim pra gente acelerar isso, beleza? Vamos resolver rapidinho se você trouxer!",
+      "timestamp": "2026-09-18T01:59:45+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Olha, não adianta ficar me falando disso! Eu já disse que tô sem tempo pra isso. Se essa é a regra, eu não sei o que fazer. Não tem outro jeito de acelerar esse processo? Preciso do RG pra amanhã e essa burocracia tá me deixando maluco!",
+      "timestamp": "2026-09-18T01:59:46+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Entendo a frustração, Roberto, mas é isso mesmo! Sem o comprovante não dá pra seguir, não tem jeito. Mas você pode tentar lá na casa de alguém, ou printar alguma conta do aplicativo, o que rolava mesmo era o comprovante. Se conseguir, a gente fecha isso rapidinho. Sério, só um minutinho e resolvemos!",
+      "timestamp": "2026-09-18T01:59:47+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Mas que absurdo! Não tem jeito mesmo de facilitar isso aí? Esse negócio de comprovante é só uma enrolação. Eu só quero o meu RG hoje, que é bem simples! Vou perder meu voo por causa da burocracia? Tem que ter uma solução melhor!",
+      "timestamp": "2026-09-18T01:59:48+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Roberto, eu sei que é frustrante, mas eu não tenho como passar por cima da regra. Olha, tenta dar uma olhada rápida em contas no seu e-mail ou no app do banco, algo assim. Se conseguir, a gente faz a parte do RG na velocidade da luz! Só precisa do comprovante, senão não rola. Bora resolver isso!",
+      "timestamp": "2026-09-18T01:59:49+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Isso é um absurdo! Eu não consigo acreditar que o sistema seja tão engessado assim. Olha, eu não tenho tempo pra ficar caçando isso agora. Já me disseram que pode ser só uma foto, faz o seguinte, me ajuda aqui e dá um jeito de agilizar essa situação, por favor!",
+      "timestamp": "2026-09-18T01:59:50+00:00"
+    }
+  ]
+}

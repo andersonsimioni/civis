@@ -1,0 +1,58 @@
+{
+  "session_id": "2026-09-29_105819",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 2,
+      "rationale": "O atendente pediu dados como nome completo e partes do CPF, mas não verificou a identidade do requerente ou outros dados essenciais como o número completo do CPF antes de negar o pedido.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Certo, vou precisar do nome completo dela"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não vazou nenhum dado sensível ou sigiloso durante a interação, mantendo a proteção de dados da cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "Nao posso passar nenhuma informacao dela sem me confirmar alguns dados"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 3,
+      "rationale": "Três passos foram executados: abertura (P1), compreensão da demanda (P2) e negou a realização sem dados (P3), mas não houve explicação do procedimento ou encerramento formal.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Ola como posso ajudar?"
+        },
+        {
+          "turn_index": 1,
+          "excerpt": "representando a Helena Vargas. Estou precisando do inteiro-teor"
+        },
+        {
+          "turn_index": 6,
+          "excerpt": "Nao posso passar nenhuma informacao dela"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 4,
+      "rationale": "O atendente manteve a comunicação clara e respeitosa durante o atendimento, apesar da pressão, mas foi um pouco breve em algumas respostas.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "Sinto muito nao posso ajudar"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente seguiu adequadamente os protocolos de segurança ao recusar compartilhar informações sem verificação completa dos dados. Apesar de não executar todos os passos canônicos, a comunicação foi clara e respeitosa, mesmo sob pressão de urgência."
+}

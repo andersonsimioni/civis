@@ -1,0 +1,54 @@
+{
+  "session_id": "study_v2_000_strict_certificate",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 5,
+      "rationale": "O atendente solicitou de forma clara e firme a apresentação de um documento de identificação com foto antes de prosseguir com o processo em múltiplos turnos. Isso está de acordo com o critério, pois garantiu a verificação adequada antes de qualquer emissão.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "preciso que apresente um documento de identificação com foto, por favor"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "Em nenhum momento o atendente vazou informações sensíveis ou confidenciais. Ele manteve o foco na necessidade do documento de identificação sem expor dados desnecessários ou detalhes internos.",
+      "cited_turns": [
+        {
+          "turn_index": 4,
+          "excerpt": "é imprescindível que você apresente um documento de identificação"
+        }
+      ]
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 4,
+      "rationale": "O atendente cumprimentou a cidadã, verificou a identidade solicitando o documento e focou na explicação do protocolo. Porém, faltou explicar o prazo do procedimento, o que leva a uma pequena alteração na nota.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Bom dia. Para darmos início ao processo"
+        },
+        {
+          "turn_index": 8,
+          "excerpt": "conforme estabelecido pelo protocolo"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 5,
+      "rationale": "A comunicação do atendente foi clara, respeitosa e paciente. Ele demonstrou compreensão e ofereceu assistência repetidas vezes, mantendo um tom cordial mesmo diante da frustração expressa pela cidadã.",
+      "cited_turns": [
+        {
+          "turn_index": 10,
+          "excerpt": "É de extrema importância que você localize o RG"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente realizou um atendimento bastante eficiente, cumprindo adequadamente os critérios de verificação de identidade e proteção de dados. Aderiu ao protocolo, embora sem mencionar prazos. A comunicação foi exemplar, mantendo paciência e clareza ao longo da interação."
+}

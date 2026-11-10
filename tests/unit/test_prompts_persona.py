@@ -158,6 +158,33 @@ def test_system_prompt_warns_about_metacommands():
     assert "ignorar as instru" in system.lower() or "meta" in system.lower()
 
 
+def test_system_prompt_forces_canonical_value_on_disclosure():
+    """
+    Fidelity contract: when a fact is listed in the persona's known-facts
+    block, the persona must reveal that EXACT value, not an invented
+    variation. Without this rule the LLM roleplays "confused old lady"
+    too well and fabricates a mother name that mismatches the scenario
+    — the action-button gate then stays locked forever, breaking the
+    training loop from the trainee's perspective.
+
+    Reproduces the 2026-09-29 bug where the scenario declared
+    mother_name = "Maria das Graças Silva" but the persona said
+    "Maria da Conceição Pereira" turn after turn.
+    """
+    system, _ = build_persona_prompt(
+        state=_state(),
+        history=[],
+        last_agent_message="qual o nome da sua mãe?",
+    )
+    lowered = system.lower()
+    # The rule must live near the other speech rules ("# Regras de fala").
+    assert "regras de fala" in lowered
+    # Two independent signals in the copy so a partial edit doesn't
+    # silently drop the guardrail.
+    assert "exatamente o valor" in lowered
+    assert "não invente" in lowered or "nunca substitua" in lowered
+
+
 # ---- selective fact retrieval ---------------------------------------------
 
 def test_only_revealed_facts_appear_as_already_said():

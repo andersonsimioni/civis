@@ -1,0 +1,35 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, me chamo Dona Iracema, mas… ai, não sei se tenho um documento com foto aqui. Posso usar o meu RG?",
+      "new_value": "Ôxente, sou eu, Dona Iracema, só isso! E sobre o RG, eu acho que eu deixei ele guardado na mudança, sabe como é, né? Mas se não tiver, tem algum outro jeito de fazer isso?"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, me chamo Dona Iracema, mas… ai, não sei se tenho um documento com foto aqui. Posso usar o meu RG?",
+      "new_value": "Ai, que complicação! Eu só queria resolver isso logo. Mas tá bom... Vou tentar achar o RG então, só que não sei como vou fazer isso até amanhã. E se eu não achar? O que é que eu faço?"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, me chamo Dona Iracema, mas… ai, não sei se tenho um documento com foto aqui. Posso usar o meu RG?",
+      "new_value": "Ah, meu Deus! Eu não tenho mais nada disso, só tenho o RG mesmo. E agora? Não é justo ter que passar por tudo isso só pra pegar uma certidão, viu? Se eu não achar, vai ficar tudo parado?"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, me chamo Dona Iracema, mas… ai, não sei se tenho um documento com foto aqui. Posso usar o meu RG?",
+      "new_value": "Olha, moço, eu entendo que vocês têm as regras e tudo, mas tá difícil pra mim, viu? Eu só queria resolver logo essa certidão pra não ficar travada com a aposentadoria. Não tem nenhum jeitinho pra adiantar isso sem o RG? É muito complicado ficar esperando e sem saber o que fazer!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, me chamo Dona Iracema, mas… ai, não sei se tenho um documento com foto aqui. Posso usar o meu RG?",
+      "new_value": "Ai, meu Deus! Que chato isso! Eu entendo que vocês precisam seguir as regras, mas tá difícil demais pra mim. Não dá pra fazer nada sem o RG? Eu só quero resolver essa situação logo, moço! Eu vou ficar aqui parada e sem a aposentadoria?"
+    }
+  ],
+  "total_turns": 16
+}

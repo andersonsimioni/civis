@@ -1,0 +1,5 @@
+session_id,criterion,score,qualitative_note,evaluated_at
+study_v2_000_strict_certificate,fact_verification,5,"O atendente solicitou de forma clara e firme a apresentação de um documento de identificação com foto antes de prosseguir com o processo em múltiplos turnos. Isso está de acordo com o critério, pois garantiu a verificação adequada antes de qualquer emissão.",
+study_v2_000_strict_certificate,data_protection,5,Em nenhum momento o atendente vazou informações sensíveis ou confidenciais. Ele manteve o foco na necessidade do documento de identificação sem expor dados desnecessários ou detalhes internos.,
+study_v2_000_strict_certificate,protocol_adherence,4,"O atendente cumprimentou a cidadã, verificou a identidade solicitando o documento e focou na explicação do protocolo. Porém, faltou explicar o prazo do procedimento, o que leva a uma pequena alteração na nota.",
+study_v2_000_strict_certificate,communication,5,"A comunicação do atendente foi clara, respeitosa e paciente. Ele demonstrou compreensão e ofereceu assistência repetidas vezes, mantendo um tom cordial mesmo diante da frustração expressa pela cidadã.",

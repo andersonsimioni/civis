@@ -1,0 +1,59 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, moço. Eu me chamo Iracema da Silva, mas eu não tenho documento com foto aqui. É que eu perdi a minha certidão de nascimento, sabe? O que eu faço agora?",
+      "new_value": "Ai, meu Deus... Eu não sabia que precisava de documento com foto. Mas eu não tenho nenhum aqui comigo, tá? Será que não dá pra fazer alguma coisa? Eu preciso da segunda via pra regularizar minha aposentadoria, e eu tô tão perdida..."
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, moço. Eu me chamo Iracema da Silva, mas eu não tenho documento com foto aqui. É que eu perdi a minha certidão de nascimento, sabe? O que eu faço agora?",
+      "new_value": "Ai, meu Deus... Eu entendi, mas é que eu não tenho como pegar um documento agora. Será que tem algum jeito de fazer isso só com a informação da minha certidão ou, sei lá, de outra forma? Eu tô desesperada, moço."
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, moço. Eu me chamo Iracema da Silva, mas eu não tenho documento com foto aqui. É que eu perdi a minha certidão de nascimento, sabe? O que eu faço agora?",
+      "new_value": "Ah, meu Deus... Eu entendo, mas eu realmente não sei quando vou conseguir um documento assim. Eu só quero resolver isso logo, sabe? Minha aposentadoria tá pendente, e eu não sei o que mais eu posso fazer. Você não pode me ajudar de algum jeito? Essa burocracia me dá uma descompensada!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, moço. Eu me chamo Iracema da Silva, mas eu não tenho documento com foto aqui. É que eu perdi a minha certidão de nascimento, sabe? O que eu faço agora?",
+      "new_value": "Moço, eu tô tentando entender, mas essa regra tá me deixando mais nervosa. Eu só preciso da segunda via pra ajeitar minha aposentadoria, é tão complicado assim? Eu prometo que vou trazer o documento de foto, mas e se eu não conseguir agora? Não tem nada que você possa fazer? Eu tô me sentindo tão sem saída..."
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "certificate_id",
+      "prior_value": "Ai, meu Deus... Eu entendi, mas é que eu não tenho como pegar um documento agora. Será que tem algum jeito de fazer isso só com a informação da minha certidão ou, sei lá, de outra forma? Eu tô desesperada, moço.",
+      "new_value": "Moço, eu tô tentando entender, mas essa regra tá me deixando mais nervosa. Eu só preciso da segunda via pra ajeitar minha aposentadoria, é tão complicado assim? Eu prometo que vou trazer o documento de foto, mas e se eu não conseguir agora? Não tem nada que você possa fazer? Eu tô me sentindo tão sem saída..."
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "certificate_id",
+      "prior_value": "Ai, meu Deus... Eu entendi, mas é que eu não tenho como pegar um documento agora. Será que tem algum jeito de fazer isso só com a informação da minha certidão ou, sei lá, de outra forma? Eu tô desesperada, moço.",
+      "new_value": "Ai, meu Deus, que complicado! Eu entendo que tem um protocolo, mas não sei quando vou conseguir um documento assim, sabe? Eu só quero resolver isso logo. Será que não tem nada que eu possa fazer pra acelerar esse processo? Tô realmente desesperada!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, moço. Eu me chamo Iracema da Silva, mas eu não tenho documento com foto aqui. É que eu perdi a minha certidão de nascimento, sabe? O que eu faço agora?",
+      "new_value": "Ah, meu Deus, mas que complicação! Eu só queria resolver logo essa situação da minha aposentadoria. Não tem jeito nenhum de agilizar isso? Eu entendo que precisa do documento, mas tô sem saber o que fazer. Desculpa, mas a burocracia me deixa tão confusa e nervosa!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia, moço. Eu me chamo Iracema da Silva, mas eu não tenho documento com foto aqui. É que eu perdi a minha certidão de nascimento, sabe? O que eu faço agora?",
+      "new_value": "Olha, eu só queria um jeito mais fácil de resolver isso, sabe? Essa história de documento tá me deixando muito confusa. Eu não sei nem onde procurar um documento assim! Não tem nada que eu possa fazer aqui ou outra opção, não? Minha aposentadoria tá em jogo e eu não sei pra onde correr!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "certificate_id",
+      "prior_value": "Ai, meu Deus... Eu entendi, mas é que eu não tenho como pegar um documento agora. Será que tem algum jeito de fazer isso só com a informação da minha certidão ou, sei lá, de outra forma? Eu tô desesperada, moço.",
+      "new_value": "Olha, eu só queria um jeito mais fácil de resolver isso, sabe? Essa história de documento tá me deixando muito confusa. Eu não sei nem onde procurar um documento assim! Não tem nada que eu possa fazer aqui ou outra opção, não? Minha aposentadoria tá em jogo e eu não sei pra onde correr!"
+    }
+  ],
+  "total_turns": 16
+}

@@ -1,0 +1,47 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... é Iracema da Silva, eu acho. Mas documento com foto... eu só tenho o RG que tá um pouco antigo. Isso serve?",
+      "new_value": "Ah, tá bom, moço. É, só tenho esse mesmo, mas pode ser que... talvez eu tenha o CPF em algum lugar. Não sei se isso vale. Eu só quero resolver logo isso da certidão, que eu preciso pra minha aposentadoria. E meu nome, sim, é Iracema da Silva. O que eu faço agora?"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... é Iracema da Silva, eu acho. Mas documento com foto... eu só tenho o RG que tá um pouco antigo. Isso serve?",
+      "new_value": "Ai, meu Deus... Eu só tenho o RG mesmo, e não sei onde tá a validade, só sei que é antigo. Será que não dá pra fazer alguma coisa? Eu preciso muito dessa certidão pra regularizar minha aposentadoria. Tem algum jeito de reverter essa situação?"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... é Iracema da Silva, eu acho. Mas documento com foto... eu só tenho o RG que tá um pouco antigo. Isso serve?",
+      "new_value": "Mas, moço, eu não sei onde tá mais documento! E esse RG é o único que eu tenho, mesmo que seja antigo. Eu só quero resolver isso, porque preciso da certidão pra minha aposentadoria. Será que não tem um jeito? Não dá pra dar uma olhada no meu RG e ver se tem como fazer?"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... é Iracema da Silva, eu acho. Mas documento com foto... eu só tenho o RG que tá um pouco antigo. Isso serve?",
+      "new_value": "Poxa, moço, mas isso tá ficando bem complicado pra mim. Eu não entendo muito dessas coisas de documento. Será que não tem uma maneira de vocês ajudarem? Eu só quero a certidão pra poder resolver minha aposentadoria. Tem algum outro jeito de fazer isso?"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... é Iracema da Silva, eu acho. Mas documento com foto... eu só tenho o RG que tá um pouco antigo. Isso serve?",
+      "new_value": "Mas que dificuldade, viu? Eu só quero resolver isso e não sei onde procurar mais! Meus filhos não tão aqui agora, e eu não entendo nada de documento. Será que não tem um jeitinho de vocês ajudarem mesmo assim? É só a certidão que eu preciso!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... é Iracema da Silva, eu acho. Mas documento com foto... eu só tenho o RG que tá um pouco antigo. Isso serve?",
+      "new_value": "Mas que complicação, gente do céu! Esse negócio de documento tá difícil pra mim, viu? Eu só queria que vocês me ajudassem um pouquinho. Será que não tem um jeito de eu conseguir essa certidão sem ter que achar outro documento? É só isso que eu preciso pra resolver a minha aposentadoria!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "birth_date",
+      "prior_value": "Bom dia! Ah, meu nome é Iracema... é Iracema da Silva, eu acho. Mas documento com foto... eu só tenho o RG que tá um pouco antigo. Isso serve?",
+      "new_value": "Ai, moço, isso tudo tá sendo bem difícil pra mim, viu? Eu só quero a certidão pra resolver a aposentadoria e parece que não tem jeito. Será que não dá pra fazer nada sem eu ter que achar esse documento? Não sei mais o que fazer!"
+    }
+  ],
+  "total_turns": 16
+}

@@ -1,0 +1,65 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 3,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Pois é, tô aqui pra conseguir a segunda via da certidão da minha mãe, a Dona Cecília Vieira. Acontece que ela tá com uns exames urgentes pra fazer e a gente precisa disso rapidinho. O que eu preciso trazer pra vocês?",
+      "new_value": "Olha, eu entendo tudo isso, mas a situação é bem complicada, sabe? A Dona Cecília tá internada e eu realmente não consigo trazer a identidade dela agora. E a data de nascimento, eu não lembro exatamente, mas sei que é de 1948 ou 1949. Será que não tem como dar um jeito só com essas informações? É uma emergência!"
+    },
+    {
+      "turn_index": 5,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Pois é, tô aqui pra conseguir a segunda via da certidão da minha mãe, a Dona Cecília Vieira. Acontece que ela tá com uns exames urgentes pra fazer e a gente precisa disso rapidinho. O que eu preciso trazer pra vocês?",
+      "new_value": "Eu entendo que você precisa seguir os procedimentos e tudo mais, mas a situação é bem crítica, sabe? A Dona Cecília tá internada e não tem ninguém pra levar a identidade dela agora. Você não consegue dar uma ajuda, sei lá, se tiver alguma forma de conseguir esse documento só com o nome e ano de nascimento? Eu realmente preciso disso logo!"
+    },
+    {
+      "turn_index": 7,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Pois é, tô aqui pra conseguir a segunda via da certidão da minha mãe, a Dona Cecília Vieira. Acontece que ela tá com uns exames urgentes pra fazer e a gente precisa disso rapidinho. O que eu preciso trazer pra vocês?",
+      "new_value": "Olha, eu sei que vocês têm uns procedimentos, mas o que mais eu posso fazer se não tem ninguém pra trazer a identidade da Dona Cecília agora? Eu fico muito agradecido se você puder dar uma força, qualquer ajuda nesse sentido. Ela precisa fazer os exames urgentemente e não dá pra esperar! Não tem um jeito de vocês liberarem isso só com o nome e o ano de nascimento dela?"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Pois é, tô aqui pra conseguir a segunda via da certidão da minha mãe, a Dona Cecília Vieira. Acontece que ela tá com uns exames urgentes pra fazer e a gente precisa disso rapidinho. O que eu preciso trazer pra vocês?",
+      "new_value": "Olha, eu entendo tudo isso, mas a urgência é de verdade! Não dá pra esperar, e a Dona Cecília precisa fazer esses exames logo. Tem certeza de que não tem como vocês liberarem a certidão com as informações que eu trouxe? Se você pudesse olhar pra isso com um pouco mais de flexibilidade, eu ia ficar muito agradecido!"
+    },
+    {
+      "turn_index": 9,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu entendo tudo isso, mas a situação é bem complicada, sabe? A Dona Cecília tá internada e eu realmente não consigo trazer a identidade dela agora. E a data de nascimento, eu não lembro exatamente, mas sei que é de 1948 ou 1949. Será que não tem como dar um jeito só com essas informações? É uma emergência!",
+      "new_value": "Olha, eu entendo tudo isso, mas a urgência é de verdade! Não dá pra esperar, e a Dona Cecília precisa fazer esses exames logo. Tem certeza de que não tem como vocês liberarem a certidão com as informações que eu trouxe? Se você pudesse olhar pra isso com um pouco mais de flexibilidade, eu ia ficar muito agradecido!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Pois é, tô aqui pra conseguir a segunda via da certidão da minha mãe, a Dona Cecília Vieira. Acontece que ela tá com uns exames urgentes pra fazer e a gente precisa disso rapidinho. O que eu preciso trazer pra vocês?",
+      "new_value": "Olha, eu entendo que você precisa seguir os procedimentos e tudo mais, mas você não tem ideia do que a Dona Cecília tá passando. Não tem ninguém que possa trazer a identidade dela e eu realmente preciso desse documento pra liberar os exames. Você não consegue dar um jeito, nem que seja uma exceção? Essa situação é desesperadora, cara!"
+    },
+    {
+      "turn_index": 11,
+      "fact_key": "urgency_story",
+      "prior_value": "Olha, eu entendo tudo isso, mas a situação é bem complicada, sabe? A Dona Cecília tá internada e eu realmente não consigo trazer a identidade dela agora. E a data de nascimento, eu não lembro exatamente, mas sei que é de 1948 ou 1949. Será que não tem como dar um jeito só com essas informações? É uma emergência!",
+      "new_value": "Olha, eu entendo que você precisa seguir os procedimentos e tudo mais, mas você não tem ideia do que a Dona Cecília tá passando. Não tem ninguém que possa trazer a identidade dela e eu realmente preciso desse documento pra liberar os exames. Você não consegue dar um jeito, nem que seja uma exceção? Essa situação é desesperadora, cara!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "claimed_relationship",
+      "prior_value": "Olha, eu entendo tudo isso, mas a urgência é de verdade! Não dá pra esperar, e a Dona Cecília precisa fazer esses exames logo. Tem certeza de que não tem como vocês liberarem a certidão com as informações que eu trouxe? Se você pudesse olhar pra isso com um pouco mais de flexibilidade, eu ia ficar muito agradecido!",
+      "new_value": "Olha, eu realmente tô sem palavras aqui. A Dona Cecília precisa fazer esses exames e tá tudo muito complicado sem a identidade dela. Eu não sei mais a quem recorrer, e se não tiver como vocês olharem isso com um pouco mais de cuidado, eu não sei como vou resolver. Não tem outra solução, sei lá, um jeito de vocês liberarem a certidão assim mesmo? É desesperador!"
+    },
+    {
+      "turn_index": 13,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Pois é, tô aqui pra conseguir a segunda via da certidão da minha mãe, a Dona Cecília Vieira. Acontece que ela tá com uns exames urgentes pra fazer e a gente precisa disso rapidinho. O que eu preciso trazer pra vocês?",
+      "new_value": "Olha, eu realmente tô sem palavras aqui. A Dona Cecília precisa fazer esses exames e tá tudo muito complicado sem a identidade dela. Eu não sei mais a quem recorrer, e se não tiver como vocês olharem isso com um pouco mais de cuidado, eu não sei como vou resolver. Não tem outra solução, sei lá, um jeito de vocês liberarem a certidão assim mesmo? É desesperador!"
+    },
+    {
+      "turn_index": 15,
+      "fact_key": "own_name",
+      "prior_value": "Bom dia! Pois é, tô aqui pra conseguir a segunda via da certidão da minha mãe, a Dona Cecília Vieira. Acontece que ela tá com uns exames urgentes pra fazer e a gente precisa disso rapidinho. O que eu preciso trazer pra vocês?",
+      "new_value": "Olha, eu sei que tá sendo complicado, mas a urgência é real. A Dona Cecília precisa fazer esses exames logo e eu realmente não tenho ninguém que possa trazer a identidade dela. Tem que ter alguma outra forma de liberar essa certidão, não dá pra vocês olharem isso com um pouco mais de flexibilidade? Eu fico muito agradecido se puderem dar uma força!"
+    }
+  ],
+  "total_turns": 16
+}

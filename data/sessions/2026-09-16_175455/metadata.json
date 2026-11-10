@@ -1,0 +1,10 @@
+{
+  "session_id": "2026-09-16_175455",
+  "scenario_id": "rg_urgent_aggressive_v1",
+  "scenario_hash": "42ed871716602e984933ea345e961e2eab4842239373329c61dd68d51c3eb809",
+  "persona_provider_name": "ollama:qwen2.5:7b-instruct-q4_K_M",
+  "judge_provider_name": "ollama:llama3.1:8b-instruct-q4_K_M",
+  "created_at": "2026-09-16T17:54:55+00:00",
+  "last_updated_at": "2026-09-16T17:54:55+00:00",
+  "seed": null
+}

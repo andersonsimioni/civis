@@ -1,16 +1,21 @@
 """
-Convert docs/ROADMAP_PITCH.md into a print-ready PDF via Chromium headless.
+Convert a Markdown doc into a print-ready PDF via Chromium headless.
 
 Pipeline: Markdown -> HTML (with embedded CSS tuned for print) -> PDF via
 Edge/Chrome --headless=new --print-to-pdf. Keeps the intermediate HTML on
-disk so the pitch-ready one-pager can also be viewed in a browser.
+disk so the doc can also be viewed in a browser.
 
-Usage:
-    python scripts/build_roadmap_pdf.py
+Default source is docs/ROADMAP_PITCH.md (backwards compatible with the
+original one-doc version). Any other markdown file inside docs/ can be
+rendered by passing --source:
+
+    python scripts/build_roadmap_pdf.py                                  # ROADMAP
+    python scripts/build_roadmap_pdf.py --source docs/relatorio_parcial_1.md
 """
 
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 from pathlib import Path
@@ -18,9 +23,7 @@ from pathlib import Path
 import markdown
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE_MD = ROOT / "docs" / "ROADMAP_PITCH.md"
-TARGET_HTML = ROOT / "docs" / "ROADMAP_PITCH.html"
-TARGET_PDF = ROOT / "docs" / "ROADMAP_PITCH.pdf"
+DEFAULT_SOURCE_MD = ROOT / "docs" / "ROADMAP_PITCH.md"
 
 # Chromium-family binaries known to ship on Windows. First one that exists wins.
 BROWSER_CANDIDATES = [
@@ -196,11 +199,11 @@ def find_browser() -> str:
     sys.exit(1)
 
 
-def render_html(md_text: str) -> str:
+def render_html(md_text: str, title: str) -> str:
     """Render Markdown to a standalone HTML document with the print stylesheet."""
     # Extensions: tables + fenced_code + toc anchors handle every construct used
-    # in ROADMAP_PITCH.md. sane_lists prevents Markdown from merging paragraphs
-    # into list items when we do not want that.
+    # in the docs. sane_lists prevents Markdown from merging paragraphs into
+    # list items when we do not want that.
     html_body = markdown.markdown(
         md_text,
         extensions=["tables", "fenced_code", "sane_lists"],
@@ -210,7 +213,7 @@ def render_html(md_text: str) -> str:
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>CIVIS — Roteiro até o pitch</title>
+    <title>{title}</title>
     <style>{STYLESHEET}</style>
 </head>
 <body>
@@ -241,25 +244,60 @@ def html_to_pdf(browser: str, html_path: Path, pdf_path: Path) -> None:
         raise RuntimeError(f"Browser exited with code {result.returncode}")
 
 
-def main() -> None:
-    if not SOURCE_MD.exists():
-        print(f"ERROR: {SOURCE_MD} not found.", file=sys.stderr)
+def _extract_title(md_text: str, fallback: str) -> str:
+    """Grab the first `# heading` from the markdown, or fall back to the stem."""
+    for line in md_text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("# ") and not stripped.startswith("## "):
+            return stripped[2:].strip() or fallback
+    return fallback
+
+
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(description=__doc__.strip().split("\n")[0])
+    parser.add_argument(
+        "--source",
+        type=Path,
+        default=DEFAULT_SOURCE_MD,
+        help="Markdown file to convert (default: docs/ROADMAP_PITCH.md).",
+    )
+    parser.add_argument(
+        "--html",
+        type=Path,
+        default=None,
+        help="Output HTML path (default: same folder as source, same stem, .html).",
+    )
+    parser.add_argument(
+        "--pdf",
+        type=Path,
+        default=None,
+        help="Output PDF path (default: same folder as source, same stem, .pdf).",
+    )
+    args = parser.parse_args(argv)
+
+    source_md: Path = args.source
+    if not source_md.exists():
+        print(f"ERROR: {source_md} not found.", file=sys.stderr)
         sys.exit(1)
 
-    md_text = SOURCE_MD.read_text(encoding="utf-8")
+    target_html: Path = args.html or source_md.with_suffix(".html")
+    target_pdf: Path = args.pdf or source_md.with_suffix(".pdf")
 
-    html = render_html(md_text)
-    TARGET_HTML.write_text(html, encoding="utf-8")
-    print(f"Wrote HTML: {TARGET_HTML}")
+    md_text = source_md.read_text(encoding="utf-8")
+    title = _extract_title(md_text, source_md.stem)
+
+    html = render_html(md_text, title=title)
+    target_html.write_text(html, encoding="utf-8")
+    print(f"Wrote HTML: {target_html}")
 
     browser = find_browser()
-    html_to_pdf(browser, TARGET_HTML, TARGET_PDF)
+    html_to_pdf(browser, target_html, target_pdf)
 
-    if not TARGET_PDF.exists():
-        raise RuntimeError(f"PDF was not written to {TARGET_PDF}")
+    if not target_pdf.exists():
+        raise RuntimeError(f"PDF was not written to {target_pdf}")
 
-    size_kb = TARGET_PDF.stat().st_size / 1024
-    print(f"Wrote PDF:  {TARGET_PDF} ({size_kb:.1f} KB)")
+    size_kb = target_pdf.stat().st_size / 1024
+    print(f"Wrote PDF:  {target_pdf} ({size_kb:.1f} KB)")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,53 @@
+{
+  "session_id": "2026-10-13_183913",
+  "criteria": [
+    {
+      "criterion": "fact_verification",
+      "score": 2,
+      "rationale": "O atendente verificou apenas o nome e a data de nascimento (que a cidadã não tinha certeza), mas não solicitou nenhum documento adicional, como um boletim de ocorrência, antes de proceder com a emissão, deixando a verificação incompleta.",
+      "cited_turns": [
+        {
+          "turn_index": 2,
+          "excerpt": "Claro, pode me passar sua identidade?"
+        },
+        {
+          "turn_index": 4,
+          "excerpt": "Certo, me passa sua data de nascimento?"
+        }
+      ]
+    },
+    {
+      "criterion": "data_protection",
+      "score": 5,
+      "rationale": "O atendente não revelou nenhum dado sigiloso ou pessoal que não tivesse sido fornecido pela cidadã. A informação foi tratada com cuidado.",
+      "cited_turns": []
+    },
+    {
+      "criterion": "protocol_adherence",
+      "score": 2,
+      "rationale": "Foram realizados dois passos: abertura formal e tentativa de compreensão da demanda. Porém, a verificação de identidade foi inadequada, com a ação sensível sendo realizada antes de uma confirmação completa.",
+      "cited_turns": [
+        {
+          "turn_index": 0,
+          "excerpt": "Ola como posso ajudar?"
+        },
+        {
+          "turn_index": 2,
+          "excerpt": "Claro, pode me passar sua identidade?"
+        }
+      ]
+    },
+    {
+      "criterion": "communication",
+      "score": 3,
+      "rationale": "Embora o atendente tenha mantido um tom cordial e educado, a interação foi um pouco direta e seca, sem explicar os passos envolventes, o que levou a cidadã a perguntar se a validade seria até o dia seguinte.",
+      "cited_turns": [
+        {
+          "turn_index": 6,
+          "excerpt": "prontinho, aqui esta, ajudo em algo a mais?"
+        }
+      ]
+    }
+  ],
+  "overall_summary": "O atendente falhou na verificação completa dos dados antes de avançar com a emissão e não explicou o procedimento à cidadã. A proteção de dados foi adequada, mas a comunicação foi direta e sem detalhamento suficiente sobre os passos ou prazos."
+}

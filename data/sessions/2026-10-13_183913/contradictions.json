@@ -1,0 +1,11 @@
+{
+  "contradictions": [
+    {
+      "turn_index": 5,
+      "fact_key": "birth_date",
+      "prior_value": "Bah, eu não tenho a identidade, né? Eu perdi tudo! Mas eu posso te passar meu nome, que é Rodrigo Almeida da Rosa. O que mais tu precisa pra agilizar isso?",
+      "new_value": "Olha, não lembro de cabeça, mas nasci em 05 de outubro de 1985. Podes ver isso rápido, né? Não dá pra perder mais tempo!"
+    }
+  ],
+  "total_turns": 11
+}

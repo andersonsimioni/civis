@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_015_strict_certificate",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Bom dia. Para iniciarmos o processo de solicitação da segunda via de sua certidão de nascimento, por gentileza, poderia informar seu nome completo? Além disso, necessito que apresente um documento com foto para a verificação de sua identidade.",
+      "timestamp": "2026-09-17T12:16:07+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia! Meu nome é Iracema da Silva, mas eu não sei se trouxe um documento com foto. Eu tenho um cartão de aposentadoria, pode ser esse?",
+      "timestamp": "2026-09-17T12:16:08+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Infelizmente, o cartão de aposentadoria não é um documento válido para a verificação de identidade neste cartório. Por favor, verifique se tem um documento com foto, como um RG, CNH ou passaporte, para que possamos prosseguir com sua solicitação.",
+      "timestamp": "2026-09-17T12:16:09+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ai, meu Deus! Eu não sei se tenho isso tudo. O meu RG... ahn... eu acho que eu deixei com a minha filha. E a carteira de motorista também, não sei onde tá. Será que não tem como fazer de outro jeito?",
+      "timestamp": "2026-09-17T12:16:10+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Lamento, mas não há como prosseguir sem a apresentação de um documento com foto válido. É imprescindível que você tenha em mãos um RG, CNH ou passaporte para a confirmação de sua identidade. Por favor, verifique suas posses e, assim que estiver com a documentação adequada, estarei à disposição para auxiliá-la com a solicitação da segunda via de sua certidão de nascimento.",
+      "timestamp": "2026-09-17T12:16:11+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Ai, que complicação! Eu vou tentar ver se encontro alguma coisa em casa, mas eu realmente não sei onde deixei esses documentos. Será que não tem algum jeito de vocês me ajudarem, mesmo sem essa identificação agora?",
+      "timestamp": "2026-09-17T12:16:12+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Lamento, mas não posso abrir exceções ao protocolo estabelecido. É necessário apresentar um documento com foto válido para prosseguirmos com a sua solicitação. Agradeço pela sua compreensão e estarei aqui para auxiliá-la assim que você tiver a documentação necessária.",
+      "timestamp": "2026-09-17T12:16:13+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Poxa, que chato isso! Eu entendo, mas é muito difícil pra mim achar esses documentos. Se eu não conseguir até amanhã, o que eu faço? Não tem outro jeito, não?",
+      "timestamp": "2026-09-17T12:16:13+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Entendo que essa situação possa ser frustrante. No entanto, para que possamos atender sua solicitação, é imprescindível que você tenha um documento com foto válido. Caso não consiga encontrar a documentação até amanhã, recomendo que tente novamente, e estarei aqui para auxiliá-la assim que estiver com os documentos necessários. Agradeço pela sua paciência e compreensão.",
+      "timestamp": "2026-09-17T12:16:14+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Ah, que raiva! Eu só queria resolver isso logo. Eu vou fazer o possível pra achar meus documentos, mas e se eu não conseguir mesmo? Não tem nada que eu possa fazer? Isso tudo é muito complicado pra mim...",
+      "timestamp": "2026-09-17T12:16:15+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Lamento pela sua dificuldade, mas, conforme já mencionado, não podemos proceder sem a apresentação de um documento com foto válido. Essa é uma exigência do nosso protocolo. Caso não consiga encontrar a documentação, recomendo que busque alternativas, como solicitar uma segunda via do seu RG ou CNH junto ao órgão competente. Estou à disposição para atender sua solicitação assim que estiver com a documentação necessária. Agradeço pela sua compreensão e paciência.",
+      "timestamp": "2026-09-17T12:16:16+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Mas como é que eu vou conseguir tudo isso? Não sei nem por onde começar. Eu tô tão perdida, se eu soubesse que era assim eu tinha me preparado melhor. Será que não tem ninguém que possa me ajudar a resolver isso? É muito difícil pra mim, viu!",
+      "timestamp": "2026-09-17T12:16:17+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Compreendo que a situação é desafiadora. Entretanto, minha função é seguir rigorosamente o protocolo. Recomendo que você procure informações sobre como solicitar a segunda via de documentos, como o RG ou a CNH, junto ao órgão responsável. Eles poderão orientá-la adequadamente. Estou disponível para assisti-la na sua solicitação aqui assim que você tiver os documentos necessários. Agradeço pela sua compreensão.",
+      "timestamp": "2026-09-17T12:16:18+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Eu entendo, mas tá tudo muito complicado pra mim. Eu só queria resolver isso logo! Será que não tem um jeito de conversarem aqui, ou me ajudarem a agilizar esse processo? Eu só quero a minha certidão pra regularizar a aposentadoria, não é pra complicar mais a minha vida!",
+      "timestamp": "2026-09-17T12:16:19+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Entendo sua preocupação e o desejo de resolver a situação da maneira mais rápida possível. No entanto, devo reiterar que, para que possamos atender à sua solicitação de segunda via da certidão de nascimento, é fundamental a apresentação de um documento com foto válido. Recomendo que você busque a documentação necessária, e assim que estiver pronta, estarei à disposição para auxiliá-la. Agradeço pela sua paciência e compreensão.",
+      "timestamp": "2026-09-17T12:16:21+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Mas isso tudo é tão difícil! Eu não sei como vou conseguir arrumar um documento com foto assim, tô muito perdida. Eu só quero a minha certidão logo, por favor! Não tem como vocês ajudarem de alguma maneira? É tudo muito mais complicado do que eu pensei!",
+      "timestamp": "2026-09-17T12:16:22+00:00"
+    }
+  ]
+}

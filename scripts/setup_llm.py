@@ -118,6 +118,8 @@ def resolve_config_path() -> Path:
     Roaming\\civis while the loader looked at Local\\civis\\civis, and
     configs were silently ignored. Fixed on 2026-09-16.
     """
+    import contextlib
+
     src_dir = _REPO_ROOT / "src"
     added = str(src_dir) not in sys.path
     if added:
@@ -127,10 +129,8 @@ def resolve_config_path() -> Path:
         return config_path()
     finally:
         if added:
-            try:
+            with contextlib.suppress(ValueError):
                 sys.path.remove(str(src_dir))
-            except ValueError:
-                pass
 
 
 # ---------------------------------------------------------------------------

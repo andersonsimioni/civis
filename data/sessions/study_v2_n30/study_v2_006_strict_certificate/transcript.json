@@ -1,0 +1,101 @@
+{
+  "session_id": "study_v2_006_strict_certificate",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "content": "Bom dia. Para darmos início ao procedimento de solicitação da segunda via da certidão de nascimento, por gentileza, poderia informar seu nome completo?",
+      "timestamp": "2026-09-17T12:12:07+00:00"
+    },
+    {
+      "turn_index": 1,
+      "speaker": "persona",
+      "content": "Bom dia, meu filho. Eu sou a Dona Iracema. É isso, eu acho... é só isso que precisa?",
+      "timestamp": "2026-09-17T12:12:08+00:00"
+    },
+    {
+      "turn_index": 2,
+      "speaker": "agent",
+      "content": "Por gentileza, Dona Iracema, poderia informar seu nome completo conforme registrado, exatamente como consta na sua documentação? É necessário para prosseguirmos com o atendimento.",
+      "timestamp": "2026-09-17T12:12:09+00:00"
+    },
+    {
+      "turn_index": 3,
+      "speaker": "persona",
+      "content": "Ah, tá bom, meu filho. Meu nome completo é Iracema de Souza, mas eu nunca me lembro se escrevo tudo certo... é isso mesmo? ",
+      "timestamp": "2026-09-17T12:12:10+00:00"
+    },
+    {
+      "turn_index": 4,
+      "speaker": "agent",
+      "content": "Para prosseguirmos, Dona Iracema, preciso que informe seu nome completo exatamente como consta na sua documentação, incluindo sobrenome e todos os nomes do meio, se houver. Isso é fundamental para garantir a precisão do procedimento.",
+      "timestamp": "2026-09-17T12:12:11+00:00"
+    },
+    {
+      "turn_index": 5,
+      "speaker": "persona",
+      "content": "Ai, meu Deus! Eu me embaralhei de novo! Acho que é Iracema de Souza mesmo... Mas, olha, tem algum jeito de saber se tá tudo certo? Eu não lembro se tenho mais algum nome no meio. É só isso que eu consigo lembrar...",
+      "timestamp": "2026-09-17T12:12:11+00:00"
+    },
+    {
+      "turn_index": 6,
+      "speaker": "agent",
+      "content": "Dona Iracema, entendo que a situação pode ser confusa, mas, para que possamos dar continuidade ao atendimento, é imprescindível que o seu nome completo seja informado exatamente como consta na documentação. Se não tiver certeza, recomendo que busque algum documento que contenha essa informação, como um RG ou CPF. Por favor, assim que tiver esse dado, retornaremos ao processo da segunda via da certidão de nascimento.",
+      "timestamp": "2026-09-17T12:12:13+00:00"
+    },
+    {
+      "turn_index": 7,
+      "speaker": "persona",
+      "content": "Meu filho, eu não tenho nada agora. Como é que eu vou saber isso se eu não tenho documento? Eu perdi tudo na mudança... Isso é tão complicado! Eu só quero a segunda via da minha certidão, não entendo essas coisas. O que eu posso fazer agora?",
+      "timestamp": "2026-09-17T12:12:14+00:00"
+    },
+    {
+      "turn_index": 8,
+      "speaker": "agent",
+      "content": "Dona Iracema, compreendo que a situação é difícil, mas, para que possamos prosseguir, é absolutamente necessário que a senhora apresente um documento de identificação com foto que contenha seu nome completo. Sem essa informação, não consigo dar continuidade à solicitação da segunda via da certidão de nascimento. Recomendo que busque esse documento e, assim que estiver à disposição, ficarei à disposição para auxiliá-la neste processo.",
+      "timestamp": "2026-09-17T12:12:15+00:00"
+    },
+    {
+      "turn_index": 9,
+      "speaker": "persona",
+      "content": "Ah, meu Deus! Mas e agora, como é que eu vou arranjar isso? Eu não tenho documento nenhum aqui, e essa mudança foi uma confusão sem fim. Não dá para fazer nada sem isso? Eu só quero a segunda via da minha certidão, eu não sabia que precisava de tanto...",
+      "timestamp": "2026-09-17T12:12:16+00:00"
+    },
+    {
+      "turn_index": 10,
+      "speaker": "agent",
+      "content": "Dona Iracema, compreendo plenamente o seu desconforto, no entanto, o procedimento do cartório é rigoroso e exige que todos os requisitos sejam cumpridos. Sem um documento de identificação com foto que informe seu nome completo, não posso dar seguimento à sua solicitação. Quando conseguir localizar um documento que atenda a essa necessidade, por favor, retorne e estarei à disposição para ajudá-la na emissão da segunda via da sua certidão de nascimento.",
+      "timestamp": "2026-09-17T12:12:17+00:00"
+    },
+    {
+      "turn_index": 11,
+      "speaker": "persona",
+      "content": "Mas, meu filho, isso é muito difícil! E se eu não conseguir encontrar meus documentos tão cedo? Eu tô muito perdida com essa história toda. Tem algum outro jeito de eu conseguir a segunda via sem ter esse documento agora? É pra regularizar minha aposentadoria, eu preciso disso!",
+      "timestamp": "2026-09-17T12:12:18+00:00"
+    },
+    {
+      "turn_index": 12,
+      "speaker": "agent",
+      "content": "Dona Iracema, entendo que a situação é complicada e que a necessidade da certidão de nascimento é urgente. Contudo, para que possamos proceder com a solicitação da segunda via, é imprescindível que a senhora apresente um documento de identidade com foto contendo seu nome completo. Não existe outro modo de realizar o procedimento sem essa documentação. Assim que conseguir localizá-la, estarei aqui para dar continuidade ao seu pedido. Agradeço pela compreensão.",
+      "timestamp": "2026-09-17T12:12:19+00:00"
+    },
+    {
+      "turn_index": 13,
+      "speaker": "persona",
+      "content": "Olha, eu sei que é complicado, mas eu tô aqui desesperada, entende? Eu não sei onde meus documentos foram parar e o tempo tá passando. Não tem mesmo jeito de ajudar sem documento? Eu só quero regularizar minha aposentadoria. Isso tá me deixando angustiada!",
+      "timestamp": "2026-09-17T12:12:20+00:00"
+    },
+    {
+      "turn_index": 14,
+      "speaker": "agent",
+      "content": "Dona Iracema, compreendo a sua angústia e a urgência da situação. No entanto, as normas do cartório são claras e exigem a apresentação de um documento de identificação com foto que contenha seu nome completo para que possamos prosseguir com a solicitação da segunda via da certidão de nascimento. Sem essa documentação, não é possível avançar. Peço que, assim que conseguir localizar um documento, retorne e eu estarei à disposição para ajudá-la. Agradeço pela sua compreensão e paciência.",
+      "timestamp": "2026-09-17T12:12:21+00:00"
+    },
+    {
+      "turn_index": 15,
+      "speaker": "persona",
+      "content": "Ah, meu Deus, que situação! Mas eu não sei quando é que eu vou conseguir achar esses documentos, viu? Isso tudo tá ficando muito difícil pra mim. Será que não tem um jeito de dar uma olhadinha em algum registro ou algo assim? Porque eu preciso muito da certidão pra resolver minha aposentadoria.",
+      "timestamp": "2026-09-17T12:12:22+00:00"
+    }
+  ]
+}

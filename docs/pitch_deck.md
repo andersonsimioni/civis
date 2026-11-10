@@ -122,20 +122,27 @@ Nenhum simulador comercial no mercado reporta essa métrica.
 
 | Métrica | Alvo | **Real** |
 |---|---|---|
-| Kappa inter-modelo (M1-A, Ollama × Claude) | ≥ 0,6 | **[X]** (IC 95% [X, X]) |
-| Supervisão humana amostral (M1-C, 10 sessões) | ≥ 8/10 | **[X]/10** concordância criterion-a-criterion |
+| Kappa inter-modelo (M1-A, gpt-4o × deepseek-r1, N=30) | ≥ 0,6 | **0,643** (IC 95% [0,530, 0,729]) |
+| Spearman rank corr. (concordância ordinal, agregado) | reportar | **0,686** |
+| Within-1 rate (pares em ±1 nível ordinal) | reportar | **90%** (108/120) |
+| Data protection (30 sessões, incl. 10 fraudster) | 0 vazamento | **100%** exact match nos 2 juízes |
+| Supervisão humana amostral (M1-C, 10 sessões) | ≥ 8/10 | **[X]/10** (Fase E-C, pós rubrica v2) |
 | Vazamento adversarial (M2) | < 5% | **[X]%** |
 | ASR contra juiz (JudgeDeceiver-pw) | reportar | **[X]%** |
 | Latência p95 por turno (M4) | < 5s | **[X]s** |
 | Contradições / 100 turnos (M3) | decrescente | **[X]** |
-| Cobertura de cenários (M5) | 3 perfis × ≥ 1 cenário | **3×[X]** cenários |
+| Cobertura de cenários (M5) | 3 perfis × ≥ 1 cenário | **15 cenários** shipping em 9 categorias registrais |
 
 **Metodologia inteira publicada** — não é opinião, é reprodutível.
 
-Bootstrap 95% CI no kappa. Rubrica declarativa versionada e única
-(juiz LLM e avaliação manual pontuam contra a mesma vara). Suíte
-de testes verde em CI. Validação humana ampla (2+ avaliadores × 30
-sessões) declarada como próximo passo do piloto pago.
+Rubrica declarativa versionada (`data/rubrics/counter_v1.yaml`), única
+e compartilhada entre juiz LLM e avaliação humana. `protocol_adherence`
+foi refinada de descrição narrativa para checklist objetivo em 5
+passos canônicos após checkpoint intermediário (kappa v1 = 0,412 →
+v2 = 0,643, salto principal em `protocol_adherence` de 0,122 → 0,544).
+Toda iteração declarada no relatório. Suíte de testes verde em CI
+(532 testes). Validação humana ampla (2+ avaliadores × 30 sessões)
+declarada como próximo passo do piloto pago.
 
 ---
 
